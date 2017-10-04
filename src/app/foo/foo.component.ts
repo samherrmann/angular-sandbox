@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, QueryList, ViewChildren, TemplateRef,
   ViewContainerRef, ElementRef, ChangeDetectorRef, ContentChild, AfterViewInit,
-  Output, EventEmitter, EmbeddedViewRef, Input, SkipSelf, Injector
+  Output, EventEmitter, EmbeddedViewRef, Input, SkipSelf, Injector, ComponentFactoryResolver
 } from '@angular/core';
+import { BarComponent } from '../bar/bar.component';
 
 @Component({
   selector: 'app-foo',
@@ -16,7 +17,11 @@ export class FooComponent implements OnInit {
 
   private changeDetector: ChangeDetectorRef;
 
-  constructor(@SkipSelf() injector: Injector) {
+  private factory = this.componentFactoryResolver
+    .resolveComponentFactory(BarComponent);
+
+  constructor(@SkipSelf() injector: Injector,
+    private componentFactoryResolver: ComponentFactoryResolver) {
     this.changeDetector = injector.get(ChangeDetectorRef);
   }
 
@@ -27,8 +32,14 @@ export class FooComponent implements OnInit {
   // is obtined through @ContentChild. As a workaround, we require the QueryList
   // from the parent component.
   createChild(viewChildren: QueryList<any>) {
-    const viewRef = this.viewContainerRef.createEmbeddedView(this.tplRef);
+    const componentRef = this.viewContainerRef.createComponent(this.factory);
+    const viewRef = componentRef.instance.viewContainerRef.createEmbeddedView(this.tplRef);
     this.changeDetector.detectChanges();
-    console.log(viewChildren);
+
+    console.log(viewChildren)
+    console.log({
+      container: componentRef,
+      view: viewRef
+    });
   }
 }
