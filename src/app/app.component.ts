@@ -1,5 +1,6 @@
 import { Component, ViewContainerRef, ViewChild, TemplateRef, ViewChildren,
   ChangeDetectorRef, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { FooComponent } from './foo/foo.component';
 
 @Component({
   selector: 'app-root',
@@ -8,27 +9,15 @@ import { Component, ViewContainerRef, ViewChild, TemplateRef, ViewChildren,
 })
 export class AppComponent implements AfterViewInit {
 
-  @ViewChild('vc', { read: ViewContainerRef }) viewContainerRef: ViewContainerRef;
+  @ViewChildren('dynChild') dynChildren: QueryList<ElementRef>;
 
-  @ViewChild('tpl') tplRef: TemplateRef<any>;
+  @ViewChild(FooComponent) fooComponent: FooComponent;
 
-  @ViewChildren('dynChild') dynChild: QueryList<ElementRef>;
-
-  constructor(private changeDetectorRef: ChangeDetectorRef) { }
+  constructor() { }
 
   ngAfterViewInit() {
-    this.dynChild.changes.subscribe((x) => {
-      console.log(this.dynChild.last);
-    });
-
-    setTimeout(() => {
-      // without calling detect changes after each time an embedded
-      // view is created, only one event is detected.
-
-      for (let i = 0; i < 3; i++) {
-        this.viewContainerRef.createEmbeddedView(this.tplRef);
-        this.changeDetectorRef.detectChanges();
-      }
-    }, 2000);
+    for (let i = 0; i < 3; i++) {
+      this.fooComponent.createChild(this.dynChildren);
+    }
   }
 }
