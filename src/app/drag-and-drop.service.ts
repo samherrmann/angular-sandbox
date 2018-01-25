@@ -38,4 +38,12 @@ export class DragAndDropService {
   dragOver(e: PointerEvent, droppable: DroppableComponent): void {
     this._events.next(new DragEvent('dragover', droppable, e));
   }
+
+  dragEnter(e: PointerEvent, droppable: DroppableComponent): void {
+    this._events.next(new DragEvent('dragenter', droppable, e));
+  }
+
+  dragLeave(e: PointerEvent, droppable: DroppableComponent): void {
+    this._events.next(new DragEvent('dragleave', droppable, e));
+  }
 }

@@ -3,7 +3,7 @@ import { DraggableComponent } from '../draggable/draggable.component';
 import { DroppableComponent } from './droppable.component';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { filter } from 'rxjs/operators';
+import { filter, pairwise } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent } from '../drag-event';
 
@@ -16,7 +16,22 @@ export class DroppableService {
 
   register(droppable: DroppableComponent): void {
     this.subscriptions.push(
-      this.handleDragEvents(droppable)
+      this.handleDragEvents(droppable),
+      this.handleDragOverEvents(droppable)
+    );
+  }
+
+  dragEnterEvents(droppable: DroppableComponent) {
+    return this.dragAndDropService.events.pipe(
+      filter(e => e.target === droppable),
+      filter(e => e.type === 'dragenter')
+    );
+  }
+
+  dragLeaveEvents(droppable: DroppableComponent) {
+    return this.dragAndDropService.events.pipe(
+      filter(e => e.target === droppable),
+      filter(e => e.type === 'dragleave')
     );
   }
 
@@ -27,6 +42,33 @@ export class DroppableService {
     ).subscribe(e => {
       this.dragAndDropService.dragOver(e.pointerEvent, droppable);
     });
+  }
+
+  private handleDragOverEvents(droppable: DroppableComponent): Subscription {
+    return this.dragAndDropService.events.pipe(
+      this.dragOverPairs()
+    ).subscribe(e => {
+
+      if (this.isFirstDragEnterEvent(e, droppable)) {
+        this.dragAndDropService.dragEnter(e[0].pointerEvent, droppable);
+      } else if (this.isDragLeaveEvent(e, droppable)) {
+          this.dragAndDropService.dragLeave(e[1].pointerEvent, droppable);
+      } else if (this.isDragEnterEvent(e, droppable)) {
+        this.dragAndDropService.dragEnter(e[1].pointerEvent, droppable);
+      }
+    });
+  }
+
+  private isFirstDragEnterEvent(e: DragEvent[], droppable: DroppableComponent) {
+    return e.length === 1 && e[0].target === droppable;
+  }
+
+  private isDragEnterEvent(e: DragEvent[], droppable: DroppableComponent) {
+    return e.length === 2 && e[0].target !== droppable && e[1].target === droppable;
+  }
+
+  private isDragLeaveEvent(e: DragEvent[], droppable: DroppableComponent) {
+    return e.length === 2 && e[0].target === droppable && e[1].target !== droppable;
   }
 
   // unregister(droppable: DroppableComponent) {
@@ -59,6 +101,34 @@ export class DroppableService {
   // dragEnd(e: PointerEvent): void {
   //   this.dropTarget = undefined;
   // }
+
+  private dragOverPairs() {
+    return (source: Observable<DragEvent>) => {
+      let sub: Subscription;
+      let last: DragEvent;
+
+      return new Observable<DragEvent[]>(subscriber => {
+        sub = source.subscribe(e => {
+          if (e.type === 'dragstart') {
+            last = undefined;
+
+          } else if (e.type === 'dragover') {
+            if (last) {
+              subscriber.next([last, e]);
+            } else {
+              subscriber.next([e]);
+            }
+            last = e;
+          }
+        });
+
+        // on unsubscribe
+        return () => {
+          sub.unsubscribe();
+        };
+      });
+    };
+  }
 
   private isPointerOverDroppable(e: PointerEvent, droppable: DroppableComponent): boolean {
     const el: HTMLElement = droppable.elementRef.nativeElement;

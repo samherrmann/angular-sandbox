@@ -31,6 +31,14 @@ export class DroppableComponent implements OnInit {
 
   ngOnInit() {
     this.droppableService.register(this);
+    this.subscriptions.push(
+      this.droppableService.dragLeaveEvents(this).subscribe(e => {
+        this.isDropTarget = false;
+      }),
+      this.droppableService.dragEnterEvents(this).subscribe(e => {
+        this.isDropTarget = true;
+      })
+    );
   }
 
   addDraggable(): void {
@@ -38,6 +46,6 @@ export class DroppableComponent implements OnInit {
   }
 
   ngOnDestory() {
-
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
