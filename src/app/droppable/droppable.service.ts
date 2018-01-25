@@ -17,7 +17,8 @@ export class DroppableService {
   register(droppable: DroppableComponent): void {
     this.subscriptions.push(
       this.handleDragEvents(droppable),
-      this.handleDragOverEvents(droppable)
+      this.handleDragOverEvents(droppable),
+      this.handleDrop(droppable)
     );
   }
 
@@ -77,36 +78,25 @@ export class DroppableService {
     return e.length === 2 && e[0].target === droppable && e[1].target !== droppable;
   }
 
-  // unregister(droppable: DroppableComponent) {
-  //   this.droppables.splice(this.droppables.indexOf(droppable), 1);
-  // }
-
-  // drag(e: PointerEvent): void {
-  //   this.droppables.forEach(d => {
-  //     d.isDropTarget = this.isPointerOverDroppable(e, d);
-  //     if (d.isDropTarget) {
-  //       this.dropTarget = d;
-  //     }
-  //   });
-  // }
-
-  // drop(e: PointerEvent, draggable: DraggableComponent): void {
-  //   if (this.dropTarget !== undefined) {
-  //     // remove draggable from current host
-  //     this.droppables.forEach(d => {
-  //       const i = d.viewContainerRef.indexOf(draggable.componetRef.hostView);
-  //       if (i > -1) {
-  //         d.viewContainerRef.detach(i);
-  //       }
-  //     });
-  //     // add draggable to new host
-  //     this.dropTarget.viewContainerRef.insert(draggable.componetRef.hostView);
-  //   }
-  // }
-
-  // dragEnd(e: PointerEvent): void {
-  //   this.dropTarget = undefined;
-  // }
+  private handleDrop(droppable: DroppableComponent): Subscription {
+    return this.dragAndDropService.events.pipe(
+      filter(e => e.type === 'dragenter'),
+      filter(e => e.target === droppable)
+    ).subscribe(e => {
+      console.log('drop');
+      // if (this.dropTarget !== undefined) {
+      //   // remove draggable from current host
+      //   this.droppables.forEach(d => {
+      //     const i = d.viewContainerRef.indexOf(draggable.componetRef.hostView);
+      //     if (i > -1) {
+      //       d.viewContainerRef.detach(i);
+      //     }
+      //   });
+      //   // add draggable to new host
+      //   this.dropTarget.viewContainerRef.insert(draggable.componetRef.hostView);
+      // }
+    });
+  }
 
   private dragOverPairs() {
     return (source: Observable<DragEvent>) => {
