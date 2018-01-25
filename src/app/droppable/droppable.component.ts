@@ -3,11 +3,16 @@ import { Component, OnInit, HostListener, ViewContainerRef, ViewChild, Component
 import { DraggableComponent } from '../draggable/draggable.component';
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
+import { DragAndDropService } from '../drag-and-drop.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-droppable',
   templateUrl: './droppable.component.html',
-  styleUrls: ['./droppable.component.scss']
+  styleUrls: ['./droppable.component.scss'],
+  providers: [
+    DroppableService
+  ]
 })
 export class DroppableComponent implements OnInit {
 
@@ -17,9 +22,12 @@ export class DroppableComponent implements OnInit {
   @HostBinding('class.droptarget')
   isDropTarget = false;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(public elementRef: ElementRef,
     private droppableService: DroppableService,
-    private draggableFactoryService: DraggableFactoryService) { }
+    private draggableFactoryService: DraggableFactoryService,
+    private dragAndDropService: DragAndDropService) { }
 
   ngOnInit() {
     this.droppableService.register(this);
@@ -30,6 +38,6 @@ export class DroppableComponent implements OnInit {
   }
 
   ngOnDestory() {
-    this.droppableService.unregister(this);
+
   }
 }

@@ -5,6 +5,11 @@
   overflow: hidden; // TODO: need to find an alternative to not hide overflow while preventing scrollbars while dragging.
 }
 
+div[appDraggableArea] {
+  height: 100%;
+  width: 100%;
+}
+
 app-droppable {
   height: 50%;
   width: 50%;

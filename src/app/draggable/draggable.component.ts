@@ -1,5 +1,7 @@
-import { Component, OnInit, HostListener, HostBinding, ElementRef, Renderer2, ComponentRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, HostBinding, ElementRef, Renderer2, ComponentRef } from '@angular/core';
 import {  DraggableService } from './draggable.service';
+import { Subscription } from 'rxjs/Subscription';
+import { DragAndDropService } from '../drag-and-drop.service';
 
 @Component({
   selector: 'app-draggable',
@@ -9,41 +11,50 @@ import {  DraggableService } from './draggable.service';
     DraggableService
   ]
 })
-export class DraggableComponent implements OnInit {
-
-  isActive = false;
+export class DraggableComponent implements OnInit, OnDestroy {
 
   componetRef: ComponentRef<DraggableComponent>;
 
-  constructor(private draggableService: DraggableService,
-    private elementRef: ElementRef,
-    private renderer: Renderer2) { }
+  private subscriptions: Subscription[] = [];
 
-  ngOnInit() {}
+  constructor(private draggableService: DraggableService,
+    private dragAndDropService: DragAndDropService,
+    private elementRef: ElementRef,
+    private renderer: Renderer2) {
+  }
+
+  ngOnInit() {
+    this.draggableService.register(this);
+    this.subscriptions.push(
+      this.handleDragEvents(),
+      this.handleDragEndEvents()
+    );
+  }
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
-    this.isActive = true;
-    this.draggableService.dragStart(e);
+    this.dragAndDropService.dragStart(e, this);
   }
 
-  @HostListener('pointerup', ['$event'])
-  pointerUp(e: PointerEvent) {
-    this.isActive = false;
-    this.renderer.removeStyle(this.elementRef.nativeElement, 'transform');
-    this.draggableService.drop(e, this);
-    this.draggableService.dragEnd(e);
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  @HostListener('pointermove', ['$event'])
-  pointerEnter(e: PointerEvent) {
-    if (this.isActive) {
-      const delta = this.draggableService.drag(e);
-      this.renderer.setStyle(
-        this.elementRef.nativeElement,
-        'transform',
-        'translate(' + delta.x + 'px, ' + delta.y + 'px)'
-      );
-    }
+  private handleDragEvents(): Subscription {
+    return this.draggableService.dragEvents(this)
+      .subscribe(e => {
+        this.renderer.setStyle(
+          this.elementRef.nativeElement,
+          'transform',
+          'translate(' + e.x + 'px, ' + e.y + 'px)'
+        );
+      });
+  }
+
+  private handleDragEndEvents(): Subscription {
+    return this.draggableService.dragEndEvents(this)
+    .subscribe(e => {
+      this.renderer.removeStyle(this.elementRef.nativeElement, 'transform');
+    });
   }
 }
