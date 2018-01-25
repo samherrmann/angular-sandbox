@@ -35,6 +35,12 @@ export class DroppableService {
     );
   }
 
+  dragEndEvents(droppable: DroppableComponent) {
+    return this.dragAndDropService.events.pipe(
+      filter(e => e.type === 'dragend')
+    );
+  }
+
   private handleDragEvents(droppable: DroppableComponent): Subscription {
     return this.dragAndDropService.events.pipe(
       filter(e => e.type === 'drag'),

@@ -37,6 +37,9 @@ export class DroppableComponent implements OnInit {
       }),
       this.droppableService.dragEnterEvents(this).subscribe(e => {
         this.isDropTarget = true;
+      }),
+      this.droppableService.dragEndEvents(this).subscribe(e => {
+        this.isDropTarget = false;
       })
     );
   }
