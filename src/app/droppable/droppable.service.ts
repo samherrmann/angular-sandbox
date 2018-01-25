@@ -54,14 +54,14 @@ export class DroppableService {
   private handleDragOverEvents(droppable: DroppableComponent): Subscription {
     return this.dragAndDropService.events.pipe(
       this.dragOverPairs()
-    ).subscribe(e => {
+    ).subscribe(events => {
 
-      if (this.isFirstDragEnterEvent(e, droppable)) {
-        this.dragAndDropService.dragEnter(e[0].pointerEvent, droppable);
-      } else if (this.isDragLeaveEvent(e, droppable)) {
-          this.dragAndDropService.dragLeave(e[1].pointerEvent, droppable);
-      } else if (this.isDragEnterEvent(e, droppable)) {
-        this.dragAndDropService.dragEnter(e[1].pointerEvent, droppable);
+      if (this.isFirstDragEnterEvent(events, droppable)) {
+        this.dragAndDropService.dragEnter(events[0].pointerEvent, droppable);
+      } else if (this.isDragLeaveEvent(events, droppable)) {          
+          this.dragAndDropService.dragLeave(events[1].pointerEvent, droppable);
+      } else if (this.isDragEnterEvent(events, droppable)) {
+        this.dragAndDropService.dragEnter(events[1].pointerEvent, droppable);
       }
     });
   }
@@ -83,7 +83,6 @@ export class DroppableService {
       filter(e => e.type === 'dragenter'),
       filter(e => e.target === droppable)
     ).subscribe(e => {
-      console.log('drop');
       // if (this.dropTarget !== undefined) {
       //   // remove draggable from current host
       //   this.droppables.forEach(d => {

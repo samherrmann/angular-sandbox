@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener, HostBinding, ElementRef, Re
 import {  DraggableService } from './draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
+import { DroppableComponent } from '../droppable/droppable.component';
 
 @Component({
   selector: 'app-draggable',
@@ -14,6 +15,8 @@ import { DragAndDropService } from '../drag-and-drop.service';
 export class DraggableComponent implements OnInit, OnDestroy {
 
   componetRef: ComponentRef<DraggableComponent>;
+
+  host: DroppableComponent;
 
   private subscriptions: Subscription[] = [];
 

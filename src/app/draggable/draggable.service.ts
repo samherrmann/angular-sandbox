@@ -55,7 +55,7 @@ export class DraggableService implements OnDestroy {
 
   private events(draggable: DraggableComponent): Observable<DragEvent> {
     return this.dragAndDropService.events.pipe(
-      filter(e => e.target === draggable),
+      filter(e => e.draggable === draggable),
     );
   }
 

@@ -14,5 +14,6 @@ export class DraggableFactoryService {
   addDraggable(droppable: DroppableComponent): void {
     const componentRef = droppable.viewContainerRef.createComponent(this.factory);
     componentRef.instance.componetRef = componentRef;
+    componentRef.instance.host = droppable;
   }
 }

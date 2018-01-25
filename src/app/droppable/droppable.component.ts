@@ -32,11 +32,11 @@ export class DroppableComponent implements OnInit {
   ngOnInit() {
     this.droppableService.register(this);
     this.subscriptions.push(
-      this.droppableService.dragLeaveEvents(this).subscribe(e => {
-        this.isDropTarget = false;
+      this.droppableService.dragLeaveEvents(this).subscribe(e => {        
+        this.isDropTarget = false;    
       }),
-      this.droppableService.dragEnterEvents(this).subscribe(e => {
-        this.isDropTarget = true;
+      this.droppableService.dragEnterEvents(this).subscribe(e => {        
+        this.isDropTarget = true;        
       }),
       this.droppableService.dragEndEvents(this).subscribe(e => {
         this.isDropTarget = false;
