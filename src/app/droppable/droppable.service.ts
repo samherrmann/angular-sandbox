@@ -122,8 +122,8 @@ export class DroppableService {
   }
 
   private isPointerOverDroppable(e: PointerEvent, droppable: DroppableComponent): boolean {
-    const el: HTMLElement = droppable.elementRef.nativeElement;
-    return e.clientX >= el.offsetLeft && e.clientX <= (el.offsetLeft + el.offsetWidth) &&
-    e.clientY >= el.offsetTop && e.clientY <= (el.offsetTop + el.offsetHeight);
+    const el: ClientRect = droppable.elementRef.nativeElement.getBoundingClientRect();
+    return e.clientX >= el.left && e.clientX <= (el.left + el.width) &&
+    e.clientY >= el.top && e.clientY <= (el.top + el.height);
   }
 }
