@@ -1,6 +1,7 @@
-import { Directive, HostListener, OnInit, OnDestroy} from '@angular/core';
+import { Directive, HostListener, OnInit, OnDestroy, ElementRef} from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
+import { filter } from 'rxjs/operators';
 
 @Directive({
   selector: '[appDraggableArea]'
@@ -9,14 +10,22 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   private isActive = false;
 
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragAndDropService) { }
+  constructor(private dragAndDropService: DragAndDropService,
+    private elementRef: ElementRef) { }
 
   ngOnInit() {
-    this.subscription = this.dragAndDropService.isActive.subscribe(isActive => {
-      this.isActive = isActive;
-    });
+    this.subscriptions.push(
+      this.dragAndDropService.isActive.subscribe(isActive => {
+        this.isActive = isActive;
+      }),
+      this.dragAndDropService.events.pipe(
+        filter(e => e.type === 'dragstart')
+      ).subscribe(e => {
+        this.createGhostImage(e.draggable.componetRef.location.nativeElement);
+      })
+    );
   }
 
   @HostListener('pointermove', ['$event'])
@@ -37,6 +46,13 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private createGhostImage(el: HTMLElement) {
+    const clone = <HTMLElement>el.cloneNode(true);
+    clone.style.width = el.offsetWidth + 'px';
+    clone.style.height = el.offsetHeight + 'px';
+    this.elementRef.nativeElement.appendChild(clone);
   }
 }
