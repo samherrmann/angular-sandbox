@@ -85,13 +85,13 @@ export class DroppableService {
       filter(e => e.target === droppable)
     ).subscribe(e => {
       // remove draggable from current host
-      const i = e.draggable.host.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
+      const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
       if (i > -1) {
-        e.draggable.host.viewContainerRef.detach(i);
+        e.draggable.container.viewContainerRef.detach(i);
       }
       // add draggable to new host
       e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
-      e.draggable.host = e.target;
+      e.draggable.container = e.target;
     });
   }
 

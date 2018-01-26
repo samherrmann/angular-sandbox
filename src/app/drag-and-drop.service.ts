@@ -23,7 +23,7 @@ export class DragAndDropService {
 
   dragStart(e: PointerEvent, draggable: DraggableComponent): void {
     this.draggableInTransit = draggable;
-    this.target = draggable.host;
+    this.target = draggable.container;
 
     this._isActive.next(true);
     this._events.next(new DragEvent('dragstart', e, draggable, this.target));

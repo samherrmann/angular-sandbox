@@ -16,7 +16,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   componetRef: ComponentRef<DraggableComponent>;
 
-  host: DroppableComponent;
+  container: DroppableComponent;
 
   private subscriptions: Subscription[] = [];
 
