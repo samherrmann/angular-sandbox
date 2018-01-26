@@ -10,9 +10,15 @@ div[appDraggableArea] {
   width: 100%;
 }
 
+.scrollable {
+  width: 50%;
+  height: 100%;
+  overflow: auto;
+}
+
 app-droppable {
   height: 50%;
-  width: 50%;
+  width: 100%;
   float: left;
   box-sizing: border-box;
   border: 1px solid blue;
