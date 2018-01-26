@@ -1,5 +1,6 @@
 import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { DroppableComponent } from './droppable/droppable.component';
+import { ExampleComponent } from './example/example.component';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,6 @@ export class AppComponent implements AfterViewInit {
   droppables: QueryList<DroppableComponent>;
 
   ngAfterViewInit() {
-    this.droppables.first.addDraggable();
+    this.droppables.first.addDraggable(ExampleComponent);
   }
 }

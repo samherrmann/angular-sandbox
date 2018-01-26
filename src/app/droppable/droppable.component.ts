@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ViewContainerRef, ViewChild, ComponentFactoryResolver,
-  ComponentFactory, HostBinding, ElementRef } from '@angular/core';
+  ComponentFactory, HostBinding, ElementRef, Type } from '@angular/core';
 import { DraggableComponent } from '../draggable/draggable.component';
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
@@ -44,8 +44,8 @@ export class DroppableComponent implements OnInit {
     );
   }
 
-  addDraggable(): void {
-    this.draggableFactoryService.addDraggable(this);
+  addDraggable<T>(component: Type<T>): void {
+    this.draggableFactoryService.addDraggable(component, this);
   }
 
   ngOnDestory() {

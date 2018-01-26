@@ -7,16 +7,19 @@ import { DraggableComponent } from './draggable/draggable.component';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragAreaDirective } from './drag-area.directive';
 import { DragAndDropService } from './drag-and-drop.service';
+import { ExampleComponent } from './example/example.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DroppableComponent,
     DraggableComponent,
-    DragAreaDirective
+    DragAreaDirective,
+    ExampleComponent
   ],
   entryComponents: [
-    DraggableComponent
+    DraggableComponent,
+    ExampleComponent
   ],
   imports: [
     BrowserModule

@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, HostListener, HostBinding, ElementRef, Renderer2, ComponentRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, HostBinding, ElementRef, Renderer2,
+  ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
 import {  DraggableService } from './draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
@@ -13,6 +14,9 @@ import { DroppableComponent } from '../droppable/droppable.component';
   ]
 })
 export class DraggableComponent implements OnInit, OnDestroy {
+
+  @ViewChild('vc', { read: ViewContainerRef })
+  viewContainerRef: ViewContainerRef;
 
   componetRef: ComponentRef<DraggableComponent>;
 
