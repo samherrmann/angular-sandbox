@@ -55,11 +55,12 @@ export class DroppableService {
     return this.dragAndDropService.events.pipe(
       this.dragOverPairs()
     ).subscribe(events => {
-
       if (this.isFirstDragEnterEvent(events, droppable)) {
         this.dragAndDropService.dragEnter(events[0].pointerEvent, droppable);
-      } else if (this.isDragLeaveEvent(events, droppable)) {          
+
+      } else if (this.isDragLeaveEvent(events, droppable)) {
           this.dragAndDropService.dragLeave(events[1].pointerEvent, droppable);
+
       } else if (this.isDragEnterEvent(events, droppable)) {
         this.dragAndDropService.dragEnter(events[1].pointerEvent, droppable);
       }
@@ -80,20 +81,17 @@ export class DroppableService {
 
   private handleDrop(droppable: DroppableComponent): Subscription {
     return this.dragAndDropService.events.pipe(
-      filter(e => e.type === 'dragenter'),
+      filter(e => e.type === 'dragend'),
       filter(e => e.target === droppable)
     ).subscribe(e => {
-      // if (this.dropTarget !== undefined) {
-      //   // remove draggable from current host
-      //   this.droppables.forEach(d => {
-      //     const i = d.viewContainerRef.indexOf(draggable.componetRef.hostView);
-      //     if (i > -1) {
-      //       d.viewContainerRef.detach(i);
-      //     }
-      //   });
-      //   // add draggable to new host
-      //   this.dropTarget.viewContainerRef.insert(draggable.componetRef.hostView);
-      // }
+      // remove draggable from current host
+      const i = e.draggable.host.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
+      if (i > -1) {
+        e.draggable.host.viewContainerRef.detach(i);
+      }
+      // add draggable to new host
+      e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
+      e.draggable.host = e.target;
     });
   }
 
@@ -118,9 +116,7 @@ export class DroppableService {
         });
 
         // on unsubscribe
-        return () => {
-          sub.unsubscribe();
-        };
+        return () => sub.unsubscribe();
       });
     };
   }
