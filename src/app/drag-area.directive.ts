@@ -96,7 +96,7 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   private moveGhost(e: PointerEvent): void {
     const deltaX = e.clientX - this.dragStartPoint.x;
     const deltaY = e.clientY - this.dragStartPoint.y;
-    this.ghost.style.transform = 'translate3d(' + deltaX + 'px, ' + deltaY + 'px, 0)';
+    this.ghost.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px)';
   }
 
   private removeGhost(): void {
