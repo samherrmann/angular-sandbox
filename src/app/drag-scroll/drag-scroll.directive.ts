@@ -2,17 +2,17 @@ import { Directive, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
+import { DragScrollService } from './drag-scroll.service';
 
 @Directive({
   selector: '[appDragScroll]'
 })
 export class DragScrollDirective implements OnInit, OnDestroy {
 
-  private readonly SCROLL_PERCENTAGE = 0.02;
-
   private subscriptions: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
+    private dragScrollService: DragScrollService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
@@ -29,23 +29,13 @@ export class DragScrollDirective implements OnInit, OnDestroy {
     ).subscribe(e => {
       const rect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
 
-      if (this.isInScrollUpZone(e.pointerEvent, rect)) {
-        el.scrollTop -= this.SCROLL_PERCENTAGE * rect.height;
+      if (this.dragScrollService.isInScrollUpZone(e.pointerEvent, rect)) {
+        this.dragScrollService.scrollUp(el);
 
-      } else if (this.isInScrollDownZone(e.pointerEvent, rect)) {
-        el.scrollTop += this.SCROLL_PERCENTAGE * rect.height;
+      } else if (this.dragScrollService.isInScrollDownZone(e.pointerEvent, rect)) {
+        this.dragScrollService.scrollDown(el);
       }
     });
-  }
-
-  private isInScrollUpZone(e: PointerEvent, rect: ClientRect): boolean {
-    return e.clientX >= rect.left && e.clientX <= (rect.left + rect.width) &&
-    e.clientY >= rect.top && e.clientY <= (rect.top + 0.25 * rect.height);
-  }
-
-  private isInScrollDownZone(e: PointerEvent, rect: ClientRect): boolean {
-    return e.clientX >= rect.left && e.clientX <= (rect.left + rect.width) &&
-    e.clientY >= (rect.top + 0.75 * rect.height) && e.clientY <= (rect.top + rect.height);
   }
 
   ngOnDestroy() {

@@ -9,6 +9,7 @@ import { DragAreaDirective } from './drag-area.directive';
 import { DragAndDropService } from './drag-and-drop.service';
 import { ExampleComponent } from './example/example.component';
 import { DragScrollDirective } from './drag-scroll/drag-scroll.directive';
+import { DragScrollService } from './drag-scroll/drag-scroll.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { DragScrollDirective } from './drag-scroll/drag-scroll.directive';
   ],
   providers: [
     DraggableFactoryService,
-    DragAndDropService
+    DragAndDropService,
+    DragScrollService
   ],
   bootstrap: [AppComponent]
 })
