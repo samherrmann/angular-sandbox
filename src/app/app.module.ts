@@ -8,6 +8,7 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragAreaDirective } from './drag-area.directive';
 import { DragAndDropService } from './drag-and-drop.service';
 import { ExampleComponent } from './example/example.component';
+import { DragScrollDirective } from './drag-scroll.directive';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ExampleComponent } from './example/example.component';
     DroppableComponent,
     DraggableComponent,
     DragAreaDirective,
-    ExampleComponent
+    ExampleComponent,
+    DragScrollDirective
   ],
   entryComponents: [
     DraggableComponent,
