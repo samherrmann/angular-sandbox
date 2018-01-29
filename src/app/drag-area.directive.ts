@@ -55,9 +55,7 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   }
 
   private handleDragStarEvents(): Subscription {
-    return this.dragAndDropService.events.pipe(
-      filter(e => e.type === 'dragstart')
-    ).subscribe(e => {
+    return this.dragAndDropService.events('dragstart').subscribe(e => {
       this.renderer.setStyle(this.elementRef.nativeElement, 'user-select', 'none');
 
       this.dragStartPoint = {
@@ -69,17 +67,13 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   }
 
   private handleDragEvents(): Subscription {
-    return this.dragAndDropService.events.pipe(
-      filter(e => e.type === 'drag')
-    ).subscribe(e => {
+    return this.dragAndDropService.events('drag').subscribe(e => {
       this.moveGhost(e.pointerEvent);
     });
   }
 
   private handledragEndEvents(): Subscription {
-    return this.dragAndDropService.events.pipe(
-      filter(e => e.type === 'dragend')
-    ).subscribe(e => {
+    return this.dragAndDropService.events('dragend').subscribe(e => {
       this.removeGhost();
       this.renderer.removeStyle(this.elementRef.nativeElement, 'user-select');
     });

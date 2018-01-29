@@ -24,9 +24,7 @@ export class DragScrollDirective implements OnInit, OnDestroy {
   private handleDragEvent(): Subscription {
     const el = <HTMLElement>this.elementRef.nativeElement;
 
-    return this.dragAndDropService.events.pipe(
-      filter(e => e.type === 'drag')
-    ).subscribe(e => {
+    return this.dragAndDropService.events('drag').subscribe(e => {
       const rect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
 
       if (this.dragScrollService.isInScrollUpZone(e.pointerEvent, rect)) {

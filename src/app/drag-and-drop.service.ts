@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { DragEvent } from './drag-event';
+import { DragEvent, DragEventType } from './drag-event';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DroppableComponent } from './droppable/droppable.component';
+import { filter } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
 export class DragAndDropService {
 
   private readonly _events = new Subject<DragEvent>();
-  readonly events = this._events.asObservable();
 
   private readonly _isActive = new BehaviorSubject(false);
   readonly isActive = this._isActive.asObservable();
@@ -20,6 +21,14 @@ export class DragAndDropService {
   private target: DroppableComponent;
 
   constructor() { }
+
+  events(type?: DragEventType): Observable<DragEvent> {
+    if (type) {
+      return this._events.pipe(filter(e => e.type === type));
+    } else {
+      return this._events.asObservable();
+    }
+  }
 
   dragStart(e: PointerEvent, draggable: DraggableComponent): void {
     this.draggableInTransit = draggable;
