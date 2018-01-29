@@ -9,6 +9,8 @@ import { DragScrollService } from './drag-scroll.service';
 })
 export class DragScrollDirective implements OnInit, OnDestroy {
 
+  private rect: ClientRect;
+
   private subscriptions: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
@@ -17,21 +19,24 @@ export class DragScrollDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
+      this.handleDragStartEvent(),
       this.handleDragEvent()
     );
   }
 
+  private handleDragStartEvent(): Subscription {
+    return this.dragAndDropService.events('dragstart').subscribe(e => {
+      this.rect = this.elementRef.nativeElement.getBoundingClientRect();
+    });
+  }
+
   private handleDragEvent(): Subscription {
-    const el = <HTMLElement>this.elementRef.nativeElement;
-
     return this.dragAndDropService.events('drag').subscribe(e => {
-      const rect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
+      if (this.dragScrollService.isInScrollUpZone(e.pointerEvent, this.rect)) {
+        this.dragScrollService.scrollUp(this.elementRef.nativeElement);
 
-      if (this.dragScrollService.isInScrollUpZone(e.pointerEvent, rect)) {
-        this.dragScrollService.scrollUp(el);
-
-      } else if (this.dragScrollService.isInScrollDownZone(e.pointerEvent, rect)) {
-        this.dragScrollService.scrollDown(el);
+      } else if (this.dragScrollService.isInScrollDownZone(e.pointerEvent, this.rect)) {
+        this.dragScrollService.scrollDown(this.elementRef.nativeElement);
       }
     });
   }
