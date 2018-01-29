@@ -40,11 +40,6 @@ export class DragAreaDirective implements OnInit, OnDestroy {
     this.dragAndDropService.dragEnd(e);
   }
 
-  @HostListener('pointerleave', ['$event'])
-  pointerLeave(e: PointerEvent) {
-    this.dragAndDropService.dragEnd(e);
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
