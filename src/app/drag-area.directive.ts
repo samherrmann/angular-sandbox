@@ -1,8 +1,7 @@
-import { Directive, HostListener, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Directive, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { GhostService } from './ghost.service';
-import { Ghost } from './ghost';
+import { ShadowService, Shadow } from './shadow.service';
 
 @Directive({
   selector: '[appDraggableArea]'
@@ -11,13 +10,12 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   private isActive = false;
 
-  private ghost: Ghost;
+  private shadow: Shadow;
 
   private subscriptions: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
-    private elementRef: ElementRef,
-    private ghostService: GhostService) { }
+    private shadowService: ShadowService) { }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -50,19 +48,19 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   private handleDragStarEvents(): Subscription {
     return this.dragAndDropService.events('dragstart').subscribe(e => {
-      this.ghost = this.ghostService.create(this.elementRef, e.draggable, e.pointerEvent);
+      this.shadow = this.shadowService.create(e.draggable, e.pointerEvent);
     });
   }
 
   private handleDragEvents(): Subscription {
     return this.dragAndDropService.events('drag').subscribe(e => {
-      this.ghost.move(e.pointerEvent);
+      this.shadow.move(e.pointerEvent);
     });
   }
 
   private handleDragEndEvents(): Subscription {
     return this.dragAndDropService.events('dragend').subscribe(e => {
-      this.ghost.remove();
+      this.shadow.remove();
     });
   }
 }

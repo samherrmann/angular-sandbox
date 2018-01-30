@@ -10,7 +10,7 @@ import { DragAndDropService } from './drag-and-drop.service';
 import { ExampleComponent } from './example/example.component';
 import { DragScrollDirective } from './drag-scroll/drag-scroll.directive';
 import { DragScrollService } from './drag-scroll/drag-scroll.service';
-import { GhostService } from './ghost.service';
+import { ShadowService } from './shadow.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { GhostService } from './ghost.service';
     DraggableFactoryService,
     DragAndDropService,
     DragScrollService,
-    GhostService
+    ShadowService
   ],
   bootstrap: [AppComponent]
 })
