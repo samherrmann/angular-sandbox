@@ -41,8 +41,8 @@ export class DragAndDropService {
   dragEnd(e: PointerEvent): void {
     this._events.next(new DragEvent('dragend', e, this.draggableInTransit, this.target));
     this._isActive.next(false);
-    this.draggableInTransit = undefined;
-    this.target = undefined;
+    this.draggableInTransit = null;
+    this.target = null;
   }
 
   drag(e: PointerEvent): void {

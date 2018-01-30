@@ -101,6 +101,6 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   private removeGhost(): void {
     this.elementRef.nativeElement.removeChild(this.ghost);
-    this.ghost = undefined;
+    this.ghost = null;
   }
 }

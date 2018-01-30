@@ -5,11 +5,9 @@ import { DroppableComponent } from '../droppable/droppable.component';
 @Injectable()
 export class DraggableFactoryService {
 
-  private factory: ComponentFactory<DraggableComponent>;
+  private factory = this.componentFactoryResolver.resolveComponentFactory(DraggableComponent);
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
-    this.factory = this.componentFactoryResolver.resolveComponentFactory(DraggableComponent);
-  }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   addDraggable<T>(component: Type<T>, droppable: DroppableComponent): void {
     this.createContentComponent(this.createDraggable(droppable).instance, component);

@@ -91,13 +91,12 @@ export class DroppableService {
 
   private dragOverPairs() {
     return (source: Observable<DragEvent>) => {
-      let sub: Subscription;
-      let last: DragEvent;
-
       return new Observable<DragEvent[]>(subscriber => {
-        sub = source.subscribe(e => {
+        let last: DragEvent;
+
+        const sub = source.subscribe(e => {
           if (e.type === 'dragstart') {
-            last = undefined;
+            last = null;
 
           } else if (e.type === 'dragover') {
             if (last) {
