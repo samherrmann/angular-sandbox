@@ -80,9 +80,9 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   }
 
   private createGhostImage(draggable: DraggableComponent): void {
-    const container = <HTMLElement>this.elementRef.nativeElement;
-    const el = <HTMLElement>draggable.componetRef.location.nativeElement;
-    const clone = <HTMLElement>el.cloneNode(true);
+    const container = this.elementRef.nativeElement as HTMLElement;
+    const el = draggable.componetRef.location.nativeElement as HTMLElement;
+    const clone = el.cloneNode(true) as HTMLElement;
     const clientRect = el.getBoundingClientRect();
 
     clone.style.width = el.offsetWidth + 'px';
