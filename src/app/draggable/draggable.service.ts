@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent } from '../drag-event';
-import { Coordinate2D } from './coordinate-2d';
+import { Coordinate2D } from '../coordinate-2d';
 
 @Injectable()
 export class DraggableService implements OnDestroy {
