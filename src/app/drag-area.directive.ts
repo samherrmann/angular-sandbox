@@ -39,8 +39,6 @@ export class DragAreaDirective implements OnInit, OnDestroy {
     if (this.isActive) {
       this.dragAndDropService.drag(e);
     }
-    e.stopPropagation();
-    return false;
   }
 
   @HostListener('pointerup', ['$event'])
