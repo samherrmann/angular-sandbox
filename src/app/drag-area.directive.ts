@@ -26,7 +26,7 @@ export class DragAreaDirective implements OnInit, OnDestroy {
       }),
       this.handleDragStarEvents(),
       this.handleDragEvents(),
-      this.handledragEndEvents()
+      this.handleDragEndEvents()
     );
   }
 
@@ -60,7 +60,7 @@ export class DragAreaDirective implements OnInit, OnDestroy {
     });
   }
 
-  private handledragEndEvents(): Subscription {
+  private handleDragEndEvents(): Subscription {
     return this.dragAndDropService.events('dragend').subscribe(e => {
       this.ghost.remove();
     });
