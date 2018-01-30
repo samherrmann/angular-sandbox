@@ -7,8 +7,8 @@ export class GhostService {
 
   create(dragArea: ElementRef, draggable: DraggableComponent, e: PointerEvent): Ghost {
     return new Ghost(
-      dragArea.nativeElement,
       draggable.componetRef.location.nativeElement,
+      dragArea.nativeElement,
       e
     );
   }

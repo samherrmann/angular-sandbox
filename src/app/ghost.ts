@@ -4,13 +4,15 @@ export class Ghost {
 
   private ghost: HTMLElement;
 
-  private dragStartPoint: Coordinate2D;
+  private readonly dragStartPoint: Coordinate2D = {
+    x: this.e.clientX,
+    y: this.e.clientY
+  };
 
-  constructor(private dragArea: HTMLElement,
-    draggable: HTMLElement,
-    e: PointerEvent) {
+  constructor(draggable: HTMLElement,
+    private dragArea: HTMLElement,
+    private e: PointerEvent) {
 
-    this.initDragStartPoint(e);
     this.ghost = draggable.cloneNode(true) as HTMLElement;
     this.styleGhost(draggable);
     dragArea.appendChild(this.ghost);
@@ -37,12 +39,5 @@ export class Ghost {
     style.position = 'fixed';
     style.top = clientRect.top + 'px';
     style.left = clientRect.left + 'px';
-  }
-
-  private initDragStartPoint(e: PointerEvent): void {
-    this.dragStartPoint = {
-      x: e.clientX,
-      y: e.clientY
-    };
   }
 }
