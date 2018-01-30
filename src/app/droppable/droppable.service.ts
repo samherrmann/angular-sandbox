@@ -17,7 +17,7 @@ export class DroppableService {
     this.subscriptions.push(
       this.handleDragEvents(droppable),
       this.handleDragOverEvents(droppable),
-      this.handleDrop(droppable)
+      this.handleDragEnd(droppable)
     );
   }
 
@@ -73,7 +73,7 @@ export class DroppableService {
     return e.length === 2 && e[0].target === droppable && e[1].target !== droppable;
   }
 
-  private handleDrop(droppable: DroppableComponent): Subscription {
+  private handleDragEnd(droppable: DroppableComponent): Subscription {
     return this.dragAndDropService.events('dragend').pipe(
       filter(e => e.target === droppable)
     ).subscribe(e => {
