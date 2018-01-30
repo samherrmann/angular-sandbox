@@ -1,4 +1,5 @@
 import { Coordinate2D } from './coordinate-2d';
+import { Renderer2 } from '@angular/core';
 
 export class Shadow {
 
@@ -9,11 +10,13 @@ export class Shadow {
     y: this.e.clientY
   };
 
-  constructor(private draggable: HTMLElement, private e: PointerEvent) {
+  constructor(private renderer: Renderer2,
+    private draggable: HTMLElement,
+    private e: PointerEvent) {
 
     this.shadow = draggable.cloneNode(true) as HTMLElement;
     this.setTransitStyles(draggable);
-    draggable.parentElement.insertBefore(this.shadow, draggable);
+    this.renderer.insertBefore(draggable.parentElement, this.shadow, this.draggable);
   }
 
   move(e: PointerEvent): void {
@@ -21,22 +24,20 @@ export class Shadow {
       x: e.clientX - this.dragStartPoint.x,
       y: e.clientY - this.dragStartPoint.y
     };
-    this.draggable.style.transform = 'translate(' + delta.x + 'px, ' + delta.y + 'px)';
+    this.renderer.setStyle(this.draggable, 'transform', 'translate(' + delta.x + 'px, ' + delta.y + 'px)');
   }
 
   remove(): void {
-    this.shadow.parentElement.removeChild(this.shadow);
-    this.draggable.removeAttribute('style');
+    this.renderer.removeChild(this.shadow.parentElement, this.shadow);
+    this.renderer.removeAttribute(this.draggable, 'style');
   }
 
   private setTransitStyles(draggable: HTMLElement): void {
     const clientRect = draggable.getBoundingClientRect();
-    const s = draggable.style;
-
-    s.width = draggable.offsetWidth + 'px';
-    s.height = draggable.offsetHeight + 'px';
-    s.position = 'fixed';
-    s.top = clientRect.top + 'px';
-    s.left = clientRect.left + 'px';
+    this.renderer.setStyle(draggable, 'width', draggable.offsetWidth + 'px');
+    this.renderer.setStyle(draggable, 'height', draggable.offsetHeight + 'px');
+    this.renderer.setStyle(draggable, 'position', 'fixed');
+    this.renderer.setStyle(draggable, 'top', clientRect.top + 'px');
+    this.renderer.setStyle(draggable, 'left', clientRect.left + 'px');
   }
 }

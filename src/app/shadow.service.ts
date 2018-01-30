@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { Shadow } from './shadow';
 import { DraggableComponent } from './draggable/draggable.component';
 export { Shadow };
@@ -6,8 +6,9 @@ export { Shadow };
 @Injectable()
 export class ShadowService {
 
-  create(draggable: DraggableComponent, e: PointerEvent): Shadow {
+  create(renderer: Renderer2, draggable: DraggableComponent, e: PointerEvent): Shadow {
     return new Shadow(
+      renderer,
       draggable.componetRef.location.nativeElement,
       e
     );

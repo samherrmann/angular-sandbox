@@ -1,4 +1,4 @@
-import { Directive, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Directive, HostListener, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ShadowService, Shadow } from './shadow.service';
@@ -15,7 +15,8 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
-    private shadowService: ShadowService) { }
+    private shadowService: ShadowService,
+    private renderer: Renderer2) { }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -48,7 +49,7 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   private handleDragStarEvents(): Subscription {
     return this.dragAndDropService.events('dragstart').subscribe(e => {
-      this.shadow = this.shadowService.create(e.draggable, e.pointerEvent);
+      this.shadow = this.shadowService.create(this.renderer, e.draggable, e.pointerEvent);
     });
   }
 
