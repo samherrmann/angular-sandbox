@@ -1,4 +1,4 @@
-import { Injectable, ComponentFactory, ComponentFactoryResolver, Type, ComponentRef } from '@angular/core';
+import { Injectable, ComponentFactoryResolver, Type, ComponentRef } from '@angular/core';
 import { DraggableComponent } from './draggable.component';
 import { DroppableComponent } from '../droppable/droppable.component';
 

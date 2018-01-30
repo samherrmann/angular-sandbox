@@ -1,9 +1,8 @@
-import { Injectable, ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { DraggableComponent } from '../draggable/draggable.component';
+import { Injectable } from '@angular/core';
 import { DroppableComponent } from './droppable.component';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { filter, pairwise } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent } from '../drag-event';
 

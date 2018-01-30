@@ -1,10 +1,6 @@
-import { Directive, HostListener, OnInit, OnDestroy, ElementRef, Renderer2, HostBinding } from '@angular/core';
+import { Directive, HostListener, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { filter } from 'rxjs/operators';
-import { DraggableComponent } from './draggable/draggable.component';
-import { Coordinate2D } from './coordinate-2d';
-import { DragEvent } from './drag-event';
 import { GhostService } from './ghost.service';
 import { Ghost } from './ghost';
 
@@ -21,7 +17,6 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   constructor(private dragAndDropService: DragAndDropService,
     private elementRef: ElementRef,
-    private renderer: Renderer2,
     private ghostService: GhostService) { }
 
   ngOnInit() {

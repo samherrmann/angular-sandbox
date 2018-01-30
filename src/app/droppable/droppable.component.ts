@@ -1,9 +1,6 @@
-import { Component, OnInit, HostListener, ViewContainerRef, ViewChild, ComponentFactoryResolver,
-  ComponentFactory, HostBinding, ElementRef, Type } from '@angular/core';
-import { DraggableComponent } from '../draggable/draggable.component';
+import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type } from '@angular/core';
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
-import { DragAndDropService } from '../drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -26,8 +23,7 @@ export class DroppableComponent implements OnInit {
 
   constructor(public elementRef: ElementRef,
     private droppableService: DroppableService,
-    private draggableFactoryService: DraggableFactoryService,
-    private dragAndDropService: DragAndDropService) { }
+    private draggableFactoryService: DraggableFactoryService) { }
 
   ngOnInit() {
     this.droppableService.register(this);

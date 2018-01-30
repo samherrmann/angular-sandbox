@@ -1,6 +1,4 @@
 import { Coordinate2D } from './coordinate-2d';
-import { DraggableComponent } from './draggable/draggable.component';
-import { ElementRef } from '@angular/core';
 
 export class Ghost {
 

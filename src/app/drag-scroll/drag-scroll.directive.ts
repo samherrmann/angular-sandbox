@@ -1,6 +1,5 @@
 import { Directive, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { DragAndDropService } from '../drag-and-drop.service';
-import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { DragScrollService } from './drag-scroll.service';
 
