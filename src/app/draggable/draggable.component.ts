@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener,
+import { Component, HostListener,
   ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
 import {  DraggableService } from './draggable.service';
 import { DragAndDropService } from '../drag-and-drop.service';
@@ -12,7 +12,7 @@ import { DroppableComponent } from '../droppable/droppable.component';
     DraggableService
   ]
 })
-export class DraggableComponent implements OnInit, OnDestroy {
+export class DraggableComponent {
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
@@ -21,43 +21,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   container: DroppableComponent;
 
-  // private subscriptions: Subscription[] = [];
-
-  constructor(private dragAndDropService: DragAndDropService) {
-  }
-
-  ngOnInit() {
-    // this.draggableService.register(this);
-    // this.subscriptions.push(
-    //   this.handleDragEvents(),
-    //   this.handleDragEndEvents()
-    // );
-  }
+  constructor(private dragAndDropService: DragAndDropService) { }
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
     this.dragAndDropService.dragStart(e, this);
   }
-
-  ngOnDestroy() {
-    // this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  // private handleDragEvents(): Subscription {
-  //   return this.draggableService.dragEvents(this)
-  //     .subscribe(e => {
-  //       this.renderer.setStyle(
-  //         this.elementRef.nativeElement,
-  //         'transform',
-  //         'translate(' + e.x + 'px, ' + e.y + 'px)'
-  //       );
-  //     });
-  // }
-
-  // private handleDragEndEvents(): Subscription {
-  //   return this.draggableService.dragEndEvents(this)
-  //   .subscribe(e => {
-  //     this.renderer.removeStyle(this.elementRef.nativeElement, 'transform');
-  //   });
-  // }
 }
