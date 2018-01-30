@@ -21,10 +21,6 @@ app-droppable {
   float: left;
   box-sizing: border-box;
   border: 1px solid blue;
-
-  &.droptarget {
-    background-color: aqua;
-  }
 }
 
 ::ng-deep app-draggable {

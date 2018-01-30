@@ -1,4 +1,4 @@
-import { Component, HostListener,
+import { Component, HostListener, OnInit,
   ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
 import {  DraggableService } from './draggable.service';
 import { DragAndDropService } from '../drag-and-drop.service';
@@ -12,7 +12,7 @@ import { DroppableComponent } from '../droppable/droppable.component';
     DraggableService
   ]
 })
-export class DraggableComponent {
+export class DraggableComponent implements OnInit {
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
@@ -21,7 +21,12 @@ export class DraggableComponent {
 
   container: DroppableComponent;
 
-  constructor(private dragAndDropService: DragAndDropService) { }
+  constructor(private dragAndDropService: DragAndDropService,
+    private draggableService: DraggableService) { }
+
+  ngOnInit() {
+    this.draggableService.register(this);
+  }
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {

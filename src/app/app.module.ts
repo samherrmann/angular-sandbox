@@ -10,7 +10,7 @@ import { DragAndDropService } from './drag-and-drop.service';
 import { ExampleComponent } from './example/example.component';
 import { DragScrollDirective } from './drag-scroll/drag-scroll.directive';
 import { DragScrollService } from './drag-scroll/drag-scroll.service';
-import { ShadowService } from './shadow.service';
+import { ShadowService } from './draggable/shadow.service';
 
 @NgModule({
   declarations: [
