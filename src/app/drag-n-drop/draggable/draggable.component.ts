@@ -52,6 +52,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.handleDragStart(),
       this.handleDrag(),
+      this.handleDragEnter(),
+      this.handleDragLeave(),
       this.handleDragEnd()
     );
   }
@@ -81,9 +83,25 @@ export class DraggableComponent implements OnInit, OnDestroy {
     });
   }
 
+  private handleDragEnter(): Subscription {
+    return this.draggableService.dragEnterEvents.subscribe(e => {
+      this.insertShadow(
+        e.target.elementRef.nativeElement,
+        e.draggable.componetRef.location.nativeElement,
+        e.draggable.shadow
+      );
+    });
+  }
+
+  private handleDragLeave(): Subscription {
+    return this.draggableService.dragLeaveEvents.subscribe(e => {
+      this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
+    });
+  }
+
   private handleDragEnd() {
-    return this.draggableService.dragEndEvents.subscribe(delta => {
-      this.removeShadow();
+    return this.draggableService.dragEndEvents.subscribe(e => {
+      this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
 
       this.isInTransit = false;
       this.transform = null;
@@ -91,6 +109,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.height = null;
       this.top = null;
       this.left = null;
+      this.shadow = null;
     });
   }
 
@@ -99,7 +118,18 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.renderer.addClass(this.shadow, 'shadow');
   }
 
-  private removeShadow(): void {
-    this.shadow = null;
+  private insertShadow(droppable: HTMLElement, draggable: HTMLElement, shadow: HTMLElement) {
+    if (draggable.parentElement === droppable) {
+      this.renderer.insertBefore(droppable, shadow, draggable);
+
+    } else {
+      this.renderer.appendChild(droppable, shadow);
+    }
+  }
+
+  private removeShadow(droppable: HTMLElement, shadow: HTMLElement) {
+    if (shadow.parentNode === droppable) {
+      this.renderer.removeChild(droppable, shadow);
+    }
   }
 }

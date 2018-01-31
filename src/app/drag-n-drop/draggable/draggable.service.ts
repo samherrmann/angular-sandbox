@@ -9,29 +9,33 @@ import { Coordinate2D } from '../coordinate-2d';
 @Injectable()
 export class DraggableService {
 
-  private dragStartPoint: Coordinate2D;
-
-  private draggable: DraggableComponent;
-
   dragStartEvents: Observable<DragEvent>;
 
   dragEvents: Observable<Coordinate2D>;
 
   dragEndEvents: Observable<DragEvent>;
 
+  dragEnterEvents: Observable<DragEvent>;
+
+  dragLeaveEvents: Observable<DragEvent>;
+
+  private dragStartPoint: Coordinate2D;
+
+  private draggable: DraggableComponent;
+
   constructor(private dragAndDropService: DragNDropService) { }
 
   register(draggable: DraggableComponent): void {
     this.draggable = draggable;
 
-    this.dragStartEvents = this.events(this.draggable, 'dragstart').pipe(
+    this.dragStartEvents = this.events('dragstart').pipe(
       tap(e => {
         this.setDragStartPoint(e);
         this.clearSelection(e.draggable.componetRef.location.nativeElement);
       })
     );
 
-    this.dragEvents = this.events(this.draggable, 'drag').pipe(
+    this.dragEvents = this.events('drag').pipe(
       map(e => {
         const delta: Coordinate2D = {
           x: e.pointerEvent.clientX - this.dragStartPoint.x,
@@ -41,16 +45,19 @@ export class DraggableService {
       })
     );
 
-    this.dragEndEvents = this.events(this.draggable, 'dragend').pipe(
+    this.dragEnterEvents = this.events('dragenter');
+    this.dragLeaveEvents = this.events('dragleave');
+
+    this.dragEndEvents = this.events('dragend').pipe(
       tap(e => {
         this.dragStartPoint = null;
       })
     );
   }
 
-  private events(draggable: DraggableComponent, type?: DragEventType): Observable<DragEvent> {
+  private events(type: DragEventType): Observable<DragEvent> {
     return this.dragAndDropService.events(type).pipe(
-      filter(e => e.draggable === draggable)
+      filter(e => e.draggable === this.draggable)
     );
   }
 

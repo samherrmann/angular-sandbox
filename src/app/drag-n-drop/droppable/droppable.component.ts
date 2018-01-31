@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type } from '@angular/core';
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,8 +21,7 @@ export class DroppableComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private renderer: Renderer2,
-    public elementRef: ElementRef,
+  constructor(public elementRef: ElementRef,
     private droppableService: DroppableService,
     private draggableFactoryService: DraggableFactoryService) { }
 
@@ -38,41 +37,19 @@ export class DroppableComponent implements OnInit {
   private handleDragEnter(): Subscription {
     return this.droppableService.dragEnterEvents(this).subscribe(e => {
       this.isDropTarget = true;
-      this.insertShadow(
-        this.elementRef.nativeElement,
-        e.draggable.componetRef.location.nativeElement,
-        e.draggable.shadow
-      );
     });
   }
 
   private handleDragLeave(): Subscription {
     return this.droppableService.dragLeaveEvents(this).subscribe(e => {
       this.isDropTarget = false;
-      this.removeShadow(this.elementRef.nativeElement, e.draggable.shadow);
     });
   }
 
   private handleDragEnd(): Subscription {
     return this.droppableService.dragEndEvents().subscribe(e => {
       this.isDropTarget = false;
-      this.removeShadow(this.elementRef.nativeElement, e.draggable.shadow);
     });
-  }
-
-  private insertShadow(droppable: HTMLElement, draggable: HTMLElement, shadow: HTMLElement) {
-    if (draggable.parentNode === this.elementRef.nativeElement) {
-      this.renderer.insertBefore(droppable, shadow, draggable);
-
-    } else {
-      this.renderer.appendChild(droppable, shadow);
-    }
-  }
-
-  private removeShadow(droppable: HTMLElement, shadow: HTMLElement) {
-    if (shadow.parentNode === droppable) {
-      this.renderer.removeChild(droppable, shadow);
-    }
   }
 
   addDraggable<T>(component: Type<T>): void {
