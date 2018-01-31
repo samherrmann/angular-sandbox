@@ -10,7 +10,10 @@ export class DraggableFactoryService {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   addDraggable<T>(component: Type<T>, droppable: DroppableComponent): void {
-    this.createContentComponent(this.createDraggable(droppable).instance, component);
+    // TODO: Investigate eliminating the `setTimeout`
+    setTimeout(() => {
+      this.createContentComponent(this.createDraggable(droppable).instance, component);
+    });
   }
 
   private createDraggable(droppable: DroppableComponent): ComponentRef<DraggableComponent> {

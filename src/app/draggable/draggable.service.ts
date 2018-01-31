@@ -2,7 +2,7 @@ import { Injectable, OnDestroy, RendererFactory2 } from '@angular/core';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent, DragEventType } from '../drag-event';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { DraggableComponent } from './draggable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Coordinate2D } from '../coordinate-2d';
@@ -22,8 +22,19 @@ export class DraggableService implements OnDestroy {
   register(draggable: DraggableComponent): void {
     this.subscriptions.push(
       this.handleDragStarEvents(draggable),
-      this.handleDragEvents(draggable),
       this.handleDragEndEvents(draggable)
+    );
+  }
+
+  dragEvents(draggable: DraggableComponent): Observable<Coordinate2D> {
+    return this.events(draggable, 'drag').pipe(
+      map(e => {
+        const delta: Coordinate2D = {
+          x: e.pointerEvent.clientX - this.dragStartPoint.x,
+          y: e.pointerEvent.clientY - this.dragStartPoint.y
+        };
+        return delta;
+      })
     );
   }
 
@@ -37,16 +48,6 @@ export class DraggableService implements OnDestroy {
     });
   }
 
-  private handleDragEvents(draggable: DraggableComponent): Subscription {
-    return this.events(draggable, 'drag').subscribe(e => {
-      this.move(
-        e.draggable.componetRef.location.nativeElement,
-        e.pointerEvent.clientX,
-        e.pointerEvent.clientY
-      );
-    });
-  }
-
   private handleDragEndEvents(draggable: DraggableComponent): Subscription {
     return this.events(draggable, 'dragend').subscribe(e => {
       this.removeTransientStyles(e.draggable.componetRef.location.nativeElement);
@@ -57,14 +58,6 @@ export class DraggableService implements OnDestroy {
     return this.dragAndDropService.events(type).pipe(
       filter(e => e.draggable === draggable)
     );
-  }
-
-  private move(draggable: HTMLElement, x: number, y: number): void {
-    const delta: Coordinate2D = {
-      x: x - this.dragStartPoint.x,
-      y: y - this.dragStartPoint.y
-    };
-    this.renderer.setStyle(draggable, 'transform', 'translate(' + delta.x + 'px, ' + delta.y + 'px)');
   }
 
   private setTransitStyles(draggable: HTMLElement): void {
