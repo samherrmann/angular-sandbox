@@ -8,7 +8,7 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragAreaDirective } from './drag-area.directive';
 import { DragAndDropService } from './drag-and-drop.service';
 import { ExampleComponent } from './example/example.component';
-import { DragScrollDirective } from './drag-scroll/drag-scroll.directive';
+import { ScrollableDirective } from './scrollable/scrollable.directive';
 import { ShadowService } from './draggable/shadow.service';
 
 @NgModule({
@@ -18,7 +18,7 @@ import { ShadowService } from './draggable/shadow.service';
     DraggableComponent,
     DragAreaDirective,
     ExampleComponent,
-    DragScrollDirective
+    ScrollableDirective
   ],
   entryComponents: [
     DraggableComponent,

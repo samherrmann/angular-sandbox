@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { DragEvent } from '../drag-event';
 
 @Injectable()
-export class DragScrollService implements OnDestroy {
+export class ScrollableService implements OnDestroy {
 
   private rect: ClientRect;
 

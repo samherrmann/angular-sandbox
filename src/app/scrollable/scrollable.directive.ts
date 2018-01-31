@@ -1,20 +1,20 @@
 import { Directive, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { DragScrollService } from './drag-scroll.service';
+import { ScrollableService } from './scrollable.service';
 
 @Directive({
-  selector: '[appDragScroll]',
+  selector: '[appScrollable]',
   providers: [
-    DragScrollService
+    ScrollableService
   ]
 })
-export class DragScrollDirective implements OnInit, OnDestroy {
+export class ScrollableDirective implements OnInit, OnDestroy {
 
   private scrollPercentage = 0.02;
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private dragScrollService: DragScrollService,
+  constructor(private dragScrollService: ScrollableService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
