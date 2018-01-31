@@ -1,31 +1,65 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
+import { DragAndDropService } from '../drag-and-drop.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { DragEvent } from '../drag-event';
 
 @Injectable()
-export class DragScrollService {
+export class DragScrollService implements OnDestroy {
 
-  private scrollPercentage = 0.02;
+  private rect: ClientRect;
 
-  constructor() { }
+  private readonly _scrollUpEvents = new Subject<DragEvent>();
+  readonly scrollUpEvents = this._scrollUpEvents.asObservable();
 
-  setScrollPercentage(value: number): void {
-    this.scrollPercentage = value;
+  private readonly _scrollDownEvents = new Subject<DragEvent>();
+  readonly scrollDownEvents = this._scrollDownEvents.asObservable();
+
+  private readonly SCROLL_ZONE_PERCENTAGE = 0.25;
+
+  private subscriptions: Subscription[] = [];
+
+  constructor(private dragAndDropService: DragAndDropService, ) { }
+
+  register(scrollable: HTMLElement): void {
+    this.subscriptions.push(
+      this.handleDragStartEvent(scrollable),
+      this.handleDragEvent()
+    );
   }
 
-  isInScrollUpZone(e: PointerEvent, target: ClientRect): boolean {
-    return e.clientX >= target.left && e.clientX <= (target.left + target.width) &&
-    e.clientY >= target.top && e.clientY <= (target.top + 0.25 * target.height);
+  private handleDragStartEvent(el: HTMLElement): Subscription {
+    return this.dragAndDropService.events('dragstart').subscribe(e => {
+      this.rect = el.getBoundingClientRect();
+    });
   }
 
-  isInScrollDownZone(e: PointerEvent, target: ClientRect): boolean {
-    return e.clientX >= target.left && e.clientX <= (target.left + target.width) &&
-    e.clientY >= (target.top + 0.75 * target.height) && e.clientY <= (target.top + target.height);
+  private handleDragEvent(): Subscription {
+    return this.dragAndDropService.events('drag').subscribe(e => {
+      if (this.isInScrollUpZone(e.pointerEvent, this.rect)) {
+        this._scrollUpEvents.next(e);
+
+      } else if (this.isInScrollDownZone(e.pointerEvent, this.rect)) {
+        this._scrollDownEvents.next(e);
+      }
+    });
   }
 
-  scrollUp(el: HTMLElement): void {
-    el.scrollTop -= this.scrollPercentage * el.clientHeight;
+  private isInScrollUpZone(e: PointerEvent, target: ClientRect): boolean {
+    return e.clientX >= target.left &&
+    e.clientX <= (target.left + target.width) &&
+    e.clientY >= target.top &&
+    e.clientY <= (target.top + this.SCROLL_ZONE_PERCENTAGE * target.height);
   }
 
-  scrollDown(el: HTMLElement): void {
-    el.scrollTop += this.scrollPercentage * el.clientHeight;
+  private isInScrollDownZone(e: PointerEvent, target: ClientRect): boolean {
+    return e.clientX >= target.left &&
+    e.clientX <= (target.left + target.width) &&
+    e.clientY >= (target.top + (1 - this.SCROLL_ZONE_PERCENTAGE) * target.height) &&
+    e.clientY <= (target.top + target.height);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

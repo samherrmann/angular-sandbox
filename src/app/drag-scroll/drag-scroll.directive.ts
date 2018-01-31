@@ -1,43 +1,48 @@
 import { Directive, OnInit, ElementRef, OnDestroy } from '@angular/core';
-import { DragAndDropService } from '../drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragScrollService } from './drag-scroll.service';
 
 @Directive({
-  selector: '[appDragScroll]'
+  selector: '[appDragScroll]',
+  providers: [
+    DragScrollService
+  ]
 })
 export class DragScrollDirective implements OnInit, OnDestroy {
 
-  private rect: ClientRect;
+  private scrollPercentage = 0.02;
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragAndDropService,
-    private dragScrollService: DragScrollService,
+  constructor(private dragScrollService: DragScrollService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
+    this.dragScrollService.register(this.elementRef.nativeElement);
     this.subscriptions.push(
-      this.handleDragStartEvent(),
-      this.handleDragEvent()
+      this.handleScrollUpEvent(),
+      this.handleScrollDownEvent()
     );
   }
 
-  private handleDragStartEvent(): Subscription {
-    return this.dragAndDropService.events('dragstart').subscribe(e => {
-      this.rect = this.elementRef.nativeElement.getBoundingClientRect();
+  private handleScrollUpEvent(): Subscription {
+    return this.dragScrollService.scrollUpEvents.subscribe(e => {
+      this.scrollUp(this.elementRef.nativeElement);
     });
   }
 
-  private handleDragEvent(): Subscription {
-    return this.dragAndDropService.events('drag').subscribe(e => {
-      if (this.dragScrollService.isInScrollUpZone(e.pointerEvent, this.rect)) {
-        this.dragScrollService.scrollUp(this.elementRef.nativeElement);
-
-      } else if (this.dragScrollService.isInScrollDownZone(e.pointerEvent, this.rect)) {
-        this.dragScrollService.scrollDown(this.elementRef.nativeElement);
-      }
+  private handleScrollDownEvent(): Subscription {
+    return this.dragScrollService.scrollDownEvents.subscribe(e => {
+      this.scrollDown(this.elementRef.nativeElement);
     });
+  }
+
+  private scrollUp(el: HTMLElement): void {
+    el.scrollTop -= this.scrollPercentage * el.clientHeight;
+  }
+
+  private scrollDown(el: HTMLElement): void {
+    el.scrollTop += this.scrollPercentage * el.clientHeight;
   }
 
   ngOnDestroy() {
