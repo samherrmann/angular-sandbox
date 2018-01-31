@@ -23,7 +23,18 @@ app-droppable {
   border: 1px solid blue;
 }
 
-::ng-deep app-draggable {
-  height: 100%;
-  width: 100%;
+::ng-deep {
+
+  app-droppable.droptarget app-draggable.shadow {
+    background-color: cyan;
+
+    * {
+      opacity: 0;
+    }
+  }
+
+  app-draggable {
+    height: 100%;
+    width: 100%;
+  }
 }
