@@ -1,4 +1,4 @@
-import { Directive, OnInit, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, OnInit, ElementRef, OnDestroy, Renderer2, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ScrollableService } from './scrollable.service';
 
@@ -10,7 +10,8 @@ import { ScrollableService } from './scrollable.service';
 })
 export class ScrollableDirective implements OnInit, OnDestroy {
 
-  private scrollPercentage = 0.02;
+  @Input()
+  scrollPercentage = 0.02;
 
   private subscriptions: Subscription[] = [];
 
