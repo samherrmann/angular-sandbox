@@ -26,10 +26,8 @@ export class DraggableService {
 
     this.dragStartEvents = this.events(this.draggable, 'dragstart').pipe(
       tap(e => {
-        this.dragStartPoint = {
-          x: e.pointerEvent.clientX,
-          y: e.pointerEvent.clientY
-        };
+        this.setDragStartPoint(e);
+        this.clearSelection(e.draggable.componetRef.location.nativeElement);
       })
     );
 
@@ -54,5 +52,19 @@ export class DraggableService {
     return this.dragAndDropService.events(type).pipe(
       filter(e => e.draggable === draggable)
     );
+  }
+
+  private setDragStartPoint(e: DragEvent): void {
+    this.dragStartPoint = {
+      x: e.pointerEvent.clientX,
+      y: e.pointerEvent.clientY
+    };
+  }
+
+  private clearSelection(draggable: HTMLElement): void {
+    const selection = window.getSelection();
+    if (selection.containsNode(draggable, true)) {
+      selection.empty();
+    }
   }
 }
