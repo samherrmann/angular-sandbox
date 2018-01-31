@@ -4,5 +4,6 @@
 
   &.in-transit {
     position: fixed;
+    user-select: none;
   }
 }
