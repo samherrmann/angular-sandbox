@@ -1,4 +1,4 @@
-import { Directive, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Directive, OnInit, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ScrollableService } from './scrollable.service';
 
@@ -14,7 +14,8 @@ export class ScrollableDirective implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private dragScrollService: ScrollableService,
+  constructor(private renderer: Renderer2,
+    private dragScrollService: ScrollableService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
@@ -38,11 +39,13 @@ export class ScrollableDirective implements OnInit, OnDestroy {
   }
 
   private scrollUp(el: HTMLElement): void {
-    el.scrollTop -= this.scrollPercentage * el.clientHeight;
+    const scrollTop = el.scrollTop - this.scrollPercentage * el.clientHeight;
+    this.renderer.setProperty(el, 'scrollTop', scrollTop);
   }
 
   private scrollDown(el: HTMLElement): void {
-    el.scrollTop += this.scrollPercentage * el.clientHeight;
+    const scrollTop = el.scrollTop + this.scrollPercentage * el.clientHeight;
+    this.renderer.setProperty(el, 'scrollTop', scrollTop);
   }
 
   ngOnDestroy() {
