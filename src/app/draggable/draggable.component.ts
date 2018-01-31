@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit, OnDestroy,
-  ComponentRef, ViewChild, ViewContainerRef, HostBinding, ElementRef } from '@angular/core';
+  ComponentRef, ViewChild, ViewContainerRef, HostBinding, ElementRef, Renderer2 } from '@angular/core';
 import {  DraggableService } from './draggable.service';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { DroppableComponent } from '../droppable/droppable.component';
@@ -40,9 +40,12 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   container: DroppableComponent;
 
+  private shadow: HTMLElement;
+
   private subscriptions: Subscription[] = [];
 
-  constructor(private elementRef: ElementRef,
+  constructor(private renderer: Renderer2,
+    private elementRef: ElementRef,
     private dragAndDropService: DragAndDropService,
     private draggableService: DraggableService) { }
 
@@ -73,6 +76,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.height = el.offsetHeight + 'px';
       this.top = clientRect.top + 'px';
       this.left = clientRect.left + 'px';
+
+      this.createShadow(this.elementRef.nativeElement);
     });
   }
 
@@ -84,6 +89,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragEnd() {
     return this.draggableService.dragEndEvents(this).subscribe(delta => {
+      this.removeShadow();
+
       this.isInTransit = false;
       this.transform = null;
       this.width = null;
@@ -91,5 +98,15 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.top = null;
       this.left = null;
     });
+  }
+
+  private createShadow(el: HTMLElement): void {
+    this.shadow = el.cloneNode(true) as HTMLElement;
+    this.renderer.insertBefore(el.parentElement, this.shadow, el);
+  }
+
+  private removeShadow(): void {
+    this.renderer.removeChild(this.shadow.parentElement, this.shadow);
+    this.shadow = null;
   }
 }
