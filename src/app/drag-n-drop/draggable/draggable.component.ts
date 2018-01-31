@@ -50,6 +50,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
     private draggableService: DraggableService) { }
 
   ngOnInit() {
+    this.draggableService.register(this);
     this.subscriptions.push(
       this.handleDragStart(),
       this.handleDrag(),
@@ -67,7 +68,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   private handleDragStart() {
-    return this.draggableService.dragStartEvents(this).subscribe(e => {
+    return this.draggableService.dragStartEvents.subscribe(e => {
       const el: HTMLElement = this.elementRef.nativeElement;
       const clientRect = el.getBoundingClientRect();
 
@@ -82,13 +83,13 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   private handleDrag() {
-    return this.draggableService.dragEvents(this).subscribe(delta => {
+    return this.draggableService.dragEvents.subscribe(delta => {
       this.transform = 'translate(' + delta.x + 'px, ' + delta.y + 'px)';
     });
   }
 
   private handleDragEnd() {
-    return this.draggableService.dragEndEvents(this).subscribe(delta => {
+    return this.draggableService.dragEndEvents.subscribe(delta => {
       this.removeShadow();
 
       this.isInTransit = false;

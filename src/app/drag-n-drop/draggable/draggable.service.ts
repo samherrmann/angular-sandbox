@@ -11,10 +11,20 @@ export class DraggableService {
 
   private dragStartPoint: Coordinate2D;
 
+  private draggable: DraggableComponent;
+
+  dragStartEvents: Observable<DragEvent>;
+
+  dragEvents: Observable<Coordinate2D>;
+
+  dragEndEvents: Observable<DragEvent>;
+
   constructor(private dragAndDropService: DragNDropService) { }
 
-  dragStartEvents(draggable: DraggableComponent): Observable<DragEvent> {
-    return this.events(draggable, 'dragstart').pipe(
+  register(draggable: DraggableComponent): void {
+    this.draggable = draggable;
+
+    this.dragStartEvents = this.events(this.draggable, 'dragstart').pipe(
       tap(e => {
         this.dragStartPoint = {
           x: e.pointerEvent.clientX,
@@ -22,10 +32,8 @@ export class DraggableService {
         };
       })
     );
-  }
 
-  dragEvents(draggable: DraggableComponent): Observable<Coordinate2D> {
-    return this.events(draggable, 'drag').pipe(
+    this.dragEvents = this.events(this.draggable, 'drag').pipe(
       map(e => {
         const delta: Coordinate2D = {
           x: e.pointerEvent.clientX - this.dragStartPoint.x,
@@ -34,10 +42,8 @@ export class DraggableService {
         return delta;
       })
     );
-  }
 
-  dragEndEvents(draggable: DraggableComponent): Observable<DragEvent> {
-    return this.events(draggable, 'dragend').pipe(
+    this.dragEndEvents = this.events(this.draggable, 'dragend').pipe(
       tap(e => {
         this.dragStartPoint = null;
       })
