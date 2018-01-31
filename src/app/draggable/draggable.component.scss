@@ -1,4 +1,8 @@
 :host {
   display: block;
   touch-action: none;
+
+  &.in-transit {
+    position: fixed;
+  }
 }
