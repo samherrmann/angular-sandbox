@@ -1,7 +1,6 @@
-import { Component, HostListener, OnInit, OnDestroy,
-  ComponentRef, ViewChild, ViewContainerRef, HostBinding, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, ComponentRef, ViewChild, ViewContainerRef,
+  HostBinding, ElementRef, Renderer2 } from '@angular/core';
 import {  DraggableService } from './draggable.service';
-import { DragNDropService } from '../drag-n-drop.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -46,7 +45,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
-    private dragAndDropService: DragNDropService,
     private draggableService: DraggableService) { }
 
   ngOnInit() {
@@ -56,11 +54,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.handleDrag(),
       this.handleDragEnd()
     );
-  }
-
-  @HostListener('pointerdown', ['$event'])
-  pointerDown(e: PointerEvent) {
-    this.dragAndDropService.dragStart(e, this);
   }
 
   ngOnDestroy() {

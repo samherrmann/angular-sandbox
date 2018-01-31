@@ -6,6 +6,7 @@ import { ScrollableDirective } from './scrollable/scrollable.directive';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragNDropService } from './drag-n-drop.service';
 import { DraggableVideoDirective } from './draggable-video.directive';
+import { DragHandleDirective } from './drag-handle.directive';
 
 @NgModule({
   declarations: [
@@ -13,14 +14,16 @@ import { DraggableVideoDirective } from './draggable-video.directive';
     DraggableComponent,
     DragAreaDirective,
     ScrollableDirective,
-    DraggableVideoDirective
+    DraggableVideoDirective,
+    DragHandleDirective
   ],
   exports: [
     DroppableComponent,
     DraggableComponent,
     DragAreaDirective,
     ScrollableDirective,
-    DraggableVideoDirective
+    DraggableVideoDirective,
+    DragHandleDirective
   ],
   entryComponents: [
     DraggableComponent
