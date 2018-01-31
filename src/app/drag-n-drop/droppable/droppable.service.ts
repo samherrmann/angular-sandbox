@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DroppableComponent } from './droppable.component';
-import { DragAndDropService } from '../drag-and-drop.service';
+import { DragNDropService } from '../drag-n-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
@@ -11,7 +11,7 @@ export class DroppableService {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragAndDropService) { }
+  constructor(private dragAndDropService: DragNDropService) { }
 
   register(droppable: DroppableComponent): void {
     this.subscriptions.push(

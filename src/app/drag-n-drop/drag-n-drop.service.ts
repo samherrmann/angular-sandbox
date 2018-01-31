@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
-export class DragAndDropService {
+export class DragNDropService {
 
   private readonly _events = new Subject<DragEvent>();
 

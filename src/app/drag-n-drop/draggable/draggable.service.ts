@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DragAndDropService } from '../drag-and-drop.service';
+import { DragNDropService } from '../drag-n-drop.service';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent, DragEventType } from '../drag-event';
 import { filter, map, tap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ export class DraggableService {
 
   private dragStartPoint: Coordinate2D;
 
-  constructor(private dragAndDropService: DragAndDropService) { }
+  constructor(private dragAndDropService: DragNDropService) { }
 
   dragStartEvents(draggable: DraggableComponent): Observable<DragEvent> {
     return this.events(draggable, 'dragstart').pipe(

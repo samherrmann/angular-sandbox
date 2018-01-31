@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { DragAndDropService } from '../drag-and-drop.service';
+import { DragNDropService } from '../drag-n-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { DragEvent } from '../drag-event';
@@ -19,7 +19,7 @@ export class ScrollableService implements OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragAndDropService, ) { }
+  constructor(private dragAndDropService: DragNDropService, ) { }
 
   register(scrollable: HTMLElement): void {
     this.subscriptions.push(

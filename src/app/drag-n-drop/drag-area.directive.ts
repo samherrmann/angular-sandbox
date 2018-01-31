@@ -1,5 +1,5 @@
 import { Directive, HostListener, OnInit, OnDestroy } from '@angular/core';
-import { DragAndDropService } from './drag-and-drop.service';
+import { DragNDropService } from './drag-n-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
@@ -11,7 +11,7 @@ export class DragAreaDirective implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragAndDropService) { }
+  constructor(private dragAndDropService: DragNDropService) { }
 
   ngOnInit() {
     this.subscriptions.push(
