@@ -14,10 +14,27 @@ video {
   max-height: 100%;
 }
 
-div[appDragHandle] {
+header {
   position: absolute;
+  width: 100%;
   top: 0;
-  right: 0;
+  left: 0;
+
+  div[appDragHandle] {
+    opacity: 0;
+  }
+
+  &:hover {
+    background-color: black;
+
+    div[appDragHandle] {
+      opacity: 1;
+    }
+  }
+}
+
+div[appDragHandle] {
+  float: right;
   width: 24px;
   padding: 24px;
 
