@@ -29,30 +29,15 @@ export class DraggableService {
     this.draggable = draggable;
 
     this.dragStartEvents = this.events('dragstart').pipe(
-      tap(e => {
-        this.setDragStartPoint(e);
-        this.clearSelection(e.draggable.componetRef.location.nativeElement);
-      })
+      tap(e => this.setDragStartPoint(e))
     );
-
     this.dragEvents = this.events('drag').pipe(
-      map(e => {
-        const delta: Coordinate2D = {
-          x: e.pointerEvent.clientX - this.dragStartPoint.x,
-          y: e.pointerEvent.clientY - this.dragStartPoint.y
-        };
-        return delta;
-      })
+      map(e => this.dragPositionDelta(e))
     );
-
     this.dragEnterEvents = this.events('dragenter');
     this.dragLeaveEvents = this.events('dragleave');
-
     this.dragEndEvents = this.events('dragend').pipe(
-      tap(e => {
-        this.moveDraggable(e);
-        this.dragStartPoint = null;
-      })
+      tap(e => this.dragStartPoint = null)
     );
   }
 
@@ -69,21 +54,11 @@ export class DraggableService {
     };
   }
 
-  private clearSelection(draggable: HTMLElement): void {
-    const selection = window.getSelection();
-    if (selection.containsNode(draggable, true)) {
-      selection.empty();
-    }
-  }
-
-  private moveDraggable(e: DragEvent): void {
-    // remove draggable from current host
-    const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
-    if (i > -1) {
-      e.draggable.container.viewContainerRef.detach(i);
-    }
-    // add draggable to new host
-    e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
-    e.draggable.container = e.target;
+  private dragPositionDelta(e: DragEvent): Coordinate2D {
+    const delta: Coordinate2D = {
+      x: e.pointerEvent.clientX - this.dragStartPoint.x,
+      y: e.pointerEvent.clientY - this.dragStartPoint.y
+    };
+    return delta;
   }
 }

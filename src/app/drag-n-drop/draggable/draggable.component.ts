@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, ComponentRef, ViewChild, ViewContainerRef
 import {  DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
+import { DragEvent } from '../drag-event';
 
 @Component({
   selector: 'app-draggable',
@@ -64,6 +65,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragStart() {
     return this.draggableService.dragStartEvents.subscribe(e => {
+      this.clearSelection(e.draggable.componetRef.location.nativeElement);
+
       const el: HTMLElement = this.elementRef.nativeElement;
       const clientRect = el.getBoundingClientRect();
 
@@ -102,6 +105,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private handleDragEnd() {
     return this.draggableService.dragEndEvents.subscribe(e => {
       this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
+      this.moveDraggable(e);
 
       this.isInTransit = false;
       this.transform = null;
@@ -130,6 +134,24 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private removeShadow(droppable: HTMLElement, shadow: HTMLElement) {
     if (shadow.parentNode === droppable) {
       this.renderer.removeChild(droppable, shadow);
+    }
+  }
+
+  private moveDraggable(e: DragEvent): void {
+    // remove draggable from current host
+    const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
+    if (i > -1) {
+      e.draggable.container.viewContainerRef.detach(i);
+    }
+    // add draggable to new host
+    e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
+    e.draggable.container = e.target;
+  }
+
+  private clearSelection(draggable: HTMLElement): void {
+    const selection = window.getSelection();
+    if (selection.containsNode(draggable, true)) {
+      selection.empty();
     }
   }
 }
