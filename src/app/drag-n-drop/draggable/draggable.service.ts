@@ -50,6 +50,7 @@ export class DraggableService {
 
     this.dragEndEvents = this.events('dragend').pipe(
       tap(e => {
+        this.moveDraggable(e);
         this.dragStartPoint = null;
       })
     );
@@ -73,5 +74,16 @@ export class DraggableService {
     if (selection.containsNode(draggable, true)) {
       selection.empty();
     }
+  }
+
+  private moveDraggable(e: DragEvent): void {
+    // remove draggable from current host
+    const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
+    if (i > -1) {
+      e.draggable.container.viewContainerRef.detach(i);
+    }
+    // add draggable to new host
+    e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
+    e.draggable.container = e.target;
   }
 }

@@ -16,8 +16,7 @@ export class DroppableService {
   register(droppable: DroppableComponent): void {
     this.subscriptions.push(
       this.handleDragEvents(droppable),
-      this.handleDragOverEvents(droppable),
-      this.handleDragEnd(droppable)
+      this.handleDragOverEvents(droppable)
     );
   }
 
@@ -71,21 +70,6 @@ export class DroppableService {
 
   private isDragLeaveEvent(e: DragEvent[], droppable: DroppableComponent) {
     return e.length === 2 && e[0].target === droppable && e[1].target !== droppable;
-  }
-
-  private handleDragEnd(droppable: DroppableComponent): Subscription {
-    return this.dragAndDropService.events('dragend').pipe(
-      filter(e => e.target === droppable)
-    ).subscribe(e => {
-      // remove draggable from current host
-      const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
-      if (i > -1) {
-        e.draggable.container.viewContainerRef.detach(i);
-      }
-      // add draggable to new host
-      e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
-      e.draggable.container = e.target;
-    });
   }
 
   private dragOverPairs() {
