@@ -30,7 +30,7 @@ export class DragNDropService {
     }
   }
 
-  dragStart(e: PointerEvent, draggable: DraggableComponent): void {
+  emitDragStart(e: PointerEvent, draggable: DraggableComponent): void {
     this.draggableInTransit = draggable;
     this.target = draggable.container;
 
@@ -38,27 +38,27 @@ export class DragNDropService {
     this._events.next(new DragEvent('dragstart', e, draggable, this.target));
   }
 
-  dragEnd(e: PointerEvent): void {
+  emitDragEnd(e: PointerEvent): void {
     this._events.next(new DragEvent('dragend', e, this.draggableInTransit, this.target));
     this._isActive.next(false);
     this.draggableInTransit = null;
     this.target = null;
   }
 
-  drag(e: PointerEvent): void {
+  emitDrag(e: PointerEvent): void {
     this._events.next(new DragEvent('drag', e, this.draggableInTransit, this.target));
   }
 
-  dragOver(e: PointerEvent, droppable: DroppableComponent): void {
+  emitDragOver(e: PointerEvent, droppable: DroppableComponent): void {
     this.target = droppable;
     this._events.next(new DragEvent('dragover', e, this.draggableInTransit, this.target));
   }
 
-  dragEnter(e: PointerEvent, droppable: DroppableComponent): void {
+  emitDragEnter(e: PointerEvent, droppable: DroppableComponent): void {
     this._events.next(new DragEvent('dragenter', e, this.draggableInTransit, droppable));
   }
 
-  dragLeave(e: PointerEvent, droppable: DroppableComponent): void {
+  emitDragLeave(e: PointerEvent, droppable: DroppableComponent): void {
     this._events.next(new DragEvent('dragleave', e, this.draggableInTransit, droppable));
   }
 }

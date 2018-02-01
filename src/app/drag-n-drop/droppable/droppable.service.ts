@@ -40,7 +40,7 @@ export class DroppableService {
     return this.dragAndDropService.events('drag').pipe(
       filter(e => this.isPointerOverDroppable(e.pointerEvent, droppable))
     ).subscribe(e => {
-      this.dragAndDropService.dragOver(e.pointerEvent, droppable);
+      this.dragAndDropService.emitDragOver(e.pointerEvent, droppable);
     });
   }
 
@@ -49,13 +49,13 @@ export class DroppableService {
       this.dragOverPairs()
     ).subscribe(events => {
       if (this.isFirstDragEnterEvent(events, droppable)) {
-        this.dragAndDropService.dragEnter(events[0].pointerEvent, droppable);
+        this.dragAndDropService.emitDragEnter(events[0].pointerEvent, droppable);
 
       } else if (this.isDragLeaveEvent(events, droppable)) {
-          this.dragAndDropService.dragLeave(events[1].pointerEvent, droppable);
+          this.dragAndDropService.emitDragLeave(events[1].pointerEvent, droppable);
 
       } else if (this.isDragEnterEvent(events, droppable)) {
-        this.dragAndDropService.dragEnter(events[1].pointerEvent, droppable);
+        this.dragAndDropService.emitDragEnter(events[1].pointerEvent, droppable);
       }
     });
   }

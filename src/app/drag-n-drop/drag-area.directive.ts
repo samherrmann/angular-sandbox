@@ -24,14 +24,14 @@ export class DragAreaDirective implements OnInit, OnDestroy {
   @HostListener('pointermove', ['$event'])
   pointerMove(e: PointerEvent) {
     if (this.isActive) {
-      this.dragAndDropService.drag(e);
+      this.dragAndDropService.emitDrag(e);
     }
   }
 
   @HostListener('pointerup', ['$event'])
   pointerUp(e: PointerEvent) {
     if (this.isActive) {
-      this.dragAndDropService.dragEnd(e);
+      this.dragAndDropService.emitDragEnd(e);
     }
   }
 

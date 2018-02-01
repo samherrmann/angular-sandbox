@@ -18,6 +18,6 @@ export class DragHandleDirective implements OnInit {
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
-    this.dragAndDropService.dragStart(e, this.draggable);
+    this.dragAndDropService.emitDragStart(e, this.draggable);
   }
 }
