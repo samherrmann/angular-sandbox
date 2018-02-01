@@ -29,13 +29,13 @@ export class ScrollableService implements OnDestroy {
   }
 
   private handleDragStartEvent(el: HTMLElement): Subscription {
-    return this.dragAndDropService.events('dragstart').subscribe(e => {
+    return this.dragAndDropService.dragStart.subscribe(e => {
       this.rect = el.getBoundingClientRect();
     });
   }
 
   private handleDragEvent(): Subscription {
-    return this.dragAndDropService.events('drag').subscribe(e => {
+    return this.dragAndDropService.drag.subscribe(e => {
       if (this.isInScrollUpZone(e.pointerEvent, this.rect)) {
         this._scrollUpEvents.next(e);
 

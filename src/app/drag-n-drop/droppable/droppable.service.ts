@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent } from '../drag-event';
+import { merge } from 'rxjs/observable/merge';
 
 @Injectable()
 export class DroppableService {
@@ -21,23 +22,23 @@ export class DroppableService {
   }
 
   dragEnterEvents(droppable: DroppableComponent) {
-    return this.dragAndDropService.events('dragenter').pipe(
+    return this.dragAndDropService.dragEnter.pipe(
       filter(e => e.target === droppable)
     );
   }
 
   dragLeaveEvents(droppable: DroppableComponent) {
-    return this.dragAndDropService.events('dragleave').pipe(
+    return this.dragAndDropService.dragLeave.pipe(
       filter(e => e.target === droppable)
     );
   }
 
   dragEndEvents() {
-    return this.dragAndDropService.events('dragend');
+    return this.dragAndDropService.dragEnd;
   }
 
   private handleDragEvents(droppable: DroppableComponent): Subscription {
-    return this.dragAndDropService.events('drag').pipe(
+    return this.dragAndDropService.drag.pipe(
       filter(e => this.isPointerOverDroppable(e.pointerEvent, droppable))
     ).subscribe(e => {
       this.dragAndDropService.emitDragOver(e.pointerEvent, droppable);
@@ -45,7 +46,10 @@ export class DroppableService {
   }
 
   private handleDragOverEvents(droppable: DroppableComponent): Subscription {
-    return this.dragAndDropService.events().pipe(
+    return merge(
+      this.dragAndDropService.dragStart,
+      this.dragAndDropService.dragOver
+    ).pipe(
       this.dragOverPairs()
     ).subscribe(events => {
       if (this.isFirstDragEnterEvent(events, droppable)) {

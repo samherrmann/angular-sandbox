@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DragNDropService } from '../drag-n-drop.service';
 import { Observable } from 'rxjs/Observable';
-import { DragEvent, DragEventType } from '../drag-event';
+import { DragEvent } from '../drag-event';
 import { filter, map, tap } from 'rxjs/operators';
 import { DraggableComponent } from './draggable.component';
 import { Coordinate2D } from '../coordinate-2d';
@@ -21,30 +21,32 @@ export class DraggableService {
 
   private dragStartPoint: Coordinate2D;
 
-  private draggable: DraggableComponent;
-
   constructor(private dragAndDropService: DragNDropService) { }
 
   register(draggable: DraggableComponent): void {
-    this.draggable = draggable;
 
-    this.dragStartEvents = this.events('dragstart').pipe(
+    this.dragStartEvents = this.dragAndDropService.dragStart.pipe(
+      this.filter(draggable),
       tap(e => this.setDragStartPoint(e))
     );
-    this.dragEvents = this.events('drag').pipe(
+    this.dragEvents = this.dragAndDropService.drag.pipe(
+      this.filter(draggable),
       map(e => this.dragPositionDelta(e))
     );
-    this.dragEnterEvents = this.events('dragenter');
-    this.dragLeaveEvents = this.events('dragleave');
-    this.dragEndEvents = this.events('dragend').pipe(
+    this.dragEnterEvents = this.dragAndDropService.dragEnter.pipe(
+      this.filter(draggable)
+    );
+    this.dragLeaveEvents = this.dragAndDropService.dragLeave.pipe(
+      this.filter(draggable)
+    );
+    this.dragEndEvents = this.dragAndDropService.dragEnd.pipe(
+      this.filter(draggable),
       tap(e => this.dragStartPoint = null)
     );
   }
 
-  private events(type: DragEventType): Observable<DragEvent> {
-    return this.dragAndDropService.events(type).pipe(
-      filter(e => e.draggable === this.draggable)
-    );
+  private filter(draggable: DraggableComponent) {
+    return filter<DragEvent>(e => e.draggable === draggable);
   }
 
   private setDragStartPoint(e: DragEvent): void {
