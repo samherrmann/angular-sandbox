@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { DroppableComponent } from './droppable/droppable.component';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DragAreaDirective } from './drag-area.directive';
@@ -7,15 +8,22 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragNDropService } from './drag-n-drop.service';
 import { DraggableVideoDirective } from './draggable-video.directive';
 import { DragHandleDirective } from './drag-handle.directive';
+import { ScrollableComponent } from './scrollable/scrollable.component';
+import { SwipeModule } from '../swipe/swipe.module';
 
 @NgModule({
+  imports: [
+    CommonModule,
+    SwipeModule
+  ],
   declarations: [
     DroppableComponent,
     DraggableComponent,
     DragAreaDirective,
     ScrollableDirective,
     DraggableVideoDirective,
-    DragHandleDirective
+    DragHandleDirective,
+    ScrollableComponent
   ],
   exports: [
     DroppableComponent,
@@ -23,7 +31,8 @@ import { DragHandleDirective } from './drag-handle.directive';
     DragAreaDirective,
     ScrollableDirective,
     DraggableVideoDirective,
-    DragHandleDirective
+    DragHandleDirective,
+    ScrollableComponent
   ],
   entryComponents: [
     DraggableComponent

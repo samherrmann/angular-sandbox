@@ -1,0 +1,15 @@
+<div class="scrollable" #scrollable>
+  <ng-content></ng-content>
+</div>
+
+<div class="scroll-up-zone"
+    [ngClass]="(isDragActive | async) ? 'active' : ''"
+    appSwipeTarget
+    (swipeOver)="scrollUp($event)">
+</div>
+
+<div class="scroll-down-zone"
+    [ngClass]="(isDragActive | async) ? 'active' : ''"
+    appSwipeTarget
+    (swipeOver)="scrollDown($event)">
+</div>

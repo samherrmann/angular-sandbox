@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+.scrollable {
+  height: 100%;
+  overflow: auto;
+}
+
+.scroll-up-zone,
+.scroll-down-zone {
+  position: absolute;
+  left: 0;
+  height: 0;
+  width: 100%;
+
+  &.active {
+    height: 25%;
+  }
+}
+
+.scroll-up-zone {
+  top: 0;
+}
+
+.scroll-down-zone {
+  bottom: 0;
+}
