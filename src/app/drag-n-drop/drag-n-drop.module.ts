@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DroppableComponent } from './droppable/droppable.component';
 import { DraggableComponent } from './draggable/draggable.component';
-import { DragAreaDirective } from './drag-area.directive';
+import { DragZoneDirective } from './drag-zone.directive';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragNDropService } from './drag-n-drop.service';
 import { DraggableVideoDirective } from './draggable-video.directive';
@@ -19,7 +19,7 @@ import { ScrollableDirective } from './scrollable/scrollable.directive';
   declarations: [
     DroppableComponent,
     DraggableComponent,
-    DragAreaDirective,
+    DragZoneDirective,
     DraggableVideoDirective,
     DragHandleDirective,
     ScrollableComponent,
@@ -28,7 +28,7 @@ import { ScrollableDirective } from './scrollable/scrollable.directive';
   exports: [
     DroppableComponent,
     DraggableComponent,
-    DragAreaDirective,
+    DragZoneDirective,
     DraggableVideoDirective,
     DragHandleDirective,
     ScrollableComponent

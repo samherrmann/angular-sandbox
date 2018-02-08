@@ -3,9 +3,9 @@ import { DragNDropService } from './drag-n-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
-  selector: '[appDraggableArea]'
+  selector: '[appDragZone]'
 })
-export class DragAreaDirective implements OnInit, OnDestroy {
+export class DragZoneDirective implements OnInit, OnDestroy {
 
   private isActive = false;
 
