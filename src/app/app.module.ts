@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ExampleComponent } from './example/example.component';
 import { DragNDropModule } from './drag-n-drop/drag-n-drop.module';
-import { SwipeModule } from './swipe/swipe.module';
 
 @NgModule({
   declarations: [
@@ -15,8 +14,7 @@ import { SwipeModule } from './swipe/swipe.module';
   ],
   imports: [
     BrowserModule,
-    DragNDropModule,
-    SwipeModule
+    DragNDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
