@@ -2,14 +2,10 @@
   <ng-content></ng-content>
 </div>
 
-<div class="scroll-up-zone"
-    [ngClass]="(isDragActive | async) ? 'active' : ''"
-    appSwipeTarget
-    (swipeOver)="scrollUp($event)">
-</div>
+<ng-container *ngIf="dragActive | async">
+  <div class="scroll-up-zone" appSwipeTarget (swipeOver)="scrollUp($event)">
+  </div>
 
-<div class="scroll-down-zone"
-    [ngClass]="(isDragActive | async) ? 'active' : ''"
-    appSwipeTarget
-    (swipeOver)="scrollDown($event)">
-</div>
+  <div class="scroll-down-zone" appSwipeTarget (swipeOver)="scrollDown($event)">
+  </div>
+</ng-container>

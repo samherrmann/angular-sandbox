@@ -12,7 +12,7 @@ export class ScrollableComponent implements OnInit {
   @ViewChild(ScrollableDirective)
   scrollabel: ScrollableDirective;
 
-  isDragActive = this.dragNDropService.isActive;
+  dragActive = this.dragNDropService.active;
 
   constructor(private dragNDropService: DragNDropService) { }
 

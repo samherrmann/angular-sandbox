@@ -9,8 +9,8 @@ import { DroppableComponent } from './droppable/droppable.component';
 @Injectable()
 export class DragNDropService {
 
-  private readonly _isActive = new BehaviorSubject(false);
-  readonly isActive = this._isActive.asObservable();
+  private readonly _active = new BehaviorSubject(false);
+  readonly active = this._active.asObservable();
 
   private draggableInTransit: DraggableComponent;
 
@@ -40,13 +40,13 @@ export class DragNDropService {
     this.draggableInTransit = draggable;
     this.target = draggable.container;
 
-    this._isActive.next(true);
+    this._active.next(true);
     this._dragStart.next(new DragEvent('dragstart', e, draggable, this.target));
   }
 
   emitDragEnd(e: PointerEvent): void {
     this._dragEnd.next(new DragEvent('dragend', e, this.draggableInTransit, this.target));
-    this._isActive.next(false);
+    this._active.next(false);
     this.draggableInTransit = null;
     this.target = null;
   }
@@ -66,5 +66,9 @@ export class DragNDropService {
 
   emitDragLeave(e: PointerEvent, droppable: DroppableComponent): void {
     this._dragLeave.next(new DragEvent('dragleave', e, this.draggableInTransit, droppable));
+  }
+
+  isActive(): boolean {
+    return this._active.getValue();
   }
 }

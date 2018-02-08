@@ -1,6 +1,5 @@
-import { Directive, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Directive, HostListener, OnInit } from '@angular/core';
 import { DragNDropService } from './drag-n-drop.service';
-import { Subscription } from 'rxjs/Subscription';
 import { SwipeZoneDirective } from '../swipe/swipe-zone.directive';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
 
@@ -10,30 +9,20 @@ import { SwipeZoneService } from '../swipe/swipe-zone.service';
     SwipeZoneService
   ]
 })
-export class DragZoneDirective extends SwipeZoneDirective implements OnInit, OnDestroy {
-
-  private isActive = false;
-
-  private subscriptions: Subscription[] = [];
+export class DragZoneDirective extends SwipeZoneDirective implements OnInit {
 
   constructor(private dragAndDropService: DragNDropService,
     swipeService: SwipeZoneService) {
     super(swipeService);
   }
 
-  ngOnInit() {
-    this.subscriptions.push(
-      this.dragAndDropService.isActive.subscribe(isActive => {
-        this.isActive = isActive;
-      })
-    );
-  }
+  ngOnInit() { }
 
   @HostListener('pointermove', ['$event'])
   pointerMove(e: PointerEvent) {
     super.pointerMove(e);
 
-    if (this.isActive) {
+    if (this.dragAndDropService.isActive()) {
       this.dragAndDropService.emitDrag(e);
     }
   }
@@ -42,12 +31,8 @@ export class DragZoneDirective extends SwipeZoneDirective implements OnInit, OnD
   pointerUp(e: PointerEvent) {
     super.pointerUp(e);
 
-    if (this.isActive) {
+    if (this.dragAndDropService.isActive()) {
       this.dragAndDropService.emitDragEnd(e);
     }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

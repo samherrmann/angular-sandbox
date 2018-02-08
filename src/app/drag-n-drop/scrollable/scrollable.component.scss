@@ -12,12 +12,8 @@
 .scroll-down-zone {
   position: absolute;
   left: 0;
-  height: 0;
+  height: 25%;
   width: 100%;
-
-  &.active {
-    height: 25%;
-  }
 }
 
 .scroll-up-zone {
