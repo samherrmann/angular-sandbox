@@ -9,6 +9,7 @@ import { DraggableVideoDirective } from './draggable-video.directive';
 import { DragHandleDirective } from './drag-handle.directive';
 import { ScrollableComponent } from './scrollable/scrollable.component';
 import { SwipeModule } from '../swipe/swipe.module';
+import { ScrollableDirective } from './scrollable/scrollable.directive';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { SwipeModule } from '../swipe/swipe.module';
     DragAreaDirective,
     DraggableVideoDirective,
     DragHandleDirective,
-    ScrollableComponent
+    ScrollableComponent,
+    ScrollableDirective
   ],
   exports: [
     DroppableComponent,

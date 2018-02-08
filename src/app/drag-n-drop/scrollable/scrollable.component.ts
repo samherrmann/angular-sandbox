@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ScrollableDirective } from './scrollable.directive';
 import { DragNDropService } from '../drag-n-drop.service';
-import { SwipeEvent } from '../../swipe/swipe-event';
 
 @Component({
   selector: 'app-scrollable',
@@ -9,28 +9,20 @@ import { SwipeEvent } from '../../swipe/swipe-event';
 })
 export class ScrollableComponent implements OnInit {
 
-  @Input()
-  scrollPercentage = 0.02;
-
-  @ViewChild('scrollable')
-  scrollabel: ElementRef;
+  @ViewChild(ScrollableDirective)
+  scrollabel: ScrollableDirective;
 
   isDragActive = this.dragNDropService.isActive;
 
-  constructor(private renderer: Renderer2,
-    private dragNDropService: DragNDropService) { }
+  constructor(private dragNDropService: DragNDropService) { }
 
   ngOnInit() { }
 
-  scrollUp(e: SwipeEvent) {
-    const el: HTMLElement = this.scrollabel.nativeElement;
-    const scrollTop = el.scrollTop - this.scrollPercentage * el.clientHeight;
-    this.renderer.setProperty(el, 'scrollTop', scrollTop);
+  scrollUp() {
+    this.scrollabel.scrollUp();
   }
 
-  scrollDown(e: SwipeEvent) {
-    const el: HTMLElement = this.scrollabel.nativeElement;
-    const scrollTop = el.scrollTop + this.scrollPercentage * el.clientHeight;
-    this.renderer.setProperty(el, 'scrollTop', scrollTop);
+  scrollDown() {
+    this.scrollabel.scrollDown();
   }
 }
