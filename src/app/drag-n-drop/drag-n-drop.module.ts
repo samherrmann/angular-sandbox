@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DroppableComponent } from './droppable/droppable.component';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DragAreaDirective } from './drag-area.directive';
-import { ScrollableDirective } from './scrollable/scrollable.directive';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { DragNDropService } from './drag-n-drop.service';
 import { DraggableVideoDirective } from './draggable-video.directive';
@@ -20,7 +19,6 @@ import { SwipeModule } from '../swipe/swipe.module';
     DroppableComponent,
     DraggableComponent,
     DragAreaDirective,
-    ScrollableDirective,
     DraggableVideoDirective,
     DragHandleDirective,
     ScrollableComponent
@@ -29,7 +27,6 @@ import { SwipeModule } from '../swipe/swipe.module';
     DroppableComponent,
     DraggableComponent,
     DragAreaDirective,
-    ScrollableDirective,
     DraggableVideoDirective,
     DragHandleDirective,
     ScrollableComponent
