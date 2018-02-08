@@ -9,15 +9,15 @@ import { Coordinate2D } from '../coordinate-2d';
 @Injectable()
 export class DraggableService {
 
-  dragStartEvents: Observable<DragEvent>;
+  dragStart: Observable<DragEvent>;
 
-  dragEvents: Observable<Coordinate2D>;
+  drag: Observable<Coordinate2D>;
 
-  dragEndEvents: Observable<DragEvent>;
+  dragEnd: Observable<DragEvent>;
 
-  dragEnterEvents: Observable<DragEvent>;
+  dragEnter: Observable<DragEvent>;
 
-  dragLeaveEvents: Observable<DragEvent>;
+  dragLeave: Observable<DragEvent>;
 
   private dragStartPoint: Coordinate2D;
 
@@ -25,21 +25,21 @@ export class DraggableService {
 
   register(draggable: DraggableComponent): void {
 
-    this.dragStartEvents = this.dragAndDropService.dragStart.pipe(
+    this.dragStart = this.dragAndDropService.dragStart.pipe(
       this.filter(draggable),
       tap(e => this.setDragStartPoint(e))
     );
-    this.dragEvents = this.dragAndDropService.drag.pipe(
+    this.drag = this.dragAndDropService.drag.pipe(
       this.filter(draggable),
       map(e => this.dragPositionDelta(e))
     );
-    this.dragEnterEvents = this.dragAndDropService.dragEnter.pipe(
+    this.dragEnter = this.dragAndDropService.dragEnter.pipe(
       this.filter(draggable)
     );
-    this.dragLeaveEvents = this.dragAndDropService.dragLeave.pipe(
+    this.dragLeave = this.dragAndDropService.dragLeave.pipe(
       this.filter(draggable)
     );
-    this.dragEndEvents = this.dragAndDropService.dragEnd.pipe(
+    this.dragEnd = this.dragAndDropService.dragEnd.pipe(
       this.filter(draggable),
       tap(e => this.dragStartPoint = null)
     );

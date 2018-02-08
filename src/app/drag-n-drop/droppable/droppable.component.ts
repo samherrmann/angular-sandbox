@@ -35,19 +35,19 @@ export class DroppableComponent implements OnInit {
   }
 
   private handleDragEnter(): Subscription {
-    return this.droppableService.dragEnterEvents(this).subscribe(e => {
+    return this.droppableService.dragEnter(this).subscribe(e => {
       this.isDropTarget = true;
     });
   }
 
   private handleDragLeave(): Subscription {
-    return this.droppableService.dragLeaveEvents(this).subscribe(e => {
+    return this.droppableService.dragLeave(this).subscribe(e => {
       this.isDropTarget = false;
     });
   }
 
   private handleDragEnd(): Subscription {
-    return this.droppableService.dragEndEvents().subscribe(e => {
+    return this.droppableService.dragEnd().subscribe(e => {
       this.isDropTarget = false;
     });
   }

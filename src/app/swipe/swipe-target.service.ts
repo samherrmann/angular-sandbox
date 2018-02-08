@@ -7,14 +7,14 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class SwipeTargetService implements OnDestroy {
 
-  private readonly _swipeOverEvents = new Subject<SwipeEvent>();
-  readonly swipeOverEvents = this._swipeOverEvents.asObservable();
+  private readonly _swipeOver = new Subject<SwipeEvent>();
+  readonly swipeOver = this._swipeOver.asObservable();
 
-  private readonly _swipeEnterEvents = new Subject<SwipeEvent>();
-  readonly swipeEnterEvents = this._swipeEnterEvents.asObservable();
+  private readonly _swipeEnter = new Subject<SwipeEvent>();
+  readonly swipeEnter = this._swipeEnter.asObservable();
 
-  private readonly _swipeLeaveEvents = new Subject<SwipeEvent>();
-  readonly swipeLeaveEvents = this._swipeLeaveEvents.asObservable();
+  private readonly _swipeLeave = new Subject<SwipeEvent>();
+  readonly swipeLeave = this._swipeLeave.asObservable();
 
   private subs: Subscription[] = [];
 
@@ -24,44 +24,44 @@ export class SwipeTargetService implements OnDestroy {
 
   register(target: HTMLElement): void {
     this.subs.push(
-      this.handleSwipeStartEvents(target),
-      this.handleSwipeEvents(target),
-      this.handleSwipeEndEvents(target)
+      this.handleSwipeStart(target),
+      this.handleSwipe(target),
+      this.handleSwipeEnd(target)
     );
   }
 
-  private handleSwipeStartEvents(target: HTMLElement): Subscription {
-    return this.swipeZoneService.swipeStartEvents.subscribe(e => {
+  private handleSwipeStart(target: HTMLElement): Subscription {
+    return this.swipeZoneService.swipeStart.subscribe(e => {
       if (this.isPointerOverTarget(e.pointerEvent, target)) {
-        this._swipeEnterEvents.next(new SwipeEvent('swipenter', e.pointerEvent));
+        this._swipeEnter.next(new SwipeEvent('swipenter', e.pointerEvent));
         this.wasLastEventOverTarget = true;
       }
     });
   }
 
-  private handleSwipeEvents(target: HTMLElement): Subscription {
-    return this.swipeZoneService.swipeEvents.subscribe(e => {
+  private handleSwipe(target: HTMLElement): Subscription {
+    return this.swipeZoneService.swipe.subscribe(e => {
       if (this.isPointerOverTarget(e.pointerEvent, target)) {
-        this._swipeOverEvents.next(new SwipeEvent('swipeover', e.pointerEvent));
+        this._swipeOver.next(new SwipeEvent('swipeover', e.pointerEvent));
 
         if (!this.wasLastEventOverTarget) {
-          this._swipeEnterEvents.next(new SwipeEvent('swipenter', e.pointerEvent));
+          this._swipeEnter.next(new SwipeEvent('swipenter', e.pointerEvent));
         }
         this.wasLastEventOverTarget = true;
 
       } else {
         if (this.wasLastEventOverTarget) {
-          this._swipeLeaveEvents.next(new SwipeEvent('swipeleave', e.pointerEvent));
+          this._swipeLeave.next(new SwipeEvent('swipeleave', e.pointerEvent));
         }
         this.wasLastEventOverTarget = false;
       }
     });
   }
 
-  private handleSwipeEndEvents(target: HTMLElement): Subscription {
-    return this.swipeZoneService.swipeEndEvents.subscribe(e => {
+  private handleSwipeEnd(target: HTMLElement): Subscription {
+    return this.swipeZoneService.swipeEnd.subscribe(e => {
       if (this.wasLastEventOverTarget) {
-        this._swipeLeaveEvents.next(new SwipeEvent('swipeleave', e.pointerEvent));
+        this._swipeLeave.next(new SwipeEvent('swipeleave', e.pointerEvent));
         this.wasLastEventOverTarget = false;
       }
     });

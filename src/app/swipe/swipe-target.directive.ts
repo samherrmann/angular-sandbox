@@ -10,13 +10,13 @@ import { SwipeTargetService } from './swipe-target.service';
 export class SwipeTargetDirective implements OnInit {
 
   @Output()
-  swipeEnter = this.swipeTargetService.swipeEnterEvents;
+  swipeEnter = this.swipeTargetService.swipeEnter;
 
   @Output()
-  swipeLeave = this.swipeTargetService.swipeLeaveEvents;
+  swipeLeave = this.swipeTargetService.swipeLeave;
 
   @Output()
-  swipeOver = this.swipeTargetService.swipeOverEvents;
+  swipeOver = this.swipeTargetService.swipeOver;
 
   constructor(private swipeTargetService: SwipeTargetService,
     private elementRef: ElementRef) { }

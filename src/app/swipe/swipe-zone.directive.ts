@@ -13,16 +13,16 @@ export class SwipeZoneDirective {
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
-    this.swipeService.swipeStart(e);
+    this.swipeService.emitSwipeStart(e);
   }
 
   @HostListener('pointermove', ['$event'])
   pointerMove(e: PointerEvent) {
-    this.swipeService.swipe(e);
+    this.swipeService.emitSwipe(e);
   }
 
   @HostListener('pointerup', ['$event'])
   pointerUp(e: PointerEvent) {
-    this.swipeService.swipeEnd(e);
+    this.swipeService.emitSwipeEnd(e);
   }
 }

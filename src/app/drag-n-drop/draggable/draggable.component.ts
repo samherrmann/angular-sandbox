@@ -64,7 +64,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   private handleDragStart() {
-    return this.draggableService.dragStartEvents.subscribe(e => {
+    return this.draggableService.dragStart.subscribe(e => {
       this.clearSelection(e.draggable.componetRef.location.nativeElement);
 
       const el: HTMLElement = this.elementRef.nativeElement;
@@ -81,13 +81,13 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   private handleDrag() {
-    return this.draggableService.dragEvents.subscribe(delta => {
+    return this.draggableService.drag.subscribe(delta => {
       this.transform = 'translate(' + delta.x + 'px, ' + delta.y + 'px)';
     });
   }
 
   private handleDragEnter(): Subscription {
-    return this.draggableService.dragEnterEvents.subscribe(e => {
+    return this.draggableService.dragEnter.subscribe(e => {
       this.insertShadow(
         e.target.elementRef.nativeElement,
         e.draggable.componetRef.location.nativeElement,
@@ -97,13 +97,13 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   private handleDragLeave(): Subscription {
-    return this.draggableService.dragLeaveEvents.subscribe(e => {
+    return this.draggableService.dragLeave.subscribe(e => {
       this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
     });
   }
 
   private handleDragEnd() {
-    return this.draggableService.dragEndEvents.subscribe(e => {
+    return this.draggableService.dragEnd.subscribe(e => {
       this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
       this.moveDraggable(e);
 

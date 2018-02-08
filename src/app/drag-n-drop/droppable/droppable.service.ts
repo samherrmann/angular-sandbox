@@ -16,28 +16,28 @@ export class DroppableService {
 
   register(droppable: DroppableComponent): void {
     this.subscriptions.push(
-      this.handleDragEvents(droppable),
-      this.handleDragOverEvents(droppable)
+      this.handleDrag(droppable),
+      this.handleDragOver(droppable)
     );
   }
 
-  dragEnterEvents(droppable: DroppableComponent) {
+  dragEnter(droppable: DroppableComponent) {
     return this.dragAndDropService.dragEnter.pipe(
       filter(e => e.target === droppable)
     );
   }
 
-  dragLeaveEvents(droppable: DroppableComponent) {
+  dragLeave(droppable: DroppableComponent) {
     return this.dragAndDropService.dragLeave.pipe(
       filter(e => e.target === droppable)
     );
   }
 
-  dragEndEvents() {
+  dragEnd() {
     return this.dragAndDropService.dragEnd;
   }
 
-  private handleDragEvents(droppable: DroppableComponent): Subscription {
+  private handleDrag(droppable: DroppableComponent): Subscription {
     return this.dragAndDropService.drag.pipe(
       filter(e => this.isPointerOverDroppable(e.pointerEvent, droppable))
     ).subscribe(e => {
@@ -45,7 +45,7 @@ export class DroppableService {
     });
   }
 
-  private handleDragOverEvents(droppable: DroppableComponent): Subscription {
+  private handleDragOver(droppable: DroppableComponent): Subscription {
     return merge(
       this.dragAndDropService.dragStart,
       this.dragAndDropService.dragOver
