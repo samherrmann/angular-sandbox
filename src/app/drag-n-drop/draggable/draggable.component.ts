@@ -54,7 +54,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.handleDragStart(),
       this.handleDrag(),
       this.handleDragEnter(),
-      this.handleDragLeave(),
       this.handleDragEnd()
     );
   }
@@ -88,6 +87,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragEnter(): Subscription {
     return this.draggableService.dragEnter.subscribe(e => {
+      this.removeShadow(e.draggable.shadow);
       this.insertShadow(
         e.target.elementRef.nativeElement,
         e.draggable.componetRef.location.nativeElement,
@@ -96,15 +96,9 @@ export class DraggableComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleDragLeave(): Subscription {
-    return this.draggableService.dragLeave.subscribe(e => {
-      this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
-    });
-  }
-
   private handleDragEnd() {
     return this.draggableService.dragEnd.subscribe(e => {
-      this.removeShadow(e.target.elementRef.nativeElement, e.draggable.shadow);
+      this.removeShadow(e.draggable.shadow);
       this.moveDraggable(e);
 
       this.isInTransit = false;
@@ -131,10 +125,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
     }
   }
 
-  private removeShadow(droppable: HTMLElement, shadow: HTMLElement) {
-    if (shadow.parentNode === droppable) {
-      this.renderer.removeChild(droppable, shadow);
-    }
+  private removeShadow(shadow: HTMLElement) {
+    this.renderer.removeChild(shadow.parentNode, shadow);
   }
 
   private moveDraggable(e: DragEvent): void {

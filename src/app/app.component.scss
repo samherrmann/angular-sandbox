@@ -25,16 +25,16 @@ app-droppable {
 
 ::ng-deep {
 
-  app-droppable.droptarget app-draggable.shadow {
-    background-color: cyan;
-
-    * {
-      opacity: 0;
-    }
-  }
-
   app-draggable {
     height: 100%;
     width: 100%;
+
+    &.shadow {
+      background-color: cyan;
+
+      * {
+        opacity: 0;
+      }
+    }
   }
 }
