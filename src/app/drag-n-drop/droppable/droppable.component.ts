@@ -1,21 +1,19 @@
-import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type, Host } from '@angular/core';
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragNDropService } from '../drag-n-drop.service';
-import { SwipeTargetDirective } from '../../swipe/swipe-target.directive';
-import { SwipeTargetService } from '../../swipe/swipe-target.service';
+import { SwipeTargetDirective } from './swipe-target.directive';
 
 @Component({
   selector: 'app-droppable',
   templateUrl: './droppable.component.html',
   styleUrls: ['./droppable.component.scss'],
   providers: [
-    DroppableService,
-    SwipeTargetService
+    DroppableService
   ]
 })
-export class DroppableComponent extends SwipeTargetDirective implements OnInit {
+export class DroppableComponent implements OnInit {
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
@@ -28,14 +26,10 @@ export class DroppableComponent extends SwipeTargetDirective implements OnInit {
   constructor(private droppableService: DroppableService,
     private draggableFactoryService: DraggableFactoryService,
     private dragAndDropService: DragNDropService,
-    swipeTargetService: SwipeTargetService,
-    elementRef: ElementRef) {
-      super(swipeTargetService, elementRef);
-    }
+    public elementRef: ElementRef,
+    @Host() private swipeTargetDirective: SwipeTargetDirective) {}
 
   ngOnInit() {
-    super.ngOnInit();
-
     this.subscriptions.push(
       this.handleSwipeEnter(),
       this.handleSwipeOver(),
@@ -55,7 +49,7 @@ export class DroppableComponent extends SwipeTargetDirective implements OnInit {
   }
 
   private handleSwipeEnter(): Subscription {
-    return this.swipeEnter.subscribe(e => {
+    return this.swipeTargetDirective.swipeEnter.subscribe(e => {
       if (this.dragAndDropService.isActive()) {
         this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
       }
@@ -63,7 +57,7 @@ export class DroppableComponent extends SwipeTargetDirective implements OnInit {
   }
 
   private handleSwipeOver(): Subscription {
-    return this.swipeOver.subscribe(e => {
+    return this.swipeTargetDirective.swipeOver.subscribe(e => {
       if (this.dragAndDropService.isActive()) {
         this.dragAndDropService.emitDragOver(e.pointerEvent, this);
       }
@@ -71,7 +65,7 @@ export class DroppableComponent extends SwipeTargetDirective implements OnInit {
   }
 
   private handleSwipeLeave(): Subscription {
-    return this.swipeLeave.subscribe(e => {
+    return this.swipeTargetDirective.swipeLeave.subscribe(e => {
       if (this.dragAndDropService.isActive()) {
         this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
       }
