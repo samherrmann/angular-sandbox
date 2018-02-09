@@ -2,16 +2,20 @@ import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
+import { DragNDropService } from '../drag-n-drop.service';
+import { SwipeTargetDirective } from '../../swipe/swipe-target.directive';
+import { SwipeTargetService } from '../../swipe/swipe-target.service';
 
 @Component({
   selector: 'app-droppable',
   templateUrl: './droppable.component.html',
   styleUrls: ['./droppable.component.scss'],
   providers: [
-    DroppableService
+    DroppableService,
+    SwipeTargetService
   ]
 })
-export class DroppableComponent implements OnInit {
+export class DroppableComponent extends SwipeTargetDirective implements OnInit {
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
@@ -21,17 +25,57 @@ export class DroppableComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(public elementRef: ElementRef,
-    private droppableService: DroppableService,
-    private draggableFactoryService: DraggableFactoryService) { }
+  constructor(private droppableService: DroppableService,
+    private draggableFactoryService: DraggableFactoryService,
+    private dragAndDropService: DragNDropService,
+    swipeTargetService: SwipeTargetService,
+    elementRef: ElementRef) {
+      super(swipeTargetService, elementRef);
+    }
 
   ngOnInit() {
-    this.droppableService.register(this);
+    super.ngOnInit();
+
     this.subscriptions.push(
+      this.handleSwipeEnter(),
+      this.handleSwipeOver(),
+      this.handleSwipeLeave(),
       this.handleDragEnter(),
       this.handleDragLeave(),
       this.handleDragEnd()
     );
+  }
+
+  addDraggable<T>(component: Type<T>): void {
+    this.draggableFactoryService.addDraggable(component, this);
+  }
+
+  ngOnDestory() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private handleSwipeEnter(): Subscription {
+    return this.swipeEnter.subscribe(e => {
+      if (this.dragAndDropService.isActive()) {
+        this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
+      }
+    });
+  }
+
+  private handleSwipeOver(): Subscription {
+    return this.swipeOver.subscribe(e => {
+      if (this.dragAndDropService.isActive()) {
+        this.dragAndDropService.emitDragOver(e.pointerEvent, this);
+      }
+    });
+  }
+
+  private handleSwipeLeave(): Subscription {
+    return this.swipeLeave.subscribe(e => {
+      if (this.dragAndDropService.isActive()) {
+        this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
+      }
+    });
   }
 
   private handleDragEnter(): Subscription {
@@ -50,13 +94,5 @@ export class DroppableComponent implements OnInit {
     return this.droppableService.dragEnd().subscribe(e => {
       this.isDropTarget = false;
     });
-  }
-
-  addDraggable<T>(component: Type<T>): void {
-    this.draggableFactoryService.addDraggable(component, this);
-  }
-
-  ngOnDestory() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
