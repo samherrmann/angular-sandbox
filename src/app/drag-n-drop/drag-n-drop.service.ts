@@ -72,14 +72,10 @@ export class DragNDropService {
   }
 
   listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
-    return this.observeWhenActive(fromEvent<T>(el, eventName));
-  }
-
-  observeWhenActive<T>(source: Observable<T>): Observable<T> {
     return this.active.pipe(
       filter(e => e === true),
       flatMap(() => {
-        return source.pipe(
+        return fromEvent<T>(el, eventName).pipe(
           takeUntil(this.active.pipe(filter(e => e === false)))
         );
       })
