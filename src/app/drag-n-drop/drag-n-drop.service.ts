@@ -4,6 +4,9 @@ import { Subject } from 'rxjs/Subject';
 import { DragEvent } from './drag-event';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DroppableComponent } from './droppable/droppable.component';
+import { filter, flatMap, takeUntil } from 'rxjs/operators';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
@@ -68,7 +71,18 @@ export class DragNDropService {
     this._dragLeave.next(new DragEvent('dragleave', e, this.draggableInTransit, droppable));
   }
 
-  isActive(): boolean {
-    return this._active.getValue();
+  listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
+    return this.observeWhenActive(fromEvent<T>(el, eventName));
+  }
+
+  observeWhenActive<T>(source: Observable<T>): Observable<T> {
+    return this.active.pipe(
+      filter(e => e === true),
+      flatMap(() => {
+        return source.pipe(
+          takeUntil(this.active.pipe(filter(e => e === false)))
+        );
+      })
+    );
   }
 }

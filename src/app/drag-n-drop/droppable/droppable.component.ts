@@ -49,26 +49,26 @@ export class DroppableComponent implements OnInit {
   }
 
   private handleSwipeEnter(): Subscription {
-    return this.swipeTargetDirective.appSwipeEnter.subscribe(e => {
-      if (this.dragAndDropService.isActive()) {
-        this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
-      }
+    return this.dragAndDropService.observeWhenActive(
+      this.swipeTargetDirective.appSwipeEnter
+    ).subscribe(e => {
+      this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
     });
   }
 
   private handleSwipeOver(): Subscription {
-    return this.swipeTargetDirective.appSwipeOver.subscribe(e => {
-      if (this.dragAndDropService.isActive()) {
-        this.dragAndDropService.emitDragOver(e.pointerEvent, this);
-      }
+    return this.dragAndDropService.observeWhenActive(
+      this.swipeTargetDirective.appSwipeOver
+    ).subscribe(e => {
+      this.dragAndDropService.emitDragOver(e.pointerEvent, this);
     });
   }
 
   private handleSwipeLeave(): Subscription {
-    return this.swipeTargetDirective.appSwipeLeave.subscribe(e => {
-      if (this.dragAndDropService.isActive()) {
-        this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
-      }
+    return this.dragAndDropService.observeWhenActive(
+      this.swipeTargetDirective.appSwipeLeave
+    ).subscribe(e => {
+      this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
     });
   }
 

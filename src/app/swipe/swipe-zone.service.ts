@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SwipeEvent } from './swipe-event';
+import { Observable } from 'rxjs/Observable';
+import { filter, flatMap, takeUntil } from 'rxjs/operators';
+import { fromEvent } from 'rxjs/observable/fromEvent';
 
 @Injectable()
 export class SwipeZoneService {
 
-  private readonly _isActive = new BehaviorSubject(false);
-  readonly isActive = this._isActive.asObservable();
+  private readonly _active = new BehaviorSubject(false);
+  readonly active = this._active.asObservable();
 
   private readonly _swipeStart = new Subject<SwipeEvent>();
   readonly swipeStart = this._swipeStart.asObservable();
@@ -21,18 +24,27 @@ export class SwipeZoneService {
   constructor() {}
 
   emitSwipeStart(e: PointerEvent): void {
-    this._isActive.next(true);
+    this._active.next(true);
     this._swipeStart.next(new SwipeEvent('swipestart', e));
   }
 
   emitSwipe(e: PointerEvent): void {
-    if (this._isActive.getValue()) {
-      this._swipe.next(new SwipeEvent('swipe', e));
-    }
+    this._swipe.next(new SwipeEvent('swipe', e));
   }
 
   emitSwipeEnd(e: PointerEvent): void {
-    this._isActive.next(false);
+    this._active.next(false);
     this._swipeEnd.next(new SwipeEvent('swipeend', e));
+  }
+
+  listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
+    return this.active.pipe(
+      filter(e => e === true),
+      flatMap(() => {
+        return fromEvent<T>(el, eventName).pipe(
+          takeUntil(this.active.pipe(filter(e => e === false)))
+        );
+      })
+    );
   }
 }

@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild, HostListener, Renderer2, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, Input, ElementRef, OnDestroy } from '@angular/core';
 import { DragNDropService } from '../drag-n-drop.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-scrollable',
   templateUrl: './scrollable.component.html',
   styleUrls: ['./scrollable.component.scss']
 })
-export class ScrollableComponent implements OnInit {
+export class ScrollableComponent implements OnInit, OnDestroy {
 
   @Input()
   scrollRatio = 0.02;
@@ -18,18 +19,15 @@ export class ScrollableComponent implements OnInit {
 
   private scrollable: HTMLElement;
 
+  private subs: Subscription[] = [];
+
   constructor(private dragNDropService: DragNDropService,
-    private renderer: Renderer2) { }
+    private renderer: Renderer2,
+    private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.scrollable = this.scrollabelRef.nativeElement;
-  }
-
-  @HostListener('wheel', ['$event'])
-  mousewheel(e: WheelEvent) {
-    if (this.dragNDropService.isActive()) {
-      this.scroll(e.deltaY);
-    }
+    this.subs.push(this.handleWheel());
   }
 
   scrollUp() {
@@ -40,7 +38,20 @@ export class ScrollableComponent implements OnInit {
     this.scroll(this.scrollRatio * this.scrollable.clientHeight);
   }
 
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
   private scroll(deltaY: number) {
     this.renderer.setProperty(this.scrollable, 'scrollTop', this.scrollable.scrollTop += deltaY);
+  }
+
+  private handleWheel(): Subscription {
+    return this.dragNDropService.listenWhenActive<WheelEvent>(
+      this.elementRef.nativeElement,
+      'wheel'
+    ).subscribe(e => {
+      this.scroll(e.deltaY);
+    });
   }
 }
