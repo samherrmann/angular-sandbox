@@ -49,7 +49,7 @@ export class DroppableComponent implements OnInit {
   }
 
   private handleSwipeEnter(): Subscription {
-    return this.swipeTargetDirective.swipeEnter.subscribe(e => {
+    return this.swipeTargetDirective.appSwipeEnter.subscribe(e => {
       if (this.dragAndDropService.isActive()) {
         this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
       }
@@ -57,7 +57,7 @@ export class DroppableComponent implements OnInit {
   }
 
   private handleSwipeOver(): Subscription {
-    return this.swipeTargetDirective.swipeOver.subscribe(e => {
+    return this.swipeTargetDirective.appSwipeOver.subscribe(e => {
       if (this.dragAndDropService.isActive()) {
         this.dragAndDropService.emitDragOver(e.pointerEvent, this);
       }
@@ -65,7 +65,7 @@ export class DroppableComponent implements OnInit {
   }
 
   private handleSwipeLeave(): Subscription {
-    return this.swipeTargetDirective.swipeLeave.subscribe(e => {
+    return this.swipeTargetDirective.appSwipeLeave.subscribe(e => {
       if (this.dragAndDropService.isActive()) {
         this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
       }

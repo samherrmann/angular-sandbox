@@ -2,7 +2,7 @@ import { Directive, Output, ElementRef, OnInit } from '@angular/core';
 import { SwipeTargetService } from './swipe-target.service';
 
 @Directive({
-  selector: '[appSwipeTarget]',
+  selector: '[appSwipeEnter], [appSwipeOver], [appSwipeLeave]',
   providers: [
     SwipeTargetService
   ]
@@ -10,13 +10,13 @@ import { SwipeTargetService } from './swipe-target.service';
 export class SwipeTargetDirective implements OnInit {
 
   @Output()
-  swipeEnter = this.swipeTargetService.swipeEnter;
+  appSwipeEnter = this.swipeTargetService.swipeEnter;
 
   @Output()
-  swipeLeave = this.swipeTargetService.swipeLeave;
+  appSwipeLeave = this.swipeTargetService.swipeLeave;
 
   @Output()
-  swipeOver = this.swipeTargetService.swipeOver;
+  appSwipeOver = this.swipeTargetService.swipeOver;
 
   constructor(private swipeTargetService: SwipeTargetService,
     private elementRef: ElementRef) { }
