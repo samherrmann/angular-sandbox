@@ -1,4 +1,4 @@
-import { Directive, HostListener, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { SwipeZoneService } from './swipe-zone.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -20,11 +20,6 @@ export class SwipeZoneDirective implements OnInit, OnDestroy {
       this.handlePointerMove(),
       this.handlePointerUp()
     );
-  }
-
-  @HostListener('pointerdown', ['$event'])
-  pointerDown(e: PointerEvent) {
-    this.swipeService.emitSwipeStart(e);
   }
 
   private handlePointerMove(): Subscription {
