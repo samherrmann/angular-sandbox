@@ -16,17 +16,15 @@ export class SwipeZoneDirective implements OnInit, OnDestroy {
     private elementRef: ElementRef) { }
 
   ngOnInit() {
-    this.subs.push(this.handlePointerMove());
+    this.subs.push(
+      this.handlePointerMove(),
+      this.handlePointerUp()
+    );
   }
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
     this.swipeService.emitSwipeStart(e);
-  }
-
-  @HostListener('pointerup', ['$event'])
-  pointerUp(e: PointerEvent) {
-    this.swipeService.emitSwipeEnd(e);
   }
 
   private handlePointerMove(): Subscription {
@@ -35,6 +33,15 @@ export class SwipeZoneDirective implements OnInit, OnDestroy {
       'pointermove'
     ).subscribe(e => {
       this.swipeService.emitSwipe(e);
+    });
+  }
+
+  private handlePointerUp(): Subscription {
+    return this.swipeService.listenWhenActive<PointerEvent>(
+      this.elementRef.nativeElement,
+      'pointerup'
+    ).subscribe(e => {
+      this.swipeService.emitSwipeEnd(e);
     });
   }
 
