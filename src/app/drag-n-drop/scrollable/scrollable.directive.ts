@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, Input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, Input, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appScrollable]'
@@ -15,13 +15,20 @@ export class ScrollableDirective {
     this.el = elementRef.nativeElement;
   }
 
+  @HostListener('wheel', ['$event'])
+  mousewheel(e: WheelEvent) {
+    this.scroll(e.deltaY);
+  }
+
   scrollUp() {
-    const scrollTop = this.el.scrollTop - this.scrollPercentage * this.el.clientHeight;
-    this.renderer.setProperty(this.el, 'scrollTop', scrollTop);
+    this.scroll(-this.scrollPercentage * this.el.clientHeight);
   }
 
   scrollDown() {
-    const scrollTop = this.el.scrollTop + this.scrollPercentage * this.el.clientHeight;
-    this.renderer.setProperty(this.el, 'scrollTop', scrollTop);
+    this.scroll(this.scrollPercentage * this.el.clientHeight);
+  }
+
+  private scroll(deltaY?: number) {
+    this.renderer.setProperty(this.el, 'scrollTop', this.el.scrollTop += deltaY);
   }
 }
