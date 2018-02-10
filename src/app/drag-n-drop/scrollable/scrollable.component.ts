@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ScrollableDirective } from './scrollable.directive';
+import { Component, OnInit, ViewChild, HostListener, Renderer2, Input, ElementRef } from '@angular/core';
 import { DragNDropService } from '../drag-n-drop.service';
 
 @Component({
@@ -9,20 +8,39 @@ import { DragNDropService } from '../drag-n-drop.service';
 })
 export class ScrollableComponent implements OnInit {
 
-  @ViewChild(ScrollableDirective)
-  scrollabel: ScrollableDirective;
+  @Input()
+  scrollRatio = 0.02;
+
+  @ViewChild('scrollable')
+  scrollabelRef: ElementRef;
 
   dragActive = this.dragNDropService.active;
 
-  constructor(private dragNDropService: DragNDropService) { }
+  private scrollable: HTMLElement;
 
-  ngOnInit() { }
+  constructor(private dragNDropService: DragNDropService,
+    private renderer: Renderer2) { }
+
+  ngOnInit() {
+    this.scrollable = this.scrollabelRef.nativeElement;
+  }
+
+  @HostListener('wheel', ['$event'])
+  mousewheel(e: WheelEvent) {
+    if (this.dragNDropService.isActive()) {
+      this.scroll(e.deltaY);
+    }
+  }
 
   scrollUp() {
-    this.scrollabel.scrollUp();
+    this.scroll(-this.scrollRatio * this.scrollable.clientHeight);
   }
 
   scrollDown() {
-    this.scrollabel.scrollDown();
+    this.scroll(this.scrollRatio * this.scrollable.clientHeight);
+  }
+
+  private scroll(deltaY: number) {
+    this.renderer.setProperty(this.scrollable, 'scrollTop', this.scrollable.scrollTop += deltaY);
   }
 }
