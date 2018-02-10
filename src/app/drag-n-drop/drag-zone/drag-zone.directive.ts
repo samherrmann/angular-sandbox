@@ -1,6 +1,7 @@
-import { Directive, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Directive, OnInit, OnDestroy } from '@angular/core';
 import { DragNDropService } from '../drag-n-drop.service';
 import { Subscription } from 'rxjs/Subscription';
+import { SwipeZoneService } from '../../swipe/swipe-zone.service';
 
 @Directive({
   selector: '[appDragZone]'
@@ -10,30 +11,24 @@ export class DragZoneDirective implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private dragAndDropService: DragNDropService,
-    private elementRef: ElementRef) { }
+    private swipeService: SwipeZoneService) { }
 
   ngOnInit() {
     this.subs.push(
-      this.handlePointerMove(),
-      this.handlePointerUp()
+      this.handleSwipe(),
+      this.handleSwipeEnd()
     );
   }
 
-  private handlePointerMove(): Subscription {
-    return this.dragAndDropService.listenWhenActive<PointerEvent>(
-      this.elementRef.nativeElement,
-      'pointermove'
-    ).subscribe(e => {
-      this.dragAndDropService.emitDrag(e);
+  private handleSwipe(): Subscription {
+    return this.swipeService.swipe.subscribe(e => {
+      this.dragAndDropService.emitDrag(e.pointerEvent);
     });
   }
 
-  private handlePointerUp(): Subscription {
-    return this.dragAndDropService.listenWhenActive<PointerEvent>(
-      this.elementRef.nativeElement,
-      'pointerup'
-    ).subscribe(e => {
-      this.dragAndDropService.emitDragEnd(e);
+  private handleSwipeEnd(): Subscription {
+    return this.swipeService.swipeEnd.subscribe(e => {
+      this.dragAndDropService.emitDragEnd(e.pointerEvent);
     });
   }
 
