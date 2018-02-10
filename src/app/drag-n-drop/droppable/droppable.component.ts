@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type, Host } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef, Type } from '@angular/core';
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragNDropService } from '../drag-n-drop.service';
-import { SwipeTargetDirective } from './swipe-target.directive';
+import { SwipeTargetService } from '../../swipe/swipe-target.service';
 
 @Component({
   selector: 'app-droppable',
   templateUrl: './droppable.component.html',
   styleUrls: ['./droppable.component.scss'],
   providers: [
-    DroppableService
+    DroppableService,
+    SwipeTargetService
   ]
 })
 export class DroppableComponent implements OnInit {
@@ -27,9 +28,11 @@ export class DroppableComponent implements OnInit {
     private draggableFactoryService: DraggableFactoryService,
     private dragAndDropService: DragNDropService,
     public elementRef: ElementRef,
-    @Host() private swipeTargetDirective: SwipeTargetDirective) {}
+    private swipeTargetService: SwipeTargetService) {}
 
   ngOnInit() {
+    this.swipeTargetService.register(this.elementRef.nativeElement);
+
     this.subscriptions.push(
       this.handleSwipeEnter(),
       this.handleSwipeOver(),
@@ -49,25 +52,19 @@ export class DroppableComponent implements OnInit {
   }
 
   private handleSwipeEnter(): Subscription {
-    return this.dragAndDropService.observeWhenActive(
-      this.swipeTargetDirective.appSwipeEnter
-    ).subscribe(e => {
+    return this.swipeTargetService.swipeEnter.subscribe(e => {
       this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
     });
   }
 
   private handleSwipeOver(): Subscription {
-    return this.dragAndDropService.observeWhenActive(
-      this.swipeTargetDirective.appSwipeOver
-    ).subscribe(e => {
+    return this.swipeTargetService.swipeOver.subscribe(e => {
       this.dragAndDropService.emitDragOver(e.pointerEvent, this);
     });
   }
 
   private handleSwipeLeave(): Subscription {
-    return this.dragAndDropService.observeWhenActive(
-      this.swipeTargetDirective.appSwipeLeave
-    ).subscribe(e => {
+    return this.swipeTargetService.swipeLeave.subscribe(e => {
       this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
     });
   }
