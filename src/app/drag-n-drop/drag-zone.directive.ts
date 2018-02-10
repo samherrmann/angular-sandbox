@@ -1,19 +1,24 @@
-import { Directive, OnInit, OnDestroy } from '@angular/core';
-import { DragNDropService } from '../drag-n-drop.service';
+import { Directive, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { DragNDropService } from './drag-n-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { SwipeZoneService } from '../../swipe/swipe-zone.service';
+import { SwipeZoneService } from '../swipe/swipe-zone.service';
 
 @Directive({
-  selector: '[appDragZone]'
+  selector: '[appDragZone]',
+  providers: [
+    SwipeZoneService
+  ]
 })
 export class DragZoneDirective implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
   constructor(private dragAndDropService: DragNDropService,
-    private swipeService: SwipeZoneService) { }
+    private swipeService: SwipeZoneService,
+    private elementRef: ElementRef) { }
 
   ngOnInit() {
+    this.swipeService.register(this.elementRef.nativeElement);
     this.subs.push(
       this.handleSwipe(),
       this.handleSwipeEnd()

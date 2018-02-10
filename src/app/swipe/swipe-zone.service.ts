@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SwipeEvent } from './swipe-event';
 import { Observable } from 'rxjs/Observable';
 import { filter, flatMap, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs/observable/fromEvent';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
-export class SwipeZoneService {
+export class SwipeZoneService implements OnDestroy {
 
   private readonly _active = new BehaviorSubject(false);
   readonly active = this._active.asObservable();
@@ -21,7 +22,16 @@ export class SwipeZoneService {
   private readonly _swipeEnd = new Subject<SwipeEvent>();
   readonly swipeEnd = this._swipeEnd.asObservable();
 
+  private subs: Subscription[] = [];
+
   constructor() {}
+
+  register(el: HTMLElement) {
+    this.subs.push(
+      this.handlePointerMove(el),
+      this.handlePointerUp(el)
+    );
+  }
 
   emitSwipeStart(e: PointerEvent): void {
     this._active.next(true);
@@ -46,5 +56,21 @@ export class SwipeZoneService {
         );
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  private handlePointerMove(el: HTMLElement): Subscription {
+    return this.listenWhenActive<PointerEvent>(el, 'pointermove').subscribe(e => {
+      this.emitSwipe(e);
+    });
+  }
+
+  private handlePointerUp(el: HTMLElement): Subscription {
+    return this.listenWhenActive<PointerEvent>(el, 'pointerup').subscribe(e => {
+      this.emitSwipeEnd(e);
+    });
   }
 }

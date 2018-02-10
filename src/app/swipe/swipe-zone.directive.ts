@@ -1,6 +1,5 @@
-import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Directive, ElementRef, OnInit } from '@angular/core';
 import { SwipeZoneService } from './swipe-zone.service';
-import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
   selector: '[appSwipeZone]',
@@ -8,39 +7,12 @@ import { Subscription } from 'rxjs/Subscription';
     SwipeZoneService
   ]
 })
-export class SwipeZoneDirective implements OnInit, OnDestroy {
-
-  private subs: Subscription[] = [];
+export class SwipeZoneDirective implements OnInit {
 
   constructor(private swipeService: SwipeZoneService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
-    this.subs.push(
-      this.handlePointerMove(),
-      this.handlePointerUp()
-    );
-  }
-
-  private handlePointerMove(): Subscription {
-    return this.swipeService.listenWhenActive<PointerEvent>(
-      this.elementRef.nativeElement,
-      'pointermove'
-    ).subscribe(e => {
-      this.swipeService.emitSwipe(e);
-    });
-  }
-
-  private handlePointerUp(): Subscription {
-    return this.swipeService.listenWhenActive<PointerEvent>(
-      this.elementRef.nativeElement,
-      'pointerup'
-    ).subscribe(e => {
-      this.swipeService.emitSwipeEnd(e);
-    });
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.swipeService.register(this.elementRef.nativeElement);
   }
 }
