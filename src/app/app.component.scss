@@ -16,18 +16,21 @@ app-scrollable {
 }
 
 app-droppable {
-  height: 50%;
   width: 100%;
-  float: left;
+  min-height: 100%;
   box-sizing: border-box;
   border: 1px solid blue;
+  overflow: auto;
 }
 
 ::ng-deep {
 
   app-draggable {
-    height: 100%;
-    width: 100%;
+    margin: 8px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 0;
+    }
 
     &.shadow {
       background-color: cyan;
