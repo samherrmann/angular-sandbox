@@ -19,17 +19,12 @@ export class DragHandleDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.renderer.setStyle(this.elementRef.nativeElement, 'touch-action', 'none');
-
-    this.subs.push(
-      this.swipeService.swipeStart.subscribe(e => {
-        this.dragAndDropService.emitDragStart(e.pointerEvent, this.draggable);
-      })
-    );
   }
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
     this.swipeService.emitSwipeStart(e);
+    this.dragAndDropService.emitDragStart(e, this.draggable);
   }
 
   ngOnDestroy() {
