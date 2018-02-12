@@ -8,6 +8,6 @@ export type SwipeEventType =
   'swipe' |
   'swipestart' |
   'swipeend' |
-  'swipenter' |
+  'swipeenter' |
   'swipeleave' |
   'swipeover';

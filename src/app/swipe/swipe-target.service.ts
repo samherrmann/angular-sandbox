@@ -37,7 +37,7 @@ export class SwipeTargetService implements OnDestroy {
         // javascript execution stack to ensure that all `swipestart`
         // observers receive `swipestart` before `swipeenter`.
         setTimeout(() => {
-          this._swipeEnter.next(new SwipeEvent('swipenter', e.pointerEvent));
+          this._swipeEnter.next(new SwipeEvent('swipeenter', e.pointerEvent));
           this.wasLastEventOverTarget = true;
         });
       }
@@ -50,7 +50,7 @@ export class SwipeTargetService implements OnDestroy {
         this._swipeOver.next(new SwipeEvent('swipeover', e.pointerEvent));
 
         if (!this.wasLastEventOverTarget) {
-          this._swipeEnter.next(new SwipeEvent('swipenter', e.pointerEvent));
+          this._swipeEnter.next(new SwipeEvent('swipeenter', e.pointerEvent));
         }
         this.wasLastEventOverTarget = true;
 
