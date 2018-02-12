@@ -47,17 +47,6 @@ export class SwipeZoneService implements OnDestroy {
     this._swipeEnd.next(new SwipeEvent('swipeend', e));
   }
 
-  listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
-    return this.active.pipe(
-      filter(e => e === true),
-      flatMap(() => {
-        return fromEvent<T>(el, eventName).pipe(
-          takeUntil(this.active.pipe(filter(e => e === false)))
-        );
-      })
-    );
-  }
-
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
   }
@@ -72,5 +61,16 @@ export class SwipeZoneService implements OnDestroy {
     return this.listenWhenActive<PointerEvent>(el, 'pointerup').subscribe(e => {
       this.emitSwipeEnd(e);
     });
+  }
+
+  private listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
+    return this.active.pipe(
+      filter(e => e === true),
+      flatMap(() => {
+        return fromEvent<T>(el, eventName).pipe(
+          takeUntil(this.active.pipe(filter(e => e === false)))
+        );
+      })
+    );
   }
 }
