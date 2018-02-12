@@ -36,6 +36,9 @@ export class DraggableComponent implements OnInit, OnDestroy {
   @HostBinding('style.left')
   left: string;
 
+  @HostBinding('style.margin')
+  margin: string;
+
   componetRef: ComponentRef<DraggableComponent>;
 
   container: DroppableComponent;
@@ -74,6 +77,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.height = el.offsetHeight + 'px';
       this.top = clientRect.top + 'px';
       this.left = clientRect.left + 'px';
+      this.margin = 0 + 'px';
 
       this.createShadow(this.elementRef.nativeElement);
     });
@@ -107,6 +111,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.height = null;
       this.top = null;
       this.left = null;
+      this.margin = null;
       this.shadow = null;
     });
   }
