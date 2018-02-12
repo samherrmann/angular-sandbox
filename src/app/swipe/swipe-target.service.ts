@@ -24,9 +24,24 @@ export class SwipeTargetService implements OnDestroy {
 
   register(target: HTMLElement): void {
     this.subs.push(
+      this.handleSwipeStart(target),
       this.handleSwipe(target),
       this.handleSwipeEnd(target)
     );
+  }
+
+  private handleSwipeStart(target: HTMLElement): Subscription {
+    return this.swipeZoneService.swipeStart.subscribe(e => {
+      if (this.isPointerOverTarget(e.pointerEvent, target)) {
+        // we need to emit the `swipeenter` event at the end of the
+        // javascript execution stack to ensure that all `swipestart`
+        // observers receive `swipestart` before `swipeenter`.
+        setTimeout(() => {
+          this._swipeEnter.next(new SwipeEvent('swipenter', e.pointerEvent));
+          this.wasLastEventOverTarget = true;
+        });
+      }
+    });
   }
 
   private handleSwipe(target: HTMLElement): Subscription {
