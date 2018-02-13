@@ -6,7 +6,8 @@ import { SwipeZoneService } from '../swipe/swipe-zone.service';
 @Directive({
   selector: '[appDragZone]',
   providers: [
-    SwipeZoneService
+    SwipeZoneService,
+    DragAndDropService
   ]
 })
 export class DragZoneDirective implements OnInit, OnDestroy {
