@@ -1,3 +1,17 @@
 :host {
   display: block;
+  position: relative;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+app-drop-zone {
+  height: 50%;
+  width: 100%;
 }

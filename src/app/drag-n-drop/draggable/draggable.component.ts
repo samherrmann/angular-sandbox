@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, ComponentRef, ViewChild, ViewContainerRef
 import {  DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-draggable',
@@ -31,6 +32,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   content: ComponentRef<any>;
 
+  target: Observable<boolean>;
+
   private subs: Subscription[] = [];
 
   constructor(private renderer: Renderer2,
@@ -45,6 +48,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.handleDragEnter(),
       this.handleDragEnd()
     );
+    this.target = this.draggableService.target;
   }
 
   ngOnDestroy() {

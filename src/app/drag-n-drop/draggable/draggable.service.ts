@@ -19,6 +19,8 @@ export class DraggableService {
 
   dragLeave: Observable<DragEvent>;
 
+  target: Observable<boolean>;
+
   private dragStartPoint: Coordinate2D;
 
   constructor(private dragAndDropService: DragNDropService) { }
@@ -42,6 +44,9 @@ export class DraggableService {
     this.dragEnd = this.dragAndDropService.dragEnd.pipe(
       this.filter(draggable),
       tap(e => this.dragStartPoint = null)
+    );
+    this.target = this.dragAndDropService.inTransit.pipe(
+      map(e => e !== null && e !== draggable)
     );
   }
 

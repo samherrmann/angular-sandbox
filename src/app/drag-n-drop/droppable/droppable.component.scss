@@ -1,3 +1,8 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+}
+
+app-drop-zone {
+  flex-grow: 1;
 }

@@ -1,3 +1,8 @@
 <app-transit-container>
   <ng-container #vc></ng-container>
 </app-transit-container>
+
+<div class="mask" *ngIf="target | async">
+  <app-drop-zone dropPosition="before"></app-drop-zone>
+  <app-drop-zone dropPosition="after"></app-drop-zone>
+</div>

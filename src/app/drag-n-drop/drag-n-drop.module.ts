@@ -10,6 +10,7 @@ import { DragHandleDirective } from './drag-handle.directive';
 import { ScrollableComponent } from './scrollable/scrollable.component';
 import { SwipeModule } from '../swipe/swipe.module';
 import { TransitContainerComponent } from './transit-container/transit-container.component';
+import { DropZoneComponent } from './drop-zone/drop-zone.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { TransitContainerComponent } from './transit-container/transit-container
     DraggableVideoDirective,
     DragHandleDirective,
     ScrollableComponent,
-    TransitContainerComponent
+    TransitContainerComponent,
+    DropZoneComponent
   ],
   exports: [
     DroppableComponent,

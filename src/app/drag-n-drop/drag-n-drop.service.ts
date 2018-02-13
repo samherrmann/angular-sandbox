@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { DragEvent } from './drag-event';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DroppableComponent } from './droppable/droppable.component';
-import { filter, flatMap, takeUntil } from 'rxjs/operators';
+import { filter, flatMap, takeUntil, map } from 'rxjs/operators';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
 
@@ -12,10 +12,12 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class DragNDropService {
 
-  private readonly _active = new BehaviorSubject(false);
-  readonly active = this._active.asObservable();
+  private readonly _inTransit = new BehaviorSubject<DraggableComponent>(null);
+  readonly inTransit = this._inTransit.asObservable();
 
-  private draggableInTransit: DraggableComponent;
+  readonly active = this.inTransit.pipe(
+    map(e => e !== null)
+  );
 
   private target: DroppableComponent;
 
@@ -40,35 +42,33 @@ export class DragNDropService {
   constructor() { }
 
   emitDragStart(e: PointerEvent, draggable: DraggableComponent): void {
-    this.draggableInTransit = draggable;
     this.target = draggable.container;
 
-    this._active.next(true);
+    this._inTransit.next(draggable);
     this._dragStart.next(new DragEvent('dragstart', e, draggable, this.target));
   }
 
   emitDragEnd(e: PointerEvent): void {
-    this._dragEnd.next(new DragEvent('dragend', e, this.draggableInTransit, this.target));
-    this._active.next(false);
-    this.draggableInTransit = null;
+    this._dragEnd.next(new DragEvent('dragend', e, this._inTransit.getValue(), this.target));
+    this._inTransit.next(null);
     this.target = null;
   }
 
   emitDrag(e: PointerEvent): void {
-    this._drag.next(new DragEvent('drag', e, this.draggableInTransit, this.target));
+    this._drag.next(new DragEvent('drag', e, this._inTransit.getValue(), this.target));
   }
 
   emitDragOver(e: PointerEvent, droppable: DroppableComponent): void {
     this.target = droppable;
-    this._dragOver.next(new DragEvent('dragover', e, this.draggableInTransit, this.target));
+    this._dragOver.next(new DragEvent('dragover', e, this._inTransit.getValue(), this.target));
   }
 
   emitDragEnter(e: PointerEvent, droppable: DroppableComponent): void {
-    this._dragEnter.next(new DragEvent('dragenter', e, this.draggableInTransit, droppable));
+    this._dragEnter.next(new DragEvent('dragenter', e, this._inTransit.getValue(), droppable));
   }
 
   emitDragLeave(e: PointerEvent, droppable: DroppableComponent): void {
-    this._dragLeave.next(new DragEvent('dragleave', e, this.draggableInTransit, droppable));
+    this._dragLeave.next(new DragEvent('dragleave', e, this._inTransit.getValue(), droppable));
   }
 
   listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
