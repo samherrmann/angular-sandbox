@@ -36,7 +36,7 @@ export class RelocationService implements OnDestroy {
 
         }),
         filter(e => {
-          return e.draggable.index() !== e.index;
+          return !(e.draggable.container === e.droppable && e.draggable.index() === e.index);
         })
       ).subscribe(e => {
         e.draggable.detatch();
