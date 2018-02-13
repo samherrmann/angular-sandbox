@@ -10,6 +10,7 @@ div[appDragZone] {
 }
 
 app-scrollable {
+  float: left;
   width: 400px;
   height: 100%;
   overflow: auto;
