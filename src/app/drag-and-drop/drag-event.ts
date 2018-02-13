@@ -15,7 +15,7 @@ export class DragOverEvent extends DragEvent {
     type: DragEventType,
     pointerEvent: PointerEvent,
     draggable: DraggableComponent,
-    public target: DropZoneComponent
+    public dropZone: DropZoneComponent
   ) {
     super(type, pointerEvent, draggable);
   }

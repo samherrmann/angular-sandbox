@@ -18,21 +18,20 @@ export class RelocationService implements OnDestroy {
       this.dragAndDropService.dragEnter.pipe(
         map(e => {
 
-          if (e.target.host instanceof DraggableComponent) {
-            const host = <DraggableComponent>e.target.host;
-            const currentIndex = e.draggable.index();
-            let index = host.index();
+          if (e.dropZone.host instanceof DraggableComponent) {
+            const target = <DraggableComponent>e.dropZone.host;
+            let index = target.index();
 
-            if (host === e.target.host && currentIndex < index) {
+            if (target.container === e.draggable.container && e.draggable.index() < index) {
               index -= 1;
             }
-            if (e.target.dropPosition === 'after') {
+            if (e.dropZone.dropPosition === 'after') {
               index += 1;
             }
-            return new RelocationEvent(e.pointerEvent, e.draggable, e.draggable.container, index);
+            return new RelocationEvent(e.pointerEvent, e.draggable, target.container, index);
 
-          } else if (e.target.host instanceof DroppableComponent) {
-            return new RelocationEvent(e.pointerEvent, e.draggable, e.target.host, undefined);
+          } else if (e.dropZone.host instanceof DroppableComponent) {
+            return new RelocationEvent(e.pointerEvent, e.draggable, e.dropZone.host, undefined);
           }
 
         }),
