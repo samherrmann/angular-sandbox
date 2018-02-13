@@ -49,6 +49,19 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.candidate = this.draggableService.candidate;
   }
 
+  detatch(): void {
+    this.container.viewContainerRef.detach(this.index());
+  }
+
+  index(): number {
+    return this.container.viewContainerRef.indexOf(this.componetRef.hostView);
+  }
+
+  insert(droppable: DroppableComponent, index?: number): void {
+    droppable.viewContainerRef.insert(this.componetRef.hostView, index);
+    this.container = droppable;
+  }
+
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
   }

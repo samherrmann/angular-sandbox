@@ -4,6 +4,7 @@ import { SwipeTargetService } from '../../swipe/swipe-target.service';
 import { DraggableComponent } from '../draggable/draggable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { DroppableComponent } from '../droppable/droppable.component';
+import { DragAndDropService } from '../drag-and-drop.service';
 
 @Component({
   selector: 'app-drop-zone',
@@ -18,11 +19,12 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   @Input()
   dropPosition: RelativeLocation = 'after';
 
-  private host: DraggableComponent | DroppableComponent;
+  readonly host: DraggableComponent | DroppableComponent;
 
   private subs: Subscription[] = [];
 
-  constructor(private swipeTargetService: SwipeTargetService,
+  constructor(private dragAndDropService: DragAndDropService,
+    private swipeTargetService: SwipeTargetService,
     private elementRef: ElementRef,
     @Optional() @SkipSelf() private draggable: DraggableComponent,
     @Optional() @SkipSelf() private droppable: DroppableComponent) {
@@ -34,7 +36,13 @@ export class DropZoneComponent implements OnInit, OnDestroy {
 
     this.subs.push(
       this.swipeTargetService.swipeEnter.subscribe(e => {
-        console.log(this.host);
+        this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
+      }),
+      this.swipeTargetService.swipeOver.subscribe(e => {
+        this.dragAndDropService.emitDragOver(e.pointerEvent, this);
+      }),
+      this.swipeTargetService.swipeLeave.subscribe(e => {
+        this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
       })
     );
   }

@@ -1,13 +1,28 @@
-import { DroppableComponent } from './droppable/droppable.component';
 import { DraggableComponent } from './draggable/draggable.component';
+import { DropZoneComponent } from './drop-zone/drop-zone.component';
 
 export class DragEvent {
 
-  constructor(public type: DragEventType,
+  constructor(
+    public type: DragEventType,
     public pointerEvent: PointerEvent,
-    public draggable: DraggableComponent,
-    public target: DroppableComponent) { }
+    public draggable: DraggableComponent
+  ) { }
 }
+
+export class DragOverEvent extends DragEvent {
+  constructor(
+    type: DragEventType,
+    pointerEvent: PointerEvent,
+    draggable: DraggableComponent,
+    public target: DropZoneComponent
+  ) {
+    super(type, pointerEvent, draggable);
+  }
+}
+
+export class DragEnterEvent extends DragOverEvent { }
+export class DragLeaveEvent extends DragOverEvent { }
 
 export type DragEventType =
   'drag' |
