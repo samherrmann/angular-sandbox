@@ -37,6 +37,9 @@ export class DragAndDropService {
   private readonly _dragEnd = new Subject<DragEvent>();
   readonly dragEnd = this._dragEnd.asObservable();
 
+  private readonly _drop = new Subject<DragEvent>();
+  readonly drop = this._drop.asObservable();
+
   constructor() { }
 
   emitDragStart(e: PointerEvent, draggable: DraggableComponent): void {
@@ -63,6 +66,10 @@ export class DragAndDropService {
 
   emitDragLeave(e: PointerEvent, dropZone: DropZoneComponent): void {
     this._dragLeave.next(new DragLeaveEvent('dragleave', e, this._inTransit.getValue(), dropZone));
+  }
+
+  emitDrop(e: PointerEvent, draggable: DraggableComponent): void {
+    this._drop.next(new DragEvent('drop', e, draggable));
   }
 
   listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {

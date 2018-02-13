@@ -24,7 +24,7 @@ export class DraggableVideoDirective implements OnInit, OnDestroy {
       this.draggableService.dragStart.subscribe(e => {
         this.isPaused = this.video.paused;
       }),
-      this.draggableService.dragEnd.subscribe(e => {
+      this.draggableService.drop.subscribe(e => {
         this.isPaused ? this.video.pause() : this.video.play();
       })
     );

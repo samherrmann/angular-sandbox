@@ -29,10 +29,10 @@ export class RelocationService implements OnDestroy {
             if (e.target.dropPosition === 'after') {
               index += 1;
             }
-            return new RelocationEvent(e.draggable, e.draggable.container, index);
+            return new RelocationEvent(e.pointerEvent, e.draggable, e.draggable.container, index);
 
           } else if (e.target.host instanceof DroppableComponent) {
-            return new RelocationEvent(e.draggable, e.target.host, undefined);
+            return new RelocationEvent(e.pointerEvent, e.draggable, e.target.host, undefined);
           }
 
         }),
@@ -42,6 +42,7 @@ export class RelocationService implements OnDestroy {
       ).subscribe(e => {
         e.draggable.detatch();
         e.draggable.insert(e.droppable, e.index);
+        this.dragAndDropService.emitDrop(e.pointerEvent, e.draggable);
       })
     );
   }
