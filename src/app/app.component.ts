@@ -1,6 +1,6 @@
 import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { ExampleComponent } from './example/example.component';
-import { DroppableComponent } from './drag-n-drop/droppable/droppable.component';
+import { DroppableComponent } from './drag-and-drop/droppable/droppable.component';
 
 @Component({
   selector: 'app-root',

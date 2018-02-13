@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef, ViewChild, HostBinding, ElementRef
 import { DroppableService } from './droppable.service';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
-import { DragNDropService } from '../drag-n-drop.service';
+import { DragAndDropService } from '../drag-and-drop.service';
 import { SwipeTargetService } from '../../swipe/swipe-target.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class DroppableComponent implements OnInit {
 
   constructor(private droppableService: DroppableService,
     private draggableFactoryService: DraggableFactoryService,
-    private dragAndDropService: DragNDropService,
+    private dragAndDropService: DragAndDropService,
     public elementRef: ElementRef,
     private swipeTargetService: SwipeTargetService) {}
 

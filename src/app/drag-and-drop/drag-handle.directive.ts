@@ -1,5 +1,5 @@
 import { Directive, HostListener, SkipSelf, Renderer2, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { DragNDropService } from './drag-n-drop.service';
+import { DragAndDropService } from './drag-and-drop.service';
 import { DraggableComponent } from './draggable/draggable.component';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,7 +11,7 @@ export class DragHandleDirective implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragNDropService,
+  constructor(private dragAndDropService: DragAndDropService,
     @SkipSelf() private draggable: DraggableComponent,
     private renderer: Renderer2,
     private elementRef: ElementRef,

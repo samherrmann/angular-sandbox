@@ -1,5 +1,5 @@
 import { Directive, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { DragNDropService } from './drag-n-drop.service';
+import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
 
@@ -13,7 +13,7 @@ export class DragZoneDirective implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragNDropService,
+  constructor(private dragAndDropService: DragAndDropService,
     private swipeService: SwipeZoneService,
     private elementRef: ElementRef) { }
 

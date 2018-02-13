@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ExampleComponent } from './example/example.component';
-import { DragNDropModule } from './drag-n-drop/drag-n-drop.module';
+import { DragAndDropModule } from './drag-and-drop/drag-and-drop.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import { DragNDropModule } from './drag-n-drop/drag-n-drop.module';
   ],
   imports: [
     BrowserModule,
-    DragNDropModule
+    DragAndDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Renderer2, Input, ElementRef, OnDestroy } from '@angular/core';
-import { DragNDropService } from '../drag-n-drop.service';
+import { DragAndDropService } from '../drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -15,13 +15,13 @@ export class ScrollableComponent implements OnInit, OnDestroy {
   @ViewChild('scrollable')
   scrollabelRef: ElementRef;
 
-  dragActive = this.dragNDropService.active;
+  dragActive = this.dragAndDropService.active;
 
   private scrollable: HTMLElement;
 
   private subs: Subscription[] = [];
 
-  constructor(private dragNDropService: DragNDropService,
+  constructor(private dragAndDropService: DragAndDropService,
     private renderer: Renderer2,
     private elementRef: ElementRef) { }
 
@@ -47,7 +47,7 @@ export class ScrollableComponent implements OnInit, OnDestroy {
   }
 
   private handleWheel(): Subscription {
-    return this.dragNDropService.listenWhenActive<WheelEvent>(
+    return this.dragAndDropService.listenWhenActive<WheelEvent>(
       this.elementRef.nativeElement,
       'wheel'
     ).subscribe(e => {

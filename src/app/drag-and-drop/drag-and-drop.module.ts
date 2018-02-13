@@ -4,7 +4,7 @@ import { DroppableComponent } from './droppable/droppable.component';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DragZoneDirective } from './drag-zone.directive';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
-import { DragNDropService } from './drag-n-drop.service';
+import { DragAndDropService } from './drag-and-drop.service';
 import { DraggableVideoDirective } from './draggable-video.directive';
 import { DragHandleDirective } from './drag-handle.directive';
 import { ScrollableComponent } from './scrollable/scrollable.component';
@@ -40,7 +40,7 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
   ],
   providers: [
     DraggableFactoryService,
-    DragNDropService
+    DragAndDropService
   ]
 })
-export class DragNDropModule { }
+export class DragAndDropModule { }

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
-export class DragNDropService {
+export class DragAndDropService {
 
   private readonly _inTransit = new BehaviorSubject<DraggableComponent>(null);
   readonly inTransit = this._inTransit.asObservable();

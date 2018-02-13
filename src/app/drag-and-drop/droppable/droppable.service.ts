@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DroppableComponent } from './droppable.component';
-import { DragNDropService } from '../drag-n-drop.service';
+import { DragAndDropService } from '../drag-and-drop.service';
 import { filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { DragEvent } from '../drag-event';
@@ -8,7 +8,7 @@ import { DragEvent } from '../drag-event';
 @Injectable()
 export class DroppableService {
 
-  constructor(private dragAndDropService: DragNDropService) { }
+  constructor(private dragAndDropService: DragAndDropService) { }
 
   dragEnter(droppable: DroppableComponent): Observable<DragEvent> {
     return this.dragAndDropService.dragEnter.pipe(
