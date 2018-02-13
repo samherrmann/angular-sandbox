@@ -23,7 +23,7 @@ export class RelocationService implements OnDestroy {
             const currentIndex = e.draggable.index();
             let index = host.index();
 
-            if (currentIndex < index) {
+            if (host === e.target.host && currentIndex < index) {
               index -= 1;
             }
             if (e.target.dropPosition === 'after') {
