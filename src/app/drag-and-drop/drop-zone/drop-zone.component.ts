@@ -19,7 +19,7 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   @Input()
   dropPosition: RelativeLocation = 'after';
 
-  readonly host: DraggableComponent | DroppableComponent;
+  readonly container: DraggableComponent | DroppableComponent;
 
   private subs: Subscription[] = [];
 
@@ -28,7 +28,7 @@ export class DropZoneComponent implements OnInit, OnDestroy {
     private elementRef: ElementRef,
     @Optional() @SkipSelf() private draggable: DraggableComponent,
     @Optional() @SkipSelf() private droppable: DroppableComponent) {
-      this.host = this.draggable || this.droppable;
+      this.container = this.draggable || this.droppable;
     }
 
   ngOnInit() {

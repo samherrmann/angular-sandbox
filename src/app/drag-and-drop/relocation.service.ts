@@ -18,8 +18,8 @@ export class RelocationService implements OnDestroy {
       this.dragAndDropService.dragEnter.pipe(
         map(e => {
 
-          if (e.dropZone.host instanceof DraggableComponent) {
-            const target = <DraggableComponent>e.dropZone.host;
+          if (e.dropZone.container instanceof DraggableComponent) {
+            const target = <DraggableComponent>e.dropZone.container;
             let index = target.index();
 
             if (target.container === e.draggable.container && e.draggable.index() < index) {
@@ -30,8 +30,8 @@ export class RelocationService implements OnDestroy {
             }
             return new RelocationEvent(e.pointerEvent, e.draggable, target.container, index);
 
-          } else if (e.dropZone.host instanceof DroppableComponent) {
-            return new RelocationEvent(e.pointerEvent, e.draggable, e.dropZone.host, undefined);
+          } else if (e.dropZone.container instanceof DroppableComponent) {
+            return new RelocationEvent(e.pointerEvent, e.draggable, e.dropZone.container, undefined);
           }
 
         }),
