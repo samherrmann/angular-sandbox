@@ -44,8 +44,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.draggableService.register(this);
     this.subs.push(
       this.handleDragStart(),
-      this.handleDrag(),
-      this.handleDragEnter(),
       this.handleDragEnd()
     );
     this.target = this.draggableService.target;
@@ -79,18 +77,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleDrag(): Subscription {
-    return this.draggableService.drag.subscribe(e => {
-
-    });
-  }
-
-  private handleDragEnter(): Subscription {
-    return this.draggableService.dragEnter.subscribe(e => {
-
-    });
-  }
-
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
       this.removeShadow(e.draggable.shadow);
@@ -112,17 +98,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.shadow = null;
     }
   }
-
-  // private moveDraggable(e: DragEvent): void {
-  //   // remove draggable from current host
-  //   const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
-  //   if (i > -1) {
-  //     e.draggable.container.viewContainerRef.detach(i);
-  //   }
-  //   // add draggable to new host
-  //   e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
-  //   e.draggable.container = e.target;
-  // }
 
   private clearSelection(draggable: HTMLElement): void {
     const selection = window.getSelection();
