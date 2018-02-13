@@ -19,7 +19,7 @@ export class DraggableService {
 
   dragLeave: Observable<DragEvent>;
 
-  target: Observable<boolean>;
+  candidate: Observable<boolean>;
 
   private dragStartPoint: Coordinate2D;
 
@@ -45,7 +45,7 @@ export class DraggableService {
       this.filter(draggable),
       tap(e => this.dragStartPoint = null)
     );
-    this.target = this.dragAndDropService.inTransit.pipe(
+    this.candidate = this.dragAndDropService.inTransit.pipe(
       map(e => e !== null && e !== draggable)
     );
   }

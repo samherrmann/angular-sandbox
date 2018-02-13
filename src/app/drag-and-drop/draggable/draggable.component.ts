@@ -32,7 +32,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   content: ComponentRef<any>;
 
-  target: Observable<boolean>;
+  candidate: Observable<boolean>;
 
   private subs: Subscription[] = [];
 
@@ -46,7 +46,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.handleDragStart(),
       this.handleDragEnd()
     );
-    this.target = this.draggableService.target;
+    this.candidate = this.draggableService.candidate;
   }
 
   ngOnDestroy() {
