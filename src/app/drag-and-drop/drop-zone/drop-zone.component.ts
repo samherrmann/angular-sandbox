@@ -18,23 +18,23 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   @Input()
   dropPosition: RelativeLocation = 'after';
 
+  private host: DraggableComponent | DroppableComponent;
+
   private subs: Subscription[] = [];
 
   constructor(private swipeTargetService: SwipeTargetService,
     private elementRef: ElementRef,
     @Optional() @SkipSelf() private draggable: DraggableComponent,
-    @Optional() @SkipSelf() private droppable: DroppableComponent) { }
+    @Optional() @SkipSelf() private droppable: DroppableComponent) {
+      this.host = this.draggable || this.droppable;
+    }
 
   ngOnInit() {
     this.swipeTargetService.register(this.elementRef.nativeElement);
 
     this.subs.push(
       this.swipeTargetService.swipeEnter.subscribe(e => {
-        if (this.draggable) {
-          console.log(this.draggable);
-        } else if (this.droppable) {
-          console.log(this.droppable);
-        }
+        console.log(this.host);
       })
     );
   }
