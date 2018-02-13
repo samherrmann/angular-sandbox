@@ -25,6 +25,7 @@ export class DraggableFactoryService {
 
   private createContentComponent<T>(draggable: DraggableComponent, component: Type<T>) {
     const factory = this.componentFactoryResolver.resolveComponentFactory(component);
-    draggable.viewContainerRef.createComponent(factory);
+    const componentRef = draggable.viewContainerRef.createComponent(factory);
+    draggable.content = componentRef;
   }
 }

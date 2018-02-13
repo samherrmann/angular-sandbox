@@ -1,14 +1,3 @@
 :host {
   display: block;
-
-  &.in-transit {
-    position: fixed;
-    user-select: none;
-
-    // Without raising the z-index, the native video control-bar
-    // of the shadow appears on top of the real draggable if the
-    // draggable originates from higher up in the DOM relative
-    // to the shadow.
-    z-index: 1000;
-  }
 }

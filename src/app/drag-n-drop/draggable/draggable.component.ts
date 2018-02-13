@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy, ComponentRef, ViewChild, ViewContainerRef
 import {  DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
-import { DragEvent } from '../drag-event';
 
 @Component({
   selector: 'app-draggable',
@@ -18,26 +17,11 @@ export class DraggableComponent implements OnInit, OnDestroy {
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
 
-  @HostBinding('class.in-transit')
-  isInTransit = false;
-
-  @HostBinding('style.transform')
-  transform = 'none';
-
   @HostBinding('style.width')
   width: string;
 
   @HostBinding('style.height')
   height: string;
-
-  @HostBinding('style.top')
-  top: string;
-
-  @HostBinding('style.left')
-  left: string;
-
-  @HostBinding('style.margin')
-  margin: string;
 
   componetRef: ComponentRef<DraggableComponent>;
 
@@ -45,7 +29,9 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   shadow: HTMLElement;
 
-  private subscriptions: Subscription[] = [];
+  content: ComponentRef<any>;
+
+  private subs: Subscription[] = [];
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
@@ -53,7 +39,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.draggableService.register(this);
-    this.subscriptions.push(
+    this.subs.push(
       this.handleDragStart(),
       this.handleDrag(),
       this.handleDragEnter(),
@@ -62,57 +48,48 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  private handleDragStart() {
+  private handleDragStart(): Subscription {
     return this.draggableService.dragStart.subscribe(e => {
-      this.clearSelection(e.draggable.componetRef.location.nativeElement);
-
       const el: HTMLElement = this.elementRef.nativeElement;
-      const clientRect = el.getBoundingClientRect();
-
-      this.isInTransit = true;
       this.width = el.offsetWidth + 'px';
       this.height = el.offsetHeight + 'px';
-      this.top = clientRect.top + 'px';
-      this.left = clientRect.left + 'px';
-      this.margin = 0 + 'px';
 
-      this.createShadow(this.elementRef.nativeElement);
+      this.clearSelection(e.draggable.componetRef.location.nativeElement);
+      this.removeShadow(e.draggable.shadow);
+      this.createShadow(this.content.location.nativeElement);
+      this.insertShadow(
+        e.draggable.componetRef.location.nativeElement,
+        e.draggable.shadow
+      );
+
+      // TODO:  Investigate removing the timeout and not causing
+      //        a flicker in a list of draggables. The current
+      //        value of 64ms was determined experimentally.
+      setTimeout(() => {
+        this.height = null;
+        this.width = null;
+      }, 64);
     });
   }
 
-  private handleDrag() {
-    return this.draggableService.drag.subscribe(delta => {
-      this.transform = 'translate(' + delta.x + 'px, ' + delta.y + 'px)';
+  private handleDrag(): Subscription {
+    return this.draggableService.drag.subscribe(e => {
+
     });
   }
 
   private handleDragEnter(): Subscription {
     return this.draggableService.dragEnter.subscribe(e => {
-      this.removeShadow(e.draggable.shadow);
-      this.insertShadow(
-        e.target.elementRef.nativeElement,
-        e.draggable.componetRef.location.nativeElement,
-        e.draggable.shadow
-      );
+
     });
   }
 
-  private handleDragEnd() {
+  private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
       this.removeShadow(e.draggable.shadow);
-      this.moveDraggable(e);
-
-      this.isInTransit = false;
-      this.transform = null;
-      this.width = null;
-      this.height = null;
-      this.top = null;
-      this.left = null;
-      this.margin = null;
-      this.shadow = null;
     });
   }
 
@@ -121,29 +98,27 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.renderer.addClass(this.shadow, 'shadow');
   }
 
-  private insertShadow(droppable: HTMLElement, draggable: HTMLElement, shadow: HTMLElement) {
-    if (draggable.parentElement === droppable) {
-      this.renderer.insertBefore(droppable, shadow, draggable);
-
-    } else {
-      this.renderer.appendChild(droppable, shadow);
-    }
+  private insertShadow(draggable: HTMLElement, shadow: HTMLElement) {
+    this.renderer.appendChild(draggable, shadow);
   }
 
   private removeShadow(shadow: HTMLElement) {
-    this.renderer.removeChild(shadow.parentNode, shadow);
+    if (shadow) {
+      this.renderer.removeChild(shadow.parentNode, shadow);
+      this.shadow = null;
+    }
   }
 
-  private moveDraggable(e: DragEvent): void {
-    // remove draggable from current host
-    const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
-    if (i > -1) {
-      e.draggable.container.viewContainerRef.detach(i);
-    }
-    // add draggable to new host
-    e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
-    e.draggable.container = e.target;
-  }
+  // private moveDraggable(e: DragEvent): void {
+  //   // remove draggable from current host
+  //   const i = e.draggable.container.viewContainerRef.indexOf(e.draggable.componetRef.hostView);
+  //   if (i > -1) {
+  //     e.draggable.container.viewContainerRef.detach(i);
+  //   }
+  //   // add draggable to new host
+  //   e.target.viewContainerRef.insert(e.draggable.componetRef.hostView);
+  //   e.draggable.container = e.target;
+  // }
 
   private clearSelection(draggable: HTMLElement): void {
     const selection = window.getSelection();
