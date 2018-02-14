@@ -1,8 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { DraggableComponent } from './draggable/draggable.component';
-import { DroppableComponent } from './droppable/droppable.component';
 import { map, filter } from 'rxjs/operators';
 import { RelocationEvent } from './relocation-event';
 
@@ -15,35 +13,36 @@ export class RelocationService implements OnDestroy {
 
   init() {
     this.subs.push(
-      this.dragAndDropService.dragEnter.pipe(
-        map(e => {
-
-          if (e.dropZone.container instanceof DraggableComponent) {
-            const target = <DraggableComponent>e.dropZone.container;
-            let index = target.index();
-
-            if (target.container === e.draggable.container && e.draggable.index() < index) {
-              index -= 1;
-            }
-            if (e.dropZone.dropPosition === 'after') {
-              index += 1;
-            }
-            return new RelocationEvent(e.pointerEvent, e.draggable, target.container, index);
-
-          } else if (e.dropZone.container instanceof DroppableComponent) {
-            return new RelocationEvent(e.pointerEvent, e.draggable, e.dropZone.container, undefined);
-          }
-
-        }),
-        filter(e => {
-          return !(e.draggable.container === e.droppable && e.draggable.index() === e.index);
-        })
-      ).subscribe(e => {
-        e.draggable.detatch();
-        e.draggable.insert(e.droppable, e.index);
-        this.dragAndDropService.emitDrop(e.pointerEvent, e.draggable);
-      })
+      this.handleDragEnter()
     );
+  }
+
+  private handleDragEnter(): Subscription {
+    return this.dragAndDropService.dragEnter.pipe(
+      map(e => {
+        const target = e.dropZone.location();
+        let index = target.index;
+
+        if (index) {
+          // adjust the index if the draggable is currently located before the drop-zone
+          // in the same container, i.e. if that's the case, the index of the drop-zone
+          // will be reduced by one when the draggable is removed from its current location.
+          if (target.droppable === e.draggable.container && e.draggable.index() < index) {
+            index -= 1;
+          }
+        }
+        return new RelocationEvent(e.pointerEvent, e.draggable, target.droppable, index);
+      }),
+      filter(e => {
+        return !(e.draggable.container === e.droppable && e.draggable.index() === e.index);
+      })
+    ).subscribe(e => this.moveDraggable(e));
+  }
+
+  private moveDraggable(e: RelocationEvent): void {
+    e.draggable.detatch();
+    e.draggable.insert(e.droppable, e.index);
+    this.dragAndDropService.emitDrop(e.pointerEvent, e.draggable);
   }
 
   ngOnDestroy() {

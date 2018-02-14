@@ -5,6 +5,7 @@ import { DraggableComponent } from '../draggable/draggable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { DragAndDropService } from '../drag-and-drop.service';
+import { Location } from './location';
 
 @Component({
   selector: 'app-drop-zone',
@@ -19,17 +20,13 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   @Input()
   dropPosition: RelativeLocation = 'after';
 
-  readonly container: DraggableComponent | DroppableComponent;
-
   private subs: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
     private swipeTargetService: SwipeTargetService,
     private elementRef: ElementRef,
     @Optional() @SkipSelf() private draggable: DraggableComponent,
-    @Optional() @SkipSelf() private droppable: DroppableComponent) {
-      this.container = this.draggable || this.droppable;
-    }
+    @Optional() @SkipSelf() private droppable: DroppableComponent) { }
 
   ngOnInit() {
     this.swipeTargetService.register(this.elementRef.nativeElement);
@@ -45,6 +42,26 @@ export class DropZoneComponent implements OnInit, OnDestroy {
         this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
       })
     );
+  }
+
+  location(): Location {
+    if (this.draggable) {
+      let index = this.draggable.index();
+      if (this.dropPosition === 'after') {
+        index += 1;
+      }
+
+      return {
+        droppable: this.draggable.container,
+        index: index
+      };
+
+    } else if (this.droppable) {
+      return {
+        droppable: this.droppable,
+        index: null
+      };
+    }
   }
 
   ngOnDestroy() {
