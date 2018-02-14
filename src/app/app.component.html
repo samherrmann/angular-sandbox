@@ -1,13 +1,9 @@
 <div appDragZone>
   <div class="sortables">
-      <app-droppable></app-droppable>
-      <app-droppable></app-droppable>
+      <app-droppable *ngFor="let i of [1,2]"></app-droppable>
   </div>
   <div class="swappables">
-      <app-droppable></app-droppable>
-      <app-droppable></app-droppable>
-      <app-droppable></app-droppable>
-      <app-droppable></app-droppable>
+      <app-droppable *ngFor="let i of [1,2,3,4]" [swap]="true"></app-droppable>
   </div>
 </div>
 
