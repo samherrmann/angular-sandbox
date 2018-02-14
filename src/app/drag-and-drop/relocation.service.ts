@@ -56,7 +56,8 @@ export class RelocationService implements OnDestroy {
     this.transientRelocation,
     this.targetRelocation
   ).pipe(
-    map(events => events.filter(e => e !== null))
+    map(events => events.filter(e => e !== null)),
+    filter(events => events.length > 0)
   );
 
   private subs: Subscription[] = [];
