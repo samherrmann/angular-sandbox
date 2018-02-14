@@ -1,6 +1,8 @@
-import { Component, ViewContainerRef, ViewChild, Type } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, Type, ElementRef, Input, Renderer2 } from '@angular/core';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { SwipeTargetService } from '../../swipe/swipe-target.service';
+import { Subscription } from 'rxjs/Subscription';
+import { DragAndDropService } from '../drag-and-drop.service';
 
 @Component({
   selector: 'app-droppable',
@@ -10,14 +12,59 @@ import { SwipeTargetService } from '../../swipe/swipe-target.service';
     SwipeTargetService
   ]
 })
-export class DroppableComponent {
+export class DroppableComponent implements OnInit, OnDestroy {
+
+  @Input()
+  scrollRatio = 0.02;
+
+  @ViewChild('scrollable')
+  scrollabelRef: ElementRef;
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
 
-  constructor(private draggableFactoryService: DraggableFactoryService) {}
+  dragActive = this.dragAndDropService.active;
+
+  private scrollable: HTMLElement;
+
+  private subs: Subscription[] = [];
+
+  constructor(private draggableFactoryService: DraggableFactoryService,
+    private dragAndDropService: DragAndDropService,
+    private renderer: Renderer2,
+    private elementRef: ElementRef) {}
+
+  ngOnInit() {
+    this.scrollable = this.scrollabelRef.nativeElement;
+    this.subs.push(this.handleWheel());
+  }
 
   addDraggable<T>(component: Type<T>): void {
     this.draggableFactoryService.addDraggable(component, this);
+  }
+
+  scrollUp() {
+    this.scroll(-this.scrollRatio * this.scrollable.clientHeight);
+  }
+
+  scrollDown() {
+    this.scroll(this.scrollRatio * this.scrollable.clientHeight);
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  private scroll(deltaY: number) {
+    this.renderer.setProperty(this.scrollable, 'scrollTop', this.scrollable.scrollTop += deltaY);
+  }
+
+  private handleWheel(): Subscription {
+    return this.dragAndDropService.listenWhenActive<WheelEvent>(
+      this.elementRef.nativeElement,
+      'wheel'
+    ).subscribe(e => {
+      this.scroll(e.deltaY);
+    });
   }
 }

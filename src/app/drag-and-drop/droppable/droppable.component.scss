@@ -1,11 +1,31 @@
 :host {
   display: block;
+  position: relative;
 }
 
-app-scrollable {
+.scrollable {
   height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 app-drop-zone {
   flex-grow: 1;
+}
+
+.scroll-up-zone,
+.scroll-down-zone {
+  position: absolute;
+  left: 0;
+  height: 25%;
+  width: 100%;
+}
+
+.scroll-up-zone {
+  top: 0;
+}
+
+.scroll-down-zone {
+  bottom: 0;
 }
