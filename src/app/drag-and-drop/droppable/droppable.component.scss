@@ -1,6 +1,9 @@
 :host {
-  display: flex;
-  flex-direction: column;
+  display: block;
+}
+
+app-scrollable {
+  height: 100%;
 }
 
 app-drop-zone {

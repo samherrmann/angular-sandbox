@@ -9,19 +9,12 @@ div[appDragZone] {
   width: 100%;
 }
 
-app-scrollable {
+app-droppable {
   float: left;
   width: 400px;
   height: 100%;
-  overflow: auto;
-}
-
-app-droppable {
-  width: 100%;
-  min-height: 100%;
   box-sizing: border-box;
   border: 1px solid blue;
-  overflow: auto;
 }
 
 ::ng-deep {
