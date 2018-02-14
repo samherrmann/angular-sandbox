@@ -7,31 +7,51 @@
 div[appDragZone] {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 app-droppable {
   float: left;
-  width: 400px;
-  height: 100%;
   box-sizing: border-box;
   border: 1px solid blue;
 }
 
-::ng-deep {
+.sortables {
+  flex-shrink: 0;
 
-  app-draggable {
+  app-droppable {
+    width: 400px;
+    height: 100%;
+  }
+
+  ::ng-deep app-draggable {
     margin: 8px;
 
     &:not(:last-of-type) {
       margin-bottom: 0;
     }
+  }
+}
 
-    .shadow {
-      background-color: cyan;
+.swappables {
+  flex-grow: 1;
 
-      * {
-        opacity: 0;
-      }
-    }
+  app-droppable {
+    width: 50%;
+    height: 50%;
+  }
+
+  ::ng-deep app-draggable {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+::ng-deep app-draggable .shadow {
+  background-color: cyan;
+
+  * {
+    opacity: 0;
   }
 }
