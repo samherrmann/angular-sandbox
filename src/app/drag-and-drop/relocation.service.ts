@@ -27,14 +27,14 @@ export class RelocationService implements OnDestroy {
           // adjust the index if the draggable is currently located before the drop-zone
           // in the same container, i.e. if that's the case, the index of the drop-zone
           // will be reduced by one when the draggable is removed from its current location.
-          if (target.droppable === e.draggable.container && e.draggable.index() < index) {
+          if (target.droppable === e.draggable.droppable && e.draggable.index() < index) {
             index -= 1;
           }
         }
         return new RelocationEvent(e.pointerEvent, e.draggable, target.droppable, index);
       }),
       filter(e => {
-        return !(e.draggable.container === e.droppable && e.draggable.index() === e.index);
+        return !(e.draggable.droppable === e.droppable && e.draggable.index() === e.index);
       })
     ).subscribe(e => this.moveDraggable(e));
   }

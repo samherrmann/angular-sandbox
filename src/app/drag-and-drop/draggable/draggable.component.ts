@@ -26,7 +26,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   componetRef: ComponentRef<DraggableComponent>;
 
-  container: DroppableComponent;
+  droppable: DroppableComponent;
 
   shadow: HTMLElement;
 
@@ -50,16 +50,16 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   detatch(): void {
-    this.container.viewContainerRef.detach(this.index());
+    this.droppable.viewContainerRef.detach(this.index());
   }
 
   index(): number {
-    return this.container.viewContainerRef.indexOf(this.componetRef.hostView);
+    return this.droppable.viewContainerRef.indexOf(this.componetRef.hostView);
   }
 
   insert(droppable: DroppableComponent, index?: number): void {
     droppable.viewContainerRef.insert(this.componetRef.hostView, index);
-    this.container = droppable;
+    this.droppable = droppable;
   }
 
   ngOnDestroy() {
