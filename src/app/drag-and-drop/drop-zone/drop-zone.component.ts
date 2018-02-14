@@ -5,7 +5,7 @@ import { DraggableComponent } from '../draggable/draggable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { DragAndDropService } from '../drag-and-drop.service';
-import { Location } from './location';
+import { Location } from '../location';
 
 @Component({
   selector: 'app-drop-zone',
