@@ -25,8 +25,8 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   constructor(private dragAndDropService: DragAndDropService,
     private swipeTargetService: SwipeTargetService,
     private elementRef: ElementRef,
-    @Optional() @SkipSelf() private draggable: DraggableComponent,
-    @Optional() @SkipSelf() private droppable: DroppableComponent) { }
+    @Optional() @SkipSelf() private _draggable: DraggableComponent,
+    @Optional() @SkipSelf() private _droppable: DroppableComponent) { }
 
   ngOnInit() {
     this.swipeTargetService.register(this.elementRef.nativeElement);
@@ -45,23 +45,27 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   }
 
   location(): Location {
-    if (this.draggable) {
-      let index = this.draggable.index();
+    if (this._draggable) {
+      let index = this._draggable.index();
       if (this.dropPosition === 'after') {
         index += 1;
       }
 
       return {
-        droppable: this.draggable.droppable,
+        droppable: this._draggable.droppable,
         index: index
       };
 
-    } else if (this.droppable) {
+    } else if (this._droppable) {
       return {
-        droppable: this.droppable,
+        droppable: this._droppable,
         index: null
       };
     }
+  }
+
+  draggable(): DraggableComponent {
+    return this._draggable;
   }
 
   ngOnDestroy() {

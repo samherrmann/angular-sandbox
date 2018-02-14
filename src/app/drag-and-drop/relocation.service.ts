@@ -1,13 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { RelocationEvent } from './relocation-event';
+import { Location } from './location';
+import { zip } from 'rxjs/observable/zip';
 
 @Injectable()
 export class RelocationService implements OnDestroy {
 
-  private draggableRelocation = this.dragAndDropService.dragEnter.pipe(
+  private transientOrigin: Location;
+
+  private transientRelocation = this.dragAndDropService.dragEnter.pipe(
     map(e => {
       const target = e.dropZone.location();
       let index = target.index;
@@ -22,11 +26,37 @@ export class RelocationService implements OnDestroy {
       }
       return new RelocationEvent(e.pointerEvent, e.draggable, target.droppable, index);
     }),
-    filter(e => {
+    map(e => {
       // only emit a relocation event if the requested position is different from the
       // current position.
-      return !(e.draggable.droppable === e.droppable && e.draggable.index() === e.index);
+      if (e.draggable.droppable === e.droppable && e.draggable.index() === e.index) {
+        return null;
+      } else {
+        return e;
+      }
     })
+  );
+
+  private targetRelocation = this.dragAndDropService.dragEnter.pipe(
+    map(e => {
+      if (e.dropZone.location().droppable.swap && e.dropZone.draggable() !== null) {
+        return new RelocationEvent(
+          e.pointerEvent,
+          e.dropZone.draggable(),
+          this.transientOrigin.droppable,
+          this.transientOrigin.index
+        );
+      } else {
+        return null;
+      }
+    })
+  );
+
+  private allRelocations = zip(
+    this.transientRelocation,
+    this.targetRelocation
+  ).pipe(
+    map(events => events.filter(e => e !== null))
   );
 
   private subs: Subscription[] = [];
@@ -35,12 +65,26 @@ export class RelocationService implements OnDestroy {
 
   init() {
     this.subs.push(
-      this.draggableRelocation.subscribe(e => {
-        e.draggable.detatch();
-        e.draggable.insert(e.droppable, e.index);
-        this.dragAndDropService.emitDrop(e.pointerEvent, e.draggable);
+      this.handleRelocations(),
+      this.dragAndDropService.dragStart.subscribe(e => {
+        this.transientOrigin = new Location(e.draggable.droppable, e.draggable.index());
+      }),
+      this.dragAndDropService.dragEnd.subscribe(e => {
+        this.transientOrigin = null;
       })
     );
+  }
+
+  private handleRelocations(): Subscription {
+    return this.allRelocations.subscribe(events => {
+      events.forEach(e => {
+        e.draggable.detatch();
+      });
+      events.forEach(e => {
+        e.draggable.insert(e.droppable, e.index);
+        this.dragAndDropService.emitDrop(e.pointerEvent, e.draggable);
+      });
+    });
   }
 
   ngOnDestroy() {
