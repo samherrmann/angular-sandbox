@@ -21,8 +21,8 @@ export class DragOverEvent extends DragEvent {
   }
 }
 
-export class DragEnterEvent extends DragOverEvent { }
-export class DragLeaveEvent extends DragOverEvent { }
+export class DragEnterEvent extends DragOverEvent {}
+export class DragLeaveEvent extends DragOverEvent {}
 
 export type DragEventType =
   'drag' |

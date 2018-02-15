@@ -25,13 +25,13 @@ export class DragAndDropService {
   private readonly _drag = new Subject<DragEvent>();
   readonly drag = this._drag.asObservable();
 
-  private readonly _dragEnter = new Subject<DragOverEvent>();
+  private readonly _dragEnter = new Subject<DragEnterEvent>();
   readonly dragEnter = this._dragEnter.asObservable();
 
   private readonly _dragOver = new Subject<DragOverEvent>();
   readonly dragOver = this._dragOver.asObservable();
 
-  private readonly _dragLeave = new Subject<DragOverEvent>();
+  private readonly _dragLeave = new Subject<DragLeaveEvent>();
   readonly dragLeave = this._dragLeave.asObservable();
 
   private readonly _dragEnd = new Subject<DragEvent>();
