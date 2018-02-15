@@ -1,15 +1,18 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { RelocationEvent } from './relocation-event';
 import { Location } from './location';
+import { Cache } from './cache';
 import { zip } from 'rxjs/observable/zip';
 
 @Injectable()
 export class RelocationService implements OnDestroy {
 
   private transientOrigin: Location;
+
+  private cache: Cache;
 
   private transientRelocation = this.dragAndDropService.dragEnter.pipe(
     map(e => {
@@ -28,7 +31,7 @@ export class RelocationService implements OnDestroy {
     }),
     map(e => {
       // only emit a relocation event if the requested position is different from the
-      // current position.
+      // current position. Emit null otherwise.
       if (e.draggable.droppable === e.droppable && e.draggable.index() === e.index) {
         return null;
       } else {
@@ -39,7 +42,9 @@ export class RelocationService implements OnDestroy {
 
   private targetRelocation = this.dragAndDropService.dragEnter.pipe(
     map(e => {
-      if (e.dropZone.location().droppable.swap && e.dropZone.draggable() !== null) {
+      // if the target draggable is inside a swappable, then we need to move that
+      // draggable into the origin location of the transient draggable.
+      if (e.dropZone.draggable() !== null && e.dropZone.location().droppable.swap) {
         return new RelocationEvent(
           e.pointerEvent,
           e.dropZone.draggable(),
@@ -52,11 +57,40 @@ export class RelocationService implements OnDestroy {
     })
   );
 
+  private cacheRelocation = this.dragAndDropService.dragEnter.pipe(
+    map(e => {
+      const cache: Cache = this.cache;
+
+      if (e.dropZone.location().droppable.swap && e.dropZone.draggable() !== null) {
+        this.cache = {
+          draggable: e.dropZone.draggable(),
+          location: e.dropZone.location()
+        };
+      } else {
+        this.cache = null;
+      }
+
+      let relocation: RelocationEvent = null;
+      if (cache) {
+        relocation = new RelocationEvent(
+          e.pointerEvent,
+          cache.draggable,
+          cache.location.droppable,
+          cache.location.index
+        );
+      }
+      return relocation;
+    })
+  );
+
   private allRelocations = zip(
     this.transientRelocation,
-    this.targetRelocation
+    this.targetRelocation,
+    this.cacheRelocation
   ).pipe(
-    map(events => events.filter(e => e !== null)),
+    map(events => {
+      return events.filter(e => e !== null);
+    }),
     filter(events => events.length > 0)
   );
 
@@ -67,12 +101,8 @@ export class RelocationService implements OnDestroy {
   init() {
     this.subs.push(
       this.handleRelocations(),
-      this.dragAndDropService.dragStart.subscribe(e => {
-        this.transientOrigin = new Location(e.draggable.droppable, e.draggable.index());
-      }),
-      this.dragAndDropService.dragEnd.subscribe(e => {
-        this.transientOrigin = null;
-      })
+      this.handleDragStart(),
+      this.handleDragStop()
     );
   }
 
@@ -85,6 +115,18 @@ export class RelocationService implements OnDestroy {
         e.draggable.insert(e.droppable, e.index);
         this.dragAndDropService.emitDrop(e.pointerEvent, e.draggable);
       });
+    });
+  }
+
+  private handleDragStart(): Subscription {
+    return this.dragAndDropService.dragStart.subscribe(e => {
+      this.transientOrigin = new Location(e.draggable.droppable, e.draggable.index());
+    });
+  }
+
+  private handleDragStop(): Subscription {
+    return this.dragAndDropService.dragEnd.subscribe(e => {
+      this.transientOrigin = null;
     });
   }
 
