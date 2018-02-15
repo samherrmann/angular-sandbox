@@ -44,7 +44,7 @@ export class RelocationService implements OnDestroy {
     map(e => {
       // if the target draggable is inside a swappable, then we need to move that
       // draggable into the origin location of the transient draggable.
-      if (e.dropZone.draggable() !== null && e.dropZone.location().droppable.swap) {
+      if (e.dropZone.draggable() !== null && e.dropZone.location().droppable.swappable) {
         return new RelocationEvent(
           e.pointerEvent,
           e.dropZone.draggable(),
@@ -61,7 +61,7 @@ export class RelocationService implements OnDestroy {
     map(e => {
       const cache: Cache = this.cache;
 
-      if (e.dropZone.location().droppable.swap && e.dropZone.draggable() !== null) {
+      if (e.dropZone.location().droppable.swappable && e.dropZone.draggable() !== null) {
         this.cache = {
           draggable: e.dropZone.draggable(),
           location: e.dropZone.location()

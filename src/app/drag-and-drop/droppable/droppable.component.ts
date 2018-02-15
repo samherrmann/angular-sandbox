@@ -17,12 +17,12 @@ export class DroppableComponent implements OnInit, OnDestroy {
   /**
    * When the user drags a {@link DraggableComponent} (transient) over another
    * {@link DraggableComponent} (target) in another {@link DraggableComponent},
-   * then by setting `swap` to `true`, the target will be moved to the
-   * location which the transient originates from. If `swap` is false, then
+   * then by setting `swappable` to `true`, the target will be moved to the
+   * location which the transient originates from. If `swappable` is false, then
    * the transient is added to the container either before or after the target.
    */
   @Input()
-  swap = false;
+  swappable = false;
 
   @Input()
   scrollRatio = 0.02;
