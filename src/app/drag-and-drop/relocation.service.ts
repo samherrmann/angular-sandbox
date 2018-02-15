@@ -27,33 +27,31 @@ export class RelocationService implements OnDestroy {
           index -= 1;
         }
       }
-      return new RelocationEvent(e.pointerEvent, e.draggable, target.droppable, index);
-    }),
-    map(e => {
+
+      let relocation: RelocationEvent = null;
       // only emit a relocation event if the requested position is different from the
-      // current position. Emit null otherwise.
-      if (e.draggable.droppable === e.droppable && e.draggable.index() === e.index) {
-        return null;
-      } else {
-        return e;
+      // current position.
+      if (e.draggable.droppable !== target.droppable || e.draggable.index() !== index) {
+        relocation = new RelocationEvent(e.pointerEvent, e.draggable, target.droppable, index);
       }
+      return relocation;
     })
   );
 
   private targetRelocation = this.dragAndDropService.dragEnter.pipe(
     map(e => {
+      let relocation: RelocationEvent = null;
       // if the target draggable is inside a swappable, then we need to move that
       // draggable into the origin location of the transient draggable.
       if (e.dropZone.draggable() !== null && e.dropZone.location().droppable.swappable) {
-        return new RelocationEvent(
+        relocation = new RelocationEvent(
           e.pointerEvent,
           e.dropZone.draggable(),
           this.transientOrigin.droppable,
           this.transientOrigin.index
         );
-      } else {
-        return null;
       }
+      return relocation;
     })
   );
 
