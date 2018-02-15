@@ -32,11 +32,11 @@ export class DragZoneDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.swipeService.register(this.elementRef.nativeElement);
-    this.relocationService.init([
+    this.relocationService.init(
       this.transientRelocationService.relocation,
       this.targetRelocationService.relocation,
       this.cacheRelocationService.relocation
-    ]);
+    );
     this.subs.push(
       this.handleSwipe(),
       this.handleSwipeEnd()

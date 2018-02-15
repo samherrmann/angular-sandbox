@@ -13,7 +13,7 @@ export class RelocationService implements OnDestroy {
 
   constructor(private dragAndDropService: DragAndDropService) { }
 
-  init(relocations: Observable<RelocationEvent>[]) {
+  init(...relocations: Observable<RelocationEvent>[]) {
     this.sub = this.handleRelocations(relocations);
   }
 
