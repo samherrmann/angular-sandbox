@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { RelocationEvent } from './relocation-event';
 import { Subscription } from 'rxjs/Subscription';
-import { Location } from '../location';
+import { Location } from './location';
 
 @Injectable()
 export class TransientRelocationService implements OnDestroy {
