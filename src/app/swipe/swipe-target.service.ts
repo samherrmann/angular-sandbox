@@ -75,7 +75,8 @@ export class SwipeTargetService implements OnDestroy {
   private isPointerOverTarget(e: PointerEvent, target: HTMLElement): boolean {
     const el: ClientRect = target.getBoundingClientRect();
     return e.clientX >= el.left && e.clientX <= (el.left + el.width) &&
-    e.clientY >= el.top && e.clientY <= (el.top + el.height);
+    e.clientY >= el.top && e.clientY <= (el.top + el.height) &&
+    el.height > 0 && el.width > 0;
   }
 
   ngOnDestroy() {
