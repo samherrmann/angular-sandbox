@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, Type, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, Type, ElementRef, Input, Renderer2, Attribute } from '@angular/core';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { SwipeTargetService } from '../../swipe/swipe-target.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,15 +14,7 @@ import { DragAndDropService } from '../drag-and-drop.service';
 })
 export class DroppableComponent implements OnInit, OnDestroy {
 
-  /**
-   * When the user drags a {@link DraggableComponent} (transient) over another
-   * {@link DraggableComponent} (target) in another {@link DraggableComponent},
-   * then by setting `swappable` to `true`, the target will be moved to the
-   * location which the transient originates from. If `swappable` is false, then
-   * the transient is added to the container either before or after the target.
-   */
-  @Input()
-  swappable = false;
+  readonly swappable: boolean = false;
 
   @Input()
   scrollRatio = 0.02;
@@ -42,7 +34,10 @@ export class DroppableComponent implements OnInit, OnDestroy {
   constructor(private draggableFactoryService: DraggableFactoryService,
     private dragAndDropService: DragAndDropService,
     private renderer: Renderer2,
-    private elementRef: ElementRef) {}
+    private elementRef: ElementRef,
+    @Attribute('swappable') swappable) {
+      this.swappable = swappable !== null;
+    }
 
   ngOnInit() {
     this.scrollable = this.scrollabelRef.nativeElement;
