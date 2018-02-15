@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { DragEvent } from '../drag-event';
 import { filter, map, tap } from 'rxjs/operators';
 import { DraggableComponent } from './draggable.component';
-import { Coordinate2D } from '../coordinate-2d';
+import { Coordinate2D } from './coordinate-2d';
 
 @Injectable()
 export class DraggableService {
