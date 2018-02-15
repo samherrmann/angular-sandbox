@@ -8,19 +8,19 @@ import { DragEnterEvent } from '../drag-event';
 @Injectable()
 export class CacheRelocationService {
 
-  private cache: Cache;
+  private _cache: Cache;
 
   readonly relocation = this.dragAndDropService.dragEnter.pipe(
     map(e => {
-      const cache: Cache = this.cache;
+      const cache: Cache = this._cache;
 
       if (this.isOverDraggableInSwappable(e) && !this.isOverCache(e)) {
-        this.cache = {
+        this._cache = {
           draggable: e.dropZone.draggable(),
           location: e.dropZone.location()
         };
       } else {
-        this.cache = null;
+        this._cache = null;
       }
 
       let relocation: RelocationEvent = null;
@@ -42,8 +42,7 @@ export class CacheRelocationService {
     return e.dropZone.location().droppable.swappable && e.dropZone.draggable() !== null;
   }
 
-  private isOverCache(e: DragEnterEvent): boolean {
-    return this.cache !== null && e.dropZone.draggable() === this.cache.draggable;
+  isOverCache(e: DragEnterEvent): boolean {
+    return this._cache !== null && e.dropZone.draggable() === this._cache.draggable;
   }
-
 }
