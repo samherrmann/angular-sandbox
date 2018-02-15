@@ -3,7 +3,7 @@
   <app-drop-zone></app-drop-zone>
 </div>
 
-<ng-container *ngIf="dragActive | async">
+<ng-container *ngIf="(dragActive | async) && !swappable">
   <div class="scroll-up-zone" (appSwipeOver)="scrollUp($event)">
   </div>
 
