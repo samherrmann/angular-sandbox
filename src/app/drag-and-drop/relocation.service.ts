@@ -32,7 +32,12 @@ export class RelocationService implements OnDestroy {
       // only emit a relocation event if the requested position is different from the
       // current position.
       if (e.draggable.droppable !== target.droppable || e.draggable.index() !== index) {
-        relocation = new RelocationEvent(e.pointerEvent, e.draggable, target.droppable, index);
+        relocation = new RelocationEvent(
+          e.pointerEvent,
+          e.draggable,
+          target.droppable,
+          index
+        );
       }
       return relocation;
     })
@@ -86,9 +91,7 @@ export class RelocationService implements OnDestroy {
     this.targetRelocation,
     this.cacheRelocation
   ).pipe(
-    map(events => {
-      return events.filter(e => e !== null);
-    }),
+    map(events => events.filter(e => e !== null)),
     filter(events => events.length > 0)
   );
 
