@@ -9,50 +9,53 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class CacheRelocationService implements OnDestroy {
 
-  private _cache: Cache;
+  private readonly cache = new Cache();
 
   private sub: Subscription;
 
   readonly relocation = this.dragAndDropService.dragEnter.pipe(
     map(e => {
-      const cache: Cache = this._cache;
-
-      if (this.isOverDraggableInSwappable(e) && !this.isOverCache(e)) {
-        this._cache = {
-          draggable: e.dropZone.draggable(),
-          location: e.dropZone.location()
-        };
-      } else {
-        this.clear();
-      }
-
-      let relocation: RelocationEvent = null;
-      if (cache) {
-        relocation = new RelocationEvent(
-          e.pointerEvent,
-          cache.draggable,
-          cache.location.droppable,
-          cache.location.index
-        );
-      }
+      const relocation = this.createRelocationEvent(e);
+      this.handleCaching(e);
       return relocation;
     })
   );
 
   constructor(private dragAndDropService: DragAndDropService) {
-    this.sub = this.dragAndDropService.dragEnd.subscribe(() => this.clear());
+    this.sub = this.dragAndDropService.dragEnd.subscribe(() => this.cache.clear());
   }
 
   isOverCache(e: DragEnterEvent): boolean {
-    return this._cache !== null && e.dropZone.draggable() === this._cache.draggable;
+    return !this.cache.isEmpty() && e.dropZone.draggable() === this.cache.draggable();
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  private clear(): void {
-    this._cache = null;
+  private createRelocationEvent(e: DragEnterEvent): RelocationEvent {
+    let relocation: RelocationEvent = null;
+
+    // create relocation event if cache is not empty
+    if (!this.cache.isEmpty()) {
+      relocation = new RelocationEvent(
+        e.pointerEvent,
+        this.cache.draggable(),
+        this.cache.location().droppable,
+        this.cache.location().index
+      );
+    }
+    return relocation;
+  }
+
+  private handleCaching(e: DragEnterEvent): void {
+    // add target to cache if target is inside a swappable and the
+    // target is not the cached draggable.
+    if (this.isOverDraggableInSwappable(e) && !this.isOverCache(e)) {
+      this.cache.set(e.dropZone.draggable(), e.dropZone.location());
+    } else {
+      this.cache.clear();
+    }
   }
 
   private isOverDraggableInSwappable(e: DragEnterEvent): boolean {
