@@ -1,5 +1,5 @@
-import { DraggableComponent } from './draggable/draggable.component';
-import { DroppableComponent } from './droppable/droppable.component';
+import { DraggableComponent } from '../draggable/draggable.component';
+import { DroppableComponent } from '../droppable/droppable.component';
 
 
 export class RelocationEvent {

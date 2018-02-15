@@ -1,5 +1,5 @@
-import { DraggableComponent } from './draggable/draggable.component';
-import { Location } from './location';
+import { DraggableComponent } from '../draggable/draggable.component';
+import { Location } from '../location';
 
 export class Cache {
   constructor(
