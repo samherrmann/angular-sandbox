@@ -24,15 +24,15 @@ export class DraggableComponent implements OnInit, OnDestroy {
   @HostBinding('style.height')
   height: string;
 
-  componetRef: ComponentRef<DraggableComponent>;
-
   droppable: DroppableComponent;
 
-  shadow: HTMLElement;
-
-  content: ComponentRef<any>;
-
   candidate: Observable<boolean>;
+
+  private shadow: HTMLElement;
+
+  private host: ComponentRef<DraggableComponent>;
+
+  private content: ComponentRef<any>;
 
   private subs: Subscription[] = [];
 
@@ -49,16 +49,22 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.candidate = this.draggableService.candidate;
   }
 
+  onFactoryInit(host: ComponentRef<any>, content: ComponentRef<any>, droppable: DroppableComponent): void {
+    this.host = host;
+    this.content = content;
+    this.droppable = droppable;
+  }
+
   detatch(): void {
     this.droppable.viewContainerRef.detach(this.index());
   }
 
   index(): number {
-    return this.droppable.viewContainerRef.indexOf(this.componetRef.hostView);
+    return this.droppable.viewContainerRef.indexOf(this.host.hostView);
   }
 
   insert(droppable: DroppableComponent, index?: number): void {
-    droppable.viewContainerRef.insert(this.componetRef.hostView, index);
+    droppable.viewContainerRef.insert(this.host.hostView, index);
     this.droppable = droppable;
   }
 
@@ -72,11 +78,11 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.width = el.offsetWidth + 'px';
       this.height = el.offsetHeight + 'px';
 
-      this.clearSelection(e.draggable.componetRef.location.nativeElement);
+      this.clearSelection(e.draggable.host.location.nativeElement);
       this.removeShadow(e.draggable.shadow);
       this.createShadow(this.content.location.nativeElement);
       this.insertShadow(
-        e.draggable.componetRef.location.nativeElement,
+        e.draggable.host.location.nativeElement,
         e.draggable.shadow
       );
 

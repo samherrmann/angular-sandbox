@@ -12,20 +12,18 @@ export class DraggableFactoryService {
   addDraggable<T>(component: Type<T>, droppable: DroppableComponent): void {
     // TODO: Investigate eliminating the `setTimeout`
     setTimeout(() => {
-      this.createContentComponent(this.createDraggable(droppable).instance, component);
+      const draggable = this.createDraggable(droppable);
+      const content = this.createContentComponent(draggable.instance, component);
+      draggable.instance.onFactoryInit(draggable, content, droppable);
     });
   }
 
   private createDraggable(droppable: DroppableComponent): ComponentRef<DraggableComponent> {
-    const componentRef = droppable.viewContainerRef.createComponent(this.factory);
-    componentRef.instance.componetRef = componentRef;
-    componentRef.instance.droppable = droppable;
-    return componentRef;
+    return droppable.viewContainerRef.createComponent(this.factory);
   }
 
   private createContentComponent<T>(draggable: DraggableComponent, component: Type<T>) {
     const factory = this.componentFactoryResolver.resolveComponentFactory(component);
-    const componentRef = draggable.viewContainerRef.createComponent(factory);
-    draggable.content = componentRef;
+    return draggable.viewContainerRef.createComponent(factory);
   }
 }
