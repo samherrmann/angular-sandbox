@@ -20,21 +20,21 @@ header {
   top: 0;
   left: 0;
 
-  div[appDragHandle] {
+  > * {
+    float: right;
     opacity: 0;
   }
 
   &:hover {
     background-color: black;
 
-    div[appDragHandle] {
+    > * {
       opacity: 1;
     }
   }
 }
 
 div[appDragHandle] {
-  float: right;
   width: 24px;
   padding: 24px;
 
@@ -42,5 +42,19 @@ div[appDragHandle] {
     background-color: white;
     height: 2px;
     margin: 2px;
+  }
+}
+
+button {
+  border: 0;
+  outline: 0;
+  background-color: inherit;
+  padding: 24px;
+
+  div {
+    width: 14px;
+    height: 14px;
+    box-sizing: border-box;
+    border: 2px solid white;
   }
 }

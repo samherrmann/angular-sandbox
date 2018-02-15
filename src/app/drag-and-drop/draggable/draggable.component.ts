@@ -66,6 +66,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.droppable.viewContainerRef.detach(this.index());
   }
 
+  remove(): void {
+    this.droppable.viewContainerRef.remove(this.index());
+  }
+
   index(): number {
     return this.droppable.viewContainerRef.indexOf(this.host.hostView);
   }
