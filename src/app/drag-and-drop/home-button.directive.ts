@@ -21,6 +21,10 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
     private renderer: Renderer2) {}
 
   ngOnInit() {
+    if (!this.isAtOrigin()) {
+      this.createView();
+    }
+
     this.sub = this.draggableService.insert.subscribe(e => {
       if (!this.doesViewExist() && !this.isAtOrigin()) {
         this.createView();
