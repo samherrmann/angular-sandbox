@@ -27,7 +27,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   droppable: DroppableComponent;
 
-  candidate: Observable<boolean>;
+  target: Observable<boolean>;
 
   private _origin: DroppableComponent;
 
@@ -50,7 +50,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.handleDragStart(),
       this.handleDragEnd()
     );
-    this.candidate = this.draggableService.candidate;
+    this.target = this.draggableService.target;
   }
 
   onFactoryInit(host: ComponentRef<any>, content: ComponentRef<any>, droppable: DroppableComponent): void {
