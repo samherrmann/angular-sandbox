@@ -15,6 +15,15 @@ export class DroppableComponent implements OnInit, OnDestroy {
   @Input()
   scrollRatio = 0.02;
 
+  @Input()
+  set name(value: string) {
+    this._name = value;
+  };
+
+  get name(): string {
+    return this._name;
+  }
+
   @ViewChild('scrollable')
   scrollabelRef: ElementRef;
 
@@ -24,6 +33,8 @@ export class DroppableComponent implements OnInit, OnDestroy {
   dragActive = this.dragAndDropService.active;
 
   private scrollable: HTMLElement;
+
+  private _name = '';
 
   private subs: Subscription[] = [];
 
