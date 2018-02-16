@@ -39,7 +39,6 @@ export class CacheRelocationService implements OnDestroy {
     // create relocation event if cache is not empty
     if (!this.cache.isEmpty()) {
       relocation = new RelocationEvent(
-        e.pointerEvent,
         this.cache.draggable(),
         this.cache.location().droppable,
         this.cache.location().index

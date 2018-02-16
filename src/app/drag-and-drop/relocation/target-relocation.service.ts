@@ -27,7 +27,6 @@ export class TargetRelocationService {
       const transientOrigin = this.transientRelocationService.origin();
 
       relocation = new RelocationEvent(
-        e.pointerEvent,
         e.dropZone.draggable(),
         transientOrigin.droppable,
         transientOrigin.index

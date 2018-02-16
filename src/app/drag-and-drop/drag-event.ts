@@ -9,7 +9,6 @@ export class RemoveEvent {
 export class InsertEvent extends RemoveEvent {}
 
 export class DragEvent extends RemoveEvent {
-
   constructor(
     type: DragEventType,
     public pointerEvent: PointerEvent,

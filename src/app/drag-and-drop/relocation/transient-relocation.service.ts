@@ -36,7 +36,6 @@ export class TransientRelocationService implements OnDestroy {
     // current position.
     if (e.draggable.droppable !== e.dropZone.location().droppable || e.draggable.index() !== index) {
       relocation = new RelocationEvent(
-        e.pointerEvent,
         e.draggable,
         e.dropZone.location().droppable,
         index
