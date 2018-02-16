@@ -4,11 +4,11 @@ import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
-  selector: '[appDraggableHomeButton]'
+  selector: '[appHomeButton]'
 })
-export class DraggableHomeButtonDirective implements OnInit, OnDestroy {
+export class HomeButtonDirective implements OnInit, OnDestroy {
 
-  private viewRef: EmbeddedViewRef<DraggableHomeButtonDirective> = null;
+  private viewRef: EmbeddedViewRef<HomeButtonDirective> = null;
 
   private removeClickListener: () => void;
 
@@ -16,7 +16,7 @@ export class DraggableHomeButtonDirective implements OnInit, OnDestroy {
 
   constructor(@SkipSelf() private draggable: DraggableComponent,
     private draggableService: DraggableService,
-    private templateRef: TemplateRef<DraggableHomeButtonDirective>,
+    private templateRef: TemplateRef<HomeButtonDirective>,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2) {}
 

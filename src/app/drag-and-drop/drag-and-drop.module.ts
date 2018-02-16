@@ -9,7 +9,7 @@ import { DragHandleDirective } from './drag-handle.directive';
 import { SwipeModule } from '../swipe/swipe.module';
 import { TransitContainerComponent } from './transit-container/transit-container.component';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
-import { DraggableHomeButtonDirective } from './draggable-home-button.directive';
+import { HomeButtonDirective } from './home-button.directive';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import { DraggableHomeButtonDirective } from './draggable-home-button.directive'
     DragHandleDirective,
     TransitContainerComponent,
     DropZoneComponent,
-    DraggableHomeButtonDirective
+    HomeButtonDirective
   ],
   exports: [
     DroppableComponent,
@@ -32,7 +32,7 @@ import { DraggableHomeButtonDirective } from './draggable-home-button.directive'
     DragZoneDirective,
     DraggableVideoDirective,
     DragHandleDirective,
-    DraggableHomeButtonDirective
+    HomeButtonDirective
   ],
   entryComponents: [
     DraggableComponent
