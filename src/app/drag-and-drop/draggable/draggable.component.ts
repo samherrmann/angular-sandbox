@@ -4,6 +4,7 @@ import {  DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { DragAndDropService } from '../drag-and-drop.service';
 
 @Component({
   selector: 'app-draggable',
@@ -40,7 +41,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
-    private draggableService: DraggableService) { }
+    private draggableService: DraggableService,
+    private dragAndDropService: DragAndDropService) { }
 
   ngOnInit() {
     this.draggableService.register(this);
@@ -77,6 +79,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   insert(droppable: DroppableComponent, index?: number): void {
     droppable.viewContainerRef.insert(this.host.hostView, index);
     this.droppable = droppable;
+    this.dragAndDropService.emitDrop(this);
   }
 
   ngOnDestroy() {
