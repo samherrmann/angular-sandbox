@@ -65,10 +65,12 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   detatch(): void {
+    this.dragAndDropService.emitRemove(this);
     this.droppable.viewContainerRef.detach(this.index());
   }
 
   remove(): void {
+    this.dragAndDropService.emitRemove(this);
     this.droppable.viewContainerRef.remove(this.index());
   }
 
@@ -79,7 +81,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   insert(droppable: DroppableComponent, index?: number): void {
     droppable.viewContainerRef.insert(this.host.hostView, index);
     this.droppable = droppable;
-    this.dragAndDropService.emitDrop(this);
+    this.dragAndDropService.emitInsert(this);
   }
 
   ngOnDestroy() {

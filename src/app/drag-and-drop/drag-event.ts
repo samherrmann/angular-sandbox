@@ -1,12 +1,14 @@
 import { DraggableComponent } from './draggable/draggable.component';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 
-export class DropEvent {
+export class RemoveEvent {
   constructor(public type: DragEventType,
     public draggable: DraggableComponent) {}
 }
 
-export class DragEvent extends DropEvent {
+export class InsertEvent extends RemoveEvent {}
+
+export class DragEvent extends RemoveEvent {
 
   constructor(
     type: DragEventType,
@@ -36,7 +38,7 @@ export type DragEventType =
   'dragstart' |
   'dragend' |
   'dragenter' |
-  'dragexit' |
   'dragleave' |
   'dragover' |
-  'drop';
+  'remove' |
+  'insert';

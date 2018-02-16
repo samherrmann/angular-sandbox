@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { Observable } from 'rxjs/Observable';
-import { DragEvent } from '../drag-event';
+import { DragEvent, RemoveEvent, InsertEvent } from '../drag-event';
 import { filter, map, tap } from 'rxjs/operators';
 import { DraggableComponent } from './draggable.component';
 import { Coordinate2D } from './coordinate-2d';
@@ -19,7 +19,9 @@ export class DraggableService {
 
   dragLeave: Observable<DragEvent>;
 
-  drop: Observable<DragEvent>;
+  remove: Observable<RemoveEvent>;
+
+  insert: Observable<InsertEvent>;
 
   candidate: Observable<boolean>;
 
@@ -50,7 +52,10 @@ export class DraggableService {
     this.candidate = this.dragAndDropService.inTransit.pipe(
       map(e => e !== null && e !== draggable)
     );
-    this.drop = this.dragAndDropService.drop.pipe(
+    this.remove = this.dragAndDropService.remove.pipe(
+      this.filter(draggable)
+    );
+    this.insert = this.dragAndDropService.insert.pipe(
       this.filter(draggable)
     );
   }

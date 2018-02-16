@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { DragEvent, DragOverEvent, DragEnterEvent, DragLeaveEvent, DropEvent } from './drag-event';
+import { DragEvent, DragOverEvent, DragEnterEvent, DragLeaveEvent, RemoveEvent, InsertEvent } from './drag-event';
 import { DraggableComponent } from './draggable/draggable.component';
 import { filter, flatMap, takeUntil, map } from 'rxjs/operators';
 import { fromEvent } from 'rxjs/observable/fromEvent';
@@ -37,8 +37,11 @@ export class DragAndDropService {
   private readonly _dragEnd = new Subject<DragEvent>();
   readonly dragEnd = this._dragEnd.asObservable();
 
-  private readonly _drop = new Subject<DropEvent>();
-  readonly drop = this._drop.asObservable();
+  private readonly _remove = new Subject<RemoveEvent>();
+  readonly remove = this._remove.asObservable();
+
+  private readonly _insert = new Subject<InsertEvent>();
+  readonly insert = this._insert.asObservable();
 
   constructor() { }
 
@@ -68,8 +71,12 @@ export class DragAndDropService {
     this._dragLeave.next(new DragLeaveEvent('dragleave', e, this._inTransit.getValue(), dropZone));
   }
 
-  emitDrop(draggable: DraggableComponent): void {
-    this._drop.next(new DropEvent('drop', draggable));
+  emitRemove(draggable: DraggableComponent): void {
+    this._remove.next(new RemoveEvent('remove', draggable));
+  }
+
+  emitInsert(draggable: DraggableComponent): void {
+    this._insert.next(new InsertEvent('insert', draggable));
   }
 
   listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {

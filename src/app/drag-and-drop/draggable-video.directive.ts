@@ -21,10 +21,10 @@ export class DraggableVideoDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.draggableService.dragStart.subscribe(e => {
+      this.draggableService.remove.subscribe(e => {
         this.isPaused = this.video.paused;
       }),
-      this.draggableService.drop.subscribe(e => {
+      this.draggableService.insert.subscribe(e => {
         this.isPaused ? this.video.pause() : this.video.play();
       })
     );
