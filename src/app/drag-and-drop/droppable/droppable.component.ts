@@ -1,16 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, Type, ElementRef, Input, Renderer2, Attribute } from '@angular/core';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
-import { SwipeTargetService } from '../../swipe/swipe-target.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
 
 @Component({
   selector: 'app-droppable',
   templateUrl: './droppable.component.html',
-  styleUrls: ['./droppable.component.scss'],
-  providers: [
-    SwipeTargetService
-  ]
+  styleUrls: ['./droppable.component.scss']
 })
 export class DroppableComponent implements OnInit, OnDestroy {
 
