@@ -29,7 +29,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   target: Observable<boolean>;
 
-  private _origin: DroppableComponent;
+  private _origin = '';
 
   private shadow: HTMLElement;
 
@@ -57,10 +57,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.host = host;
     this.content = content;
     this.droppable = droppable;
-    this._origin = droppable;
+    this._origin = droppable.name;
   }
 
-  origin(): DroppableComponent {
+  get origin(): string {
     return this._origin;
   }
 

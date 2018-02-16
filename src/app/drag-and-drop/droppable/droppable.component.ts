@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, Type, Elemen
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
+import { RegistryService } from '../registry.service';
 
 @Component({
   selector: 'app-droppable',
@@ -17,8 +18,18 @@ export class DroppableComponent implements OnInit, OnDestroy {
 
   @Input()
   set name(value: string) {
+    // unregister droppable if the new name
+    // is empty or if the droppable was already
+    // registered under a different name.
+    if (!value || (value && this._name)) {
+      this.registryService.unregister(this);
+    }
+    // register droppable with new name.
+    if (value) {
+      this.registryService.register(value, this);
+    }
     this._name = value;
-  };
+  }
 
   get name(): string {
     return this._name;
@@ -40,6 +51,7 @@ export class DroppableComponent implements OnInit, OnDestroy {
 
   constructor(private draggableFactoryService: DraggableFactoryService,
     private dragAndDropService: DragAndDropService,
+    private registryService: RegistryService,
     private renderer: Renderer2,
     private elementRef: ElementRef,
     @Attribute('swappable') swappable) {
@@ -65,6 +77,7 @@ export class DroppableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
+    this.registryService.unregister(this);
   }
 
   private scroll(deltaY: number) {

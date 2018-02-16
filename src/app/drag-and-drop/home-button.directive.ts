@@ -2,6 +2,7 @@ import { Directive, OnInit, OnDestroy, SkipSelf, TemplateRef, ViewContainerRef, 
 import { DraggableComponent } from './draggable/draggable.component';
 import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
+import { RegistryService } from './registry.service';
 
 @Directive({
   selector: '[appHomeButton]'
@@ -16,17 +17,18 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
 
   constructor(@SkipSelf() private draggable: DraggableComponent,
     private draggableService: DraggableService,
+    private registryService: RegistryService,
     private templateRef: TemplateRef<HomeButtonDirective>,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2) {}
 
   ngOnInit() {
-    if (!this.isAtOrigin()) {
+    if (!this.isAtOrigin() && this.doesHaveAnOrigin()) {
       this.createView();
     }
 
     this.sub = this.draggableService.insert.subscribe(e => {
-      if (!this.doesViewExist() && !this.isAtOrigin()) {
+      if (!this.doesViewExist() && !this.isAtOrigin() && this.doesHaveAnOrigin()) {
         this.createView();
 
       } else if (this.doesViewExist() && this.isAtOrigin()) {
@@ -54,13 +56,19 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
   }
 
   private isAtOrigin(): boolean {
-    return this.draggable.droppable === this.draggable.origin();
+    return this.registryService.get(this.draggable.origin) === this.draggable.droppable;
+  }
+
+  private doesHaveAnOrigin(): boolean {
+    return this.draggable.origin.length > 0;
   }
 
   private onClick(): void {
     this.draggable.detatch();
-    if (this.draggable.origin()) {
-      this.draggable.insert(this.draggable.origin());
+    const origin = this.registryService.get(this.draggable.origin);
+
+    if (origin) {
+      this.draggable.insert(origin);
     } else {
       this.draggable.remove();
     }
