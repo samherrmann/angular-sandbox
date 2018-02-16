@@ -18,6 +18,10 @@ export class DraggableFactoryService {
     });
   }
 
+  addDraggables(components: Type<any>[], droppable: DroppableComponent): void {
+    components.forEach(c => this.addDraggable(c, droppable));
+  }
+
   private createDraggable(droppable: DroppableComponent): ComponentRef<DraggableComponent> {
     return droppable.viewContainerRef.createComponent(this.factory);
   }
