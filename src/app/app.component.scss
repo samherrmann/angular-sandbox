@@ -11,6 +11,24 @@ div[appDragZone] {
   flex-direction: row;
 }
 
+.menu {
+  flex-shrink: 1;
+  height: 100%;
+  background-color: black;
+
+  button {
+    background-color: transparent;
+    border: 0;
+    outline:  0;
+    color: white;
+    padding: 16px;
+
+    &:hover {
+      background-color: lighten(black, 20%);
+    }
+  }
+}
+
 app-droppable {
   float: left;
   box-sizing: border-box;

@@ -9,12 +9,22 @@ import { DroppableComponent } from './drag-and-drop/droppable/droppable.componen
 })
 export class AppComponent implements AfterViewInit {
 
+  isDrawerOpen = false;
+
   @ViewChildren(DroppableComponent)
   droppables: QueryList<DroppableComponent>;
 
   ngAfterViewInit() {
-    this.droppables.first.addDraggable(ExampleComponent);
-    this.droppables.first.addDraggable(ExampleComponent);
-    this.droppables.first.addDraggable(ExampleComponent);
+    this.droppables.changes.subscribe(e => {
+      if (this.isDrawerOpen) {
+        this.droppables.first.addDraggable(ExampleComponent);
+        this.droppables.first.addDraggable(ExampleComponent);
+        this.droppables.first.addDraggable(ExampleComponent);
+      }
+    });
+  }
+
+  toggleDrawer(): void {
+    this.isDrawerOpen = !this.isDrawerOpen;
   }
 }
