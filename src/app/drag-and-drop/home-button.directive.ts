@@ -2,7 +2,7 @@ import { Directive, OnInit, OnDestroy, SkipSelf, TemplateRef, ViewContainerRef, 
 import { DraggableComponent } from './draggable/draggable.component';
 import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
-import { RegistryService } from './registry.service';
+import { DragAndDropService } from './drag-and-drop.service';
 
 @Directive({
   selector: '[appHomeButton]'
@@ -17,7 +17,7 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
 
   constructor(@SkipSelf() private draggable: DraggableComponent,
     private draggableService: DraggableService,
-    private registryService: RegistryService,
+    private dragAndDropService: DragAndDropService,
     private templateRef: TemplateRef<HomeButtonDirective>,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2) {}
@@ -56,7 +56,7 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
   }
 
   private isAtOrigin(): boolean {
-    return this.registryService.get(this.draggable.origin) === this.draggable.droppable;
+    return this.dragAndDropService.droppables.get(this.draggable.origin) === this.draggable.droppable;
   }
 
   private doesHaveAnOrigin(): boolean {
@@ -65,7 +65,7 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
 
   private onClick(): void {
     this.draggable.detatch();
-    const origin = this.registryService.get(this.draggable.origin);
+    const origin = this.dragAndDropService.droppables.get(this.draggable.origin);
 
     if (origin) {
       this.draggable.insert(origin);

@@ -7,10 +7,13 @@ import { filter, flatMap, takeUntil, map } from 'rxjs/operators';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { Observable } from 'rxjs/Observable';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
-
+import { DroppableComponent } from './droppable/droppable.component';
+import { Registry } from './registry';
 
 @Injectable()
 export class DragAndDropService {
+
+  readonly droppables = new Registry<DroppableComponent>();
 
   private readonly _inTransit = new BehaviorSubject<DraggableComponent>(null);
   readonly inTransit = this._inTransit.asObservable();
