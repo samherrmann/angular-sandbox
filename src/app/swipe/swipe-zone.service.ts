@@ -47,6 +47,10 @@ export class SwipeZoneService implements OnDestroy {
     this._swipeEnd.next(new SwipeEvent('swipeend', e));
   }
 
+  get isActive(): boolean {
+    return this._active.getValue();
+  }
+
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
   }

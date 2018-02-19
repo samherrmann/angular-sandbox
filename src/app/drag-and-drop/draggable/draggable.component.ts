@@ -96,7 +96,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.height = el.offsetHeight + 'px';
 
       this.clearSelection(e.draggable.host.location.nativeElement);
-      this.removeShadow(e.draggable.shadow);
       this.createShadow(this.content.location.nativeElement);
       this.insertShadow(
         e.draggable.host.location.nativeElement,

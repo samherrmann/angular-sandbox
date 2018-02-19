@@ -23,8 +23,14 @@ export class DragHandleDirective implements OnInit, OnDestroy {
 
   @HostListener('pointerdown', ['$event'])
   pointerDown(e: PointerEvent) {
-    this.swipeService.emitSwipeStart(e);
-    this.dragAndDropService.emitDragStart(e, this.draggable);
+    // If the user releases the pointer while being outside of the
+    // swipe-zone, the swipe-end event is not triggered. When
+    // the user returns the pointer to the swipe-zone and resumes
+    // the swipe, we need to ignore the `pointerdown` event.
+    if (!this.swipeService.isActive) {
+      this.swipeService.emitSwipeStart(e);
+      this.dragAndDropService.emitDragStart(e, this.draggable);
+    }
   }
 
   ngOnDestroy() {
