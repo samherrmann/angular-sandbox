@@ -64,10 +64,9 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
   }
 
   private onClick(): void {
-    this.draggable.detatch();
     const origin = this.dragAndDropService.droppables.get(this.draggable.origin);
-
     if (origin) {
+      this.draggable.detatch();
       this.draggable.insert(origin);
     } else {
       this.draggable.remove();
