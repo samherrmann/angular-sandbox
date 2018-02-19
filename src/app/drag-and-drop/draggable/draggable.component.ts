@@ -5,6 +5,7 @@ import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
+import { TransitContainerComponent } from '../transit-container/transit-container.component';
 
 @Component({
   selector: 'app-draggable',
@@ -18,6 +19,9 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
+
+  @ViewChild(TransitContainerComponent)
+  transitContainer: TransitContainerComponent;
 
   @HostBinding('style.width')
   width: string;
@@ -92,8 +96,11 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private handleDragStart(): Subscription {
     return this.draggableService.dragStart.subscribe(e => {
       const el: HTMLElement = this.elementRef.nativeElement;
-      this.width = el.offsetWidth + 'px';
-      this.height = el.offsetHeight + 'px';
+      const clientRect = el.getBoundingClientRect();
+      this.transitContainer.onDragStart(clientRect);
+
+      this.width = clientRect.width + 'px';
+      this.height = clientRect.height + 'px';
 
       this.clearSelection(e.draggable.host.location.nativeElement);
       this.createShadow(this.content.location.nativeElement);

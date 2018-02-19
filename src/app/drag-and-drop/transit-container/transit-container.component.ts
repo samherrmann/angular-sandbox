@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostBinding, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { DraggableService } from '../draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -29,12 +29,10 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  constructor(private draggableService: DraggableService,
-    private elementRef: ElementRef) { }
+  constructor(private draggableService: DraggableService) { }
 
   ngOnInit() {
     this.subs.push(
-      this.handleDragStart(),
       this.handleDrag(),
       this.handleDragEnd()
     );
@@ -44,18 +42,12 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  private handleDragStart() {
-    return this.draggableService.dragStart.subscribe(e => {
-
-      const el: HTMLElement = this.elementRef.nativeElement;
-      const clientRect = el.getBoundingClientRect();
-
-      this.isInTransit = true;
-      this.width = el.offsetWidth + 'px';
-      this.height = el.offsetHeight + 'px';
-      this.top = clientRect.top + 'px';
-      this.left = clientRect.left + 'px';
-    });
+  onDragStart(draggable: ClientRect) {
+    this.width = draggable.width + 'px';
+    this.height = draggable.height + 'px';
+    this.isInTransit = true;
+    this.top = draggable.top + 'px';
+    this.left = draggable.left + 'px';
   }
 
   private handleDrag() {
