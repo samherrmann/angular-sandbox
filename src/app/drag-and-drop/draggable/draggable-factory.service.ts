@@ -13,13 +13,10 @@ export class DraggableFactoryService {
 
   addDraggable<T>(id: string, component: Type<T>, droppable: DroppableComponent): void {
     if (!this.dragAndDropService.draggables.has(id)) {
-      // TODO: Investigate eliminating the `setTimeout`
-      setTimeout(() => {
-        const draggable = this.createDraggable(droppable);
-        const content = this.createContentComponent(draggable.instance, component);
-        draggable.instance.onFactoryInit(draggable, content, droppable);
-        this.dragAndDropService.draggables.register(id, draggable.instance);
-      });
+      const draggable = this.createDraggable(droppable);
+      const content = this.createContentComponent(draggable.instance, component);
+      draggable.instance.onFactoryInit(draggable, content, droppable);
+      this.dragAndDropService.draggables.register(id, draggable.instance);
     }
   }
 
