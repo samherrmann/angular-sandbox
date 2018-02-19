@@ -61,12 +61,8 @@ export class DroppableComponent implements OnInit, OnDestroy {
     this.subs.push(this.handleWheel());
   }
 
-  addDraggable<T>(component: Type<T>): void {
-    this.draggableFactoryService.addDraggable(component, this);
-  }
-
-  addDraggables<T>(components: Type<T>[]): void {
-    this.draggableFactoryService.addDraggables(components, this);
+  addDraggable<T>(id: string, component: Type<T>): void {
+    this.draggableFactoryService.addDraggable(id, component, this);
   }
 
   scrollUp() {

@@ -5,12 +5,12 @@ export class Registry<T> {
 
   constructor() { }
 
-  register(name: string, item: T): void {
-    if (this.items.has(name)) {
-      console.error('Item name "' + name + '" already exists.');
+  register(id: string, item: T): void {
+    if (this.has(id)) {
+      console.error('Item name "' + id + '" already exists.');
       return;
     }
-    this.items.set(name, item);
+    this.items.set(id, item);
   }
 
   unregister(item: T): void {
@@ -22,7 +22,11 @@ export class Registry<T> {
     }
   }
 
-  get(name: string): T {
-    return this.items.get(name);
+  get(id: string): T {
+    return this.items.get(id);
+  }
+
+  has(id: string): boolean {
+    return this.items.has(id);
   }
 }

@@ -17,11 +17,10 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.droppables.changes.subscribe(e => {
       if (this.isDrawerOpen) {
-        this.droppables.first.addDraggables([
-          ExampleComponent,
-          ExampleComponent,
-          ExampleComponent
-        ]);
+        const droppable = this.droppables.first;
+        droppable.addDraggable('draggable-1', ExampleComponent);
+        droppable.addDraggable('draggable-2', ExampleComponent);
+        droppable.addDraggable('draggable-3', ExampleComponent);
       }
     });
   }

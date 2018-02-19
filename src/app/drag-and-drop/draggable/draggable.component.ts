@@ -86,6 +86,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
+    this.dragAndDropService.draggables.unregister(this);
   }
 
   private handleDragStart(): Subscription {

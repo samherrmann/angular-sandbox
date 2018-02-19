@@ -6,6 +6,7 @@ import { RelocationService } from './relocation/relocation.service';
 import { TransientRelocationService } from './relocation/transient-relocation.service';
 import { TargetRelocationService } from './relocation/target-relocation.service';
 import { CacheRelocationService } from './relocation/cache-relocation.service';
+import { DraggableFactoryService } from './draggable/draggable-factory.service';
 
 @Directive({
   selector: '[appDragZone]',
@@ -15,7 +16,8 @@ import { CacheRelocationService } from './relocation/cache-relocation.service';
     RelocationService,
     TransientRelocationService,
     TargetRelocationService,
-    CacheRelocationService
+    CacheRelocationService,
+    DraggableFactoryService
   ]
 })
 export class DragZoneDirective implements OnInit, OnDestroy {

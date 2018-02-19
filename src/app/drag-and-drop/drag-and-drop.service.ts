@@ -15,6 +15,8 @@ export class DragAndDropService {
 
   readonly droppables = new Registry<DroppableComponent>();
 
+  readonly draggables = new Registry<DraggableComponent>();
+
   private readonly _inTransit = new BehaviorSubject<DraggableComponent>(null);
   readonly inTransit = this._inTransit.asObservable();
 
