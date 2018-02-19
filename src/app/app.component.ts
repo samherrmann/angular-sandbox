@@ -1,31 +1,42 @@
-import { Component, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewChildren, OnDestroy, QueryList, AfterViewInit } from '@angular/core';
 import { ExampleComponent } from './example/example.component';
 import { DroppableComponent } from './drag-and-drop/droppable/droppable.component';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnDestroy {
 
   isDrawerOpen = false;
 
   @ViewChildren(DroppableComponent)
   droppables: QueryList<DroppableComponent>;
 
+  private sub: Subscription;
+
   ngAfterViewInit() {
-    this.droppables.changes.subscribe(e => {
-      if (this.isDrawerOpen) {
-        const droppable = this.droppables.first;
-        droppable.addDraggable('draggable-1', ExampleComponent);
-        droppable.addDraggable('draggable-2', ExampleComponent);
-        droppable.addDraggable('draggable-3', ExampleComponent);
+    // upon changes in the droppable query list...
+    this.sub = this.droppables.changes.subscribe(() => {
+      // ...check if the drawer is open.
+      const drawer = this.droppables.find(item => item.name === 'drawer');
+      if (drawer) {
+        // If the drawer is open, add 3 draggables. Note that a draggable
+        // is not recreated if its ID already exists (outside of the drawer).
+        for (let i = 0; i < 3; i++) {
+          drawer.addDraggable('draggable-' + i, ExampleComponent);
+        }
       }
     });
   }
 
   toggleDrawer(): void {
     this.isDrawerOpen = !this.isDrawerOpen;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
