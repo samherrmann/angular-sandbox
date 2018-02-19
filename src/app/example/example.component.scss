@@ -31,29 +31,20 @@ header {
   }
 }
 
-$icon-base-unit: 2px;
 $padding: 16px;
-div[appDragHandle] {
-  width: 12*$icon-base-unit;
+.drag-handle {
   padding: $padding;
-
-  div {
-    background-color: white;
-    height: $icon-base-unit;
-    margin: $icon-base-unit;
-  }
 }
 
-button {
+.home-button {
   border: 0;
   outline: 0;
   background-color: transparent;
   padding: $padding;
+}
 
-  div {
-    width: 7* $icon-base-unit;
-    height: 7* $icon-base-unit;
-    box-sizing: border-box;
-    border: $icon-base-unit solid white;
-  }
+svg {
+  color: white;
+  width: 24px;
+  height: 24px;
 }
