@@ -71,8 +71,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   detatch(): void {
-    this.width = null;
-    this.height = null;
+    this.unsetSize();
     this.dragAndDropService.emitRemove(this);
     this.droppable.viewContainerRef.detach(this.index());
   }
@@ -118,7 +117,17 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
       this.removeShadow(e.draggable.shadow);
+
+      // ensure width and height are unset in case the
+      // draggable was never detatched (i.e. the draggable
+      // was never moved).
+      this.unsetSize();
     });
+  }
+
+  private unsetSize(): void {
+    this.width = null;
+    this.height = null;
   }
 
   private createShadow(el: HTMLElement): void {
