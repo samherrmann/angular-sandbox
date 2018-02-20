@@ -57,13 +57,17 @@ export class SwipeZoneService implements OnDestroy {
 
   private handlePointerMove(el: HTMLElement): Subscription {
     return this.listenWhenActive<PointerEvent>(el, 'pointermove').subscribe(e => {
-      this.emitSwipe(e);
+      if (e.isPrimary) {
+        this.emitSwipe(e);
+      }
     });
   }
 
   private handlePointerUp(el: HTMLElement): Subscription {
     return this.listenWhenActive<PointerEvent>(el, 'pointerup').subscribe(e => {
-      this.emitSwipeEnd(e);
+      if (e.isPrimary) {
+        this.emitSwipeEnd(e);
+      }
     });
   }
 
