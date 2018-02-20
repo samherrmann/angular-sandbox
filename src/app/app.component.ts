@@ -1,4 +1,4 @@
-import { Component, ViewChildren, OnDestroy, QueryList, AfterViewInit } from '@angular/core';
+import { Component, ViewChildren, OnDestroy, QueryList, AfterViewInit, trigger, transition, animate, style } from '@angular/core';
 import { ExampleComponent } from './example/example.component';
 import { DroppableComponent } from './drag-and-drop/droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,7 +6,23 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({
+          width: 0
+        }),
+        animate('200ms ease')
+      ]),
+      transition(':leave', [
+        animate('200ms ease-out',
+        style({
+          width: 0
+        }))
+      ])
+    ])
+  ]
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
 
