@@ -5,6 +5,7 @@ import { DragEvent, RemoveEvent, InsertEvent } from '../drag-event';
 import { filter, map, tap } from 'rxjs/operators';
 import { DraggableComponent } from './draggable.component';
 import { Coordinate2D } from './coordinate-2d';
+import { UnaryFunction } from 'rxjs/interfaces';
 
 @Injectable()
 export class DraggableService {
@@ -32,35 +33,35 @@ export class DraggableService {
   register(draggable: DraggableComponent): void {
 
     this.dragStart = this.dragAndDropService.dragStart.pipe(
-      this.filter(draggable),
+      this.filterInstance(draggable),
       tap(e => this.setDragStartPoint(e))
     );
     this.drag = this.dragAndDropService.drag.pipe(
-      this.filter(draggable),
+      this.filterInstance(draggable),
       map(e => this.dragPositionDelta(e))
     );
     this.dragEnter = this.dragAndDropService.dragEnter.pipe(
-      this.filter(draggable)
+      this.filterInstance(draggable)
     );
     this.dragLeave = this.dragAndDropService.dragLeave.pipe(
-      this.filter(draggable)
+      this.filterInstance(draggable)
     );
     this.dragEnd = this.dragAndDropService.dragEnd.pipe(
-      this.filter(draggable),
+      this.filterInstance(draggable),
       tap(e => this.dragStartPoint = null)
     );
     this.target = this.dragAndDropService.inTransit.pipe(
       map(e => e !== null && e !== draggable)
     );
     this.remove = this.dragAndDropService.remove.pipe(
-      this.filter(draggable)
+      this.filterInstance(draggable)
     );
     this.insert = this.dragAndDropService.insert.pipe(
-      this.filter(draggable)
+      this.filterInstance(draggable)
     );
   }
 
-  private filter(draggable: DraggableComponent) {
+  private filterInstance(draggable: DraggableComponent): UnaryFunction<Observable<DragEvent>, Observable<DragEvent>> {
     return filter<DragEvent>(e => e.draggable === draggable);
   }
 
