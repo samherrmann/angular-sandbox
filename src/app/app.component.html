@@ -1,13 +1,13 @@
 <div appDragZone>
+
   <div class="menu-bar">
     <button (click)="toggleDrawer()">
       <ng-container *ngTemplateOutlet="menuIcon"></ng-container>
     </button>
   </div>
-  <div class="sortables">
-    <app-droppable *ngIf="isDrawerOpen" name="drawer"></app-droppable>
-    <app-droppable></app-droppable>
-  </div>
+
+  <app-droppable *ngIf="isDrawerOpen" class="drawer" name="drawer"></app-droppable>
+
   <div class="swappables">
     <app-droppable *ngFor="let i of [1,2,3,4]" swappable></app-droppable>
   </div>

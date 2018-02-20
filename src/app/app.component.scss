@@ -30,18 +30,14 @@ div[appDragZone] {
 }
 
 app-droppable {
-  float: left;
   box-sizing: border-box;
   border: 1px solid blue;
 }
 
-.sortables {
+app-droppable.drawer {
   flex-shrink: 0;
-
-  app-droppable {
-    width: 400px;
-    height: 100%;
-  }
+  width: 400px;
+  height: 100%;
 
   ::ng-deep app-draggable {
     margin: 8px;
@@ -56,6 +52,7 @@ app-droppable {
   flex-grow: 1;
 
   app-droppable {
+    float: left;
     width: 50%;
     height: 50%;
   }
