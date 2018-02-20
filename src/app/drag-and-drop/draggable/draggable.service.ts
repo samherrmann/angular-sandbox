@@ -10,6 +10,8 @@ import { UnaryFunction } from 'rxjs/interfaces';
 @Injectable()
 export class DraggableService {
 
+  active: Observable<boolean>;
+
   dragStart: Observable<DragEvent>;
 
   drag: Observable<Coordinate2D>;
@@ -32,6 +34,9 @@ export class DraggableService {
 
   register(draggable: DraggableComponent): void {
 
+    this.active = this.dragAndDropService.inTransit.pipe(
+      map(e => e === draggable)
+    );
     this.dragStart = this.dragAndDropService.dragStart.pipe(
       this.filterInstance(draggable),
       tap(e => this.setDragStartPoint(e))
