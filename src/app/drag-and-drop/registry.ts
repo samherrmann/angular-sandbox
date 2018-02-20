@@ -7,7 +7,7 @@ export class Registry<T> {
 
   register(id: string, item: T): void {
     if (this.has(id)) {
-      console.error('Item name "' + id + '" already exists.');
+      console.error('Item ID "' + id + '" already exists.');
       return;
     }
     this.items.set(id, item);
