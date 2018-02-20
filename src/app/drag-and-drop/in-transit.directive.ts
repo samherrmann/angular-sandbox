@@ -3,7 +3,7 @@ import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
-  selector: '[appInTransit]'
+  selector: '[dndInTransit]'
 })
 export class InTransitDirective implements OnInit, OnDestroy {
 

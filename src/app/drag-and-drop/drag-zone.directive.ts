@@ -9,7 +9,7 @@ import { CacheRelocationService } from './relocation/cache-relocation.service';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
 
 @Directive({
-  selector: '[appDragZone]',
+  selector: '[dndDragZone]',
   providers: [
     SwipeZoneService,
     DragAndDropService,

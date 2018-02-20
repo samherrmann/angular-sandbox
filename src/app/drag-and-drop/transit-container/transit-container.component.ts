@@ -3,7 +3,7 @@ import { DraggableService } from '../draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-transit-container',
+  selector: 'dnd-transit-container',
   templateUrl: './transit-container.component.html',
   styleUrls: ['./transit-container.component.scss']
 })

@@ -1,10 +1,10 @@
-<video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" controls loop appDraggableVideo></video>
+<video src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" controls loop dndDraggableVideo></video>
 
-<header appInTransit>
-  <div class="drag-handle" appDragHandle>
+<header dndInTransit>
+  <div class="drag-handle" dndDragHandle>
     <ng-container *ngTemplateOutlet="moveIcon"></ng-container>
   </div>
-  <button class="home-button" *appHomeButton>
+  <button class="home-button" *dndHomeButton>
     <ng-container *ngTemplateOutlet="homeIcon"></ng-container>
   </button>
 </header>

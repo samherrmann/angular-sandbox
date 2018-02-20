@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-div[appDragZone] {
+div[dndDragZone] {
   height: 100%;
   width: 100%;
   display: flex;
@@ -29,17 +29,17 @@ div[appDragZone] {
   }
 }
 
-app-droppable {
+dnd-droppable {
   box-sizing: border-box;
   border: 1px solid blue;
 }
 
-app-droppable.drawer {
+dnd-droppable.drawer {
   flex-shrink: 0;
   width: 400px;
   height: 100%;
 
-  ::ng-deep app-draggable {
+  ::ng-deep dnd-draggable {
     margin: 8px;
 
     &:not(:last-of-type) {
@@ -51,19 +51,19 @@ app-droppable.drawer {
 .swappables {
   flex-grow: 1;
 
-  app-droppable {
+  dnd-droppable {
     float: left;
     width: 50%;
     height: 50%;
   }
 
-  ::ng-deep app-draggable {
+  ::ng-deep dnd-draggable {
     height: 100%;
     width: 100%;
   }
 }
 
-::ng-deep app-draggable .shadow {
+::ng-deep dnd-draggable .shadow {
   background-color: cyan;
 
   * {

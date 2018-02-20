@@ -8,7 +8,7 @@ import { DragAndDropService } from '../drag-and-drop.service';
 import { Location } from '../relocation/location';
 
 @Component({
-  selector: 'app-drop-zone',
+  selector: 'dnd-drop-zone',
   templateUrl: './drop-zone.component.html',
   styleUrls: ['./drop-zone.component.scss'],
   providers: [

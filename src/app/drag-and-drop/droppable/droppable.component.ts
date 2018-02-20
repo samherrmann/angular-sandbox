@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
 
 @Component({
-  selector: 'app-droppable',
+  selector: 'dnd-droppable',
   templateUrl: './droppable.component.html',
   styleUrls: ['./droppable.component.scss']
 })

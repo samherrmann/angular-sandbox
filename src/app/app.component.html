@@ -1,4 +1,4 @@
-<div appDragZone>
+<div dndDragZone>
 
   <div class="menu-bar">
     <button (click)="toggleDrawer()">
@@ -6,10 +6,10 @@
     </button>
   </div>
 
-  <app-droppable *ngIf="isDrawerOpen" @slideInOut class="drawer" name="drawer"></app-droppable>
+  <dnd-droppable *ngIf="isDrawerOpen" @slideInOut class="drawer" name="drawer"></dnd-droppable>
 
   <div class="swappables">
-    <app-droppable *ngFor="let i of [1,2,3,4]" swappable></app-droppable>
+    <dnd-droppable *ngFor="let i of [1,2,3,4]" swappable></dnd-droppable>
   </div>
 </div>
 

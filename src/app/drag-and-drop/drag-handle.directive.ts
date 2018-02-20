@@ -4,7 +4,7 @@ import { DraggableComponent } from './draggable/draggable.component';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
 
 @Directive({
-  selector: '[appDragHandle]'
+  selector: '[dndDragHandle]'
 })
 export class DragHandleDirective implements OnInit {
 

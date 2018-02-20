@@ -10,7 +10,7 @@ import { DragAndDropService } from '../drag-and-drop.service';
 import { TransitContainerComponent } from '../transit-container/transit-container.component';
 
 @Component({
-  selector: 'app-draggable',
+  selector: 'dnd-draggable',
   templateUrl: './draggable.component.html',
   styleUrls: ['./draggable.component.scss'],
   providers: [

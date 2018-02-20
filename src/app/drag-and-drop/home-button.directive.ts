@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from './drag-and-drop.service';
 
 @Directive({
-  selector: '[appHomeButton]'
+  selector: '[dndHomeButton]'
 })
 export class HomeButtonDirective implements OnInit, OnDestroy {
 

@@ -3,7 +3,7 @@ import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
-  selector: '[appDraggableVideo]'
+  selector: '[dndDraggableVideo]'
 })
 export class DraggableVideoDirective implements OnInit, OnDestroy {
 
