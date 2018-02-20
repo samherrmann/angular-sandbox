@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy, ComponentRef, ViewChild, ViewContainerRef,
-  HostBinding, ElementRef, Renderer2 } from '@angular/core';
-import {  DraggableService } from './draggable.service';
+import {
+  Component, OnInit, OnDestroy, ComponentRef, ViewChild, ViewContainerRef,
+  HostBinding, ElementRef, Renderer2
+} from '@angular/core';
+import { DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -69,6 +71,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   detatch(): void {
+    this.width = null;
+    this.height = null;
     this.dragAndDropService.emitRemove(this);
     this.droppable.viewContainerRef.detach(this.index());
   }
@@ -94,7 +98,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   private handleDragStart(): Subscription {
-    return this.draggableService.dragStart.subscribe(e => {
+    return this.draggableService.dragStart.subscribe(() => {
       const el: HTMLElement = this.elementRef.nativeElement;
       const clientRect = el.getBoundingClientRect();
       this.transitContainer.onDragStart(clientRect);
@@ -102,20 +106,12 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.width = clientRect.width + 'px';
       this.height = clientRect.height + 'px';
 
-      this.clearSelection(e.draggable.host.location.nativeElement);
+      this.clearSelection(this.elementRef.nativeElement);
       this.createShadow(this.content.location.nativeElement);
       this.insertShadow(
-        e.draggable.host.location.nativeElement,
-        e.draggable.shadow
+        this.host.location.nativeElement,
+        this.shadow
       );
-
-      // TODO:  Investigate removing the timeout and not causing
-      //        a flicker in a list of draggables. The current
-      //        value of 64ms was determined experimentally.
-      setTimeout(() => {
-        this.height = null;
-        this.width = null;
-      }, 64);
     });
   }
 
