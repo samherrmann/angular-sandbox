@@ -5,10 +5,10 @@
     position: fixed;
     user-select: none;
 
-    // Without raising the z-index, the native video control-bar
-    // of the shadow appears on top of the real draggable if the
-    // draggable originates from higher up in the DOM relative
-    // to the shadow.
-    z-index: 1000;
+    // We need to raise the z-index to ensure that the
+    // element appears above all other elements. The
+    // defined value is the maximum 32-bit value, which
+    // is the maximum value modern browsers support.
+    z-index: 2147483647;
   }
 }
