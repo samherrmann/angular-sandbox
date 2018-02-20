@@ -1,15 +1,12 @@
-import { Directive, HostListener, SkipSelf, Renderer2, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Directive, HostListener, SkipSelf, Renderer2, ElementRef, OnInit } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { DraggableComponent } from './draggable/draggable.component';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
-import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
   selector: '[appDragHandle]'
 })
-export class DragHandleDirective implements OnInit, OnDestroy {
-
-  private subs: Subscription[] = [];
+export class DragHandleDirective implements OnInit {
 
   constructor(private dragAndDropService: DragAndDropService,
     @SkipSelf() private draggable: DraggableComponent,
@@ -31,9 +28,5 @@ export class DragHandleDirective implements OnInit, OnDestroy {
       this.swipeService.emitSwipeStart(e);
       this.dragAndDropService.emitDragStart(e, this.draggable);
     }
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
   }
 }
