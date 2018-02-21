@@ -3,9 +3,9 @@ import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
-  selector: '[dndDraggableVideo]'
+  selector: '[dndVideo]'
 })
-export class DraggableVideoDirective implements OnInit, OnDestroy {
+export class VideoDirective implements OnInit, OnDestroy {
 
   private video: HTMLVideoElement;
 

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DroppableComponent } from './droppable/droppable.component';
 import { DraggableComponent } from './draggable/draggable.component';
 import { DragZoneDirective } from './drag-zone.directive';
-import { DraggableVideoDirective } from './draggable-video.directive';
+import { VideoDirective } from './video.directive';
 import { DragHandleDirective } from './drag-handle.directive';
 import { SwipeModule } from '../swipe/swipe.module';
 import { TransitContainerComponent } from './transit-container/transit-container.component';
@@ -22,7 +22,7 @@ import { TemplateDirective } from './template.directive';
     DroppableComponent,
     DraggableComponent,
     DragZoneDirective,
-    DraggableVideoDirective,
+    VideoDirective,
     DragHandleDirective,
     TransitContainerComponent,
     DropZoneComponent,
@@ -35,7 +35,7 @@ import { TemplateDirective } from './template.directive';
     DroppableComponent,
     DraggableComponent,
     DragZoneDirective,
-    DraggableVideoDirective,
+    VideoDirective,
     DragHandleDirective,
     HomeButtonDirective,
     InTransitClassDirective,
