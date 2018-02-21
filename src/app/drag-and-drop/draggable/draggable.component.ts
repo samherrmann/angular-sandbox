@@ -66,10 +66,11 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.target = this.draggableService.target;
   }
 
-  onFactoryInit(host: EmbeddedViewRef<any>, droppable: DroppableComponent): void {
+  onFactoryInit(id: string, host: EmbeddedViewRef<any>, droppable: DroppableComponent): void {
     this.host = host;
     this.droppable = droppable;
     this._origin = droppable.name;
+    this.dragAndDropService.draggables.register(id, this);
   }
 
   get origin(): string {

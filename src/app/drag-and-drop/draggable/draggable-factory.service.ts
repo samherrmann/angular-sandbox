@@ -17,8 +17,10 @@ export class DraggableFactoryService {
     zip(this.newEmbeddedDraggableView, this.newDraggable).subscribe(e => {
       const embeddedDraggableView = e[0];
       const draggable = e[1];
-      draggable.onFactoryInit(embeddedDraggableView.embeddedViewRef, embeddedDraggableView.droppable);
-      this.dragAndDropService.draggables.register(embeddedDraggableView.id, draggable);
+      draggable.onFactoryInit(
+        embeddedDraggableView.id,
+        embeddedDraggableView.embeddedViewRef,
+        embeddedDraggableView.droppable);
     });
   }
 
