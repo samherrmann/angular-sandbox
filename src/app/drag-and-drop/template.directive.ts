@@ -1,10 +1,17 @@
-import { Directive } from '@angular/core';
+import { Directive, TemplateRef } from '@angular/core';
+import { DraggableFactoryService } from './draggable/draggable-factory.service';
+import { DroppableComponent } from './droppable/droppable.component';
 
 @Directive({
   selector: '[dndTemplate]'
 })
 export class TemplateDirective {
 
-  constructor() { }
+  constructor(private templateRef: TemplateRef<any>,
+    private draggableFactoryService: DraggableFactoryService, ) {
+  }
 
+  create(id: string, droppable: DroppableComponent): void {
+    this.draggableFactoryService.create(id, this.templateRef, droppable);
+  }
 }

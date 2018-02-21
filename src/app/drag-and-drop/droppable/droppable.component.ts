@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, ElementRef,
-  Input, Renderer2, Attribute, ChangeDetectorRef, TemplateRef } from '@angular/core';
-import { DraggableFactoryService } from '../draggable/draggable-factory.service';
+  Input, Renderer2, Attribute } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
 
@@ -49,11 +48,9 @@ export class DroppableComponent implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  constructor(private draggableFactoryService: DraggableFactoryService,
-    private dragAndDropService: DragAndDropService,
+  constructor(private dragAndDropService: DragAndDropService,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
     @Attribute('swappable') swappable) {
       this.swappable = swappable !== null;
     }
@@ -61,16 +58,6 @@ export class DroppableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.scrollable = this.scrollabelRef.nativeElement;
     this.subs.push(this.handleWheel());
-  }
-
-  addDraggable<T>(id: string, tpl: TemplateRef<T>): void {
-    this.draggableFactoryService.create(id, tpl, this);
-    // We need to manually inform Angular to detect changes here because
-    // this method is most likely called from inside a lifecycle hook.
-    // Adding draggables during a change detection cycle causes the
-    // "Expression has changed after it was checked" error if we do not
-    // inform Angular of the change.
-    this.cdr.detectChanges();
   }
 
   scrollUp() {

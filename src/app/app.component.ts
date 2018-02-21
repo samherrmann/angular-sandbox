@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, trigger, transition, animate, style, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ViewChildren, QueryList, trigger, transition, animate, style, ViewChild } from '@angular/core';
 import { DroppableComponent } from './drag-and-drop/droppable/droppable.component';
 import { TemplateDirective } from './drag-and-drop/template.directive';
 
@@ -30,8 +30,8 @@ export class AppComponent {
   @ViewChildren(DroppableComponent)
   droppables: QueryList<DroppableComponent>;
 
-  @ViewChild(TemplateDirective, {read: TemplateRef})
-  draggableTpl: TemplateRef<any>;
+  @ViewChild(TemplateDirective)
+  draggableTpl: TemplateDirective;
 
   toggleDrawer(): void {
     this.isDrawerOpen = !this.isDrawerOpen;
@@ -39,7 +39,7 @@ export class AppComponent {
       setTimeout(() => {
         const drawer = this.droppables.find(item => item.name === 'drawer');
         for (let i = 0; i < 3; i++) {
-          drawer.addDraggable('draggable-' + i, this.draggableTpl);
+          this.draggableTpl.create('draggable-' + i, drawer);
         }
       });
     }
