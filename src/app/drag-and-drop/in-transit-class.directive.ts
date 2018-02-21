@@ -3,9 +3,9 @@ import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
-  selector: '[dndInTransit]'
+  selector: '[dndInTransitClass]'
 })
-export class InTransitDirective implements OnInit, OnDestroy {
+export class InTransitClassDirective implements OnInit, OnDestroy {
 
   @HostBinding('class.draggable-in-transit')
   isDragActive = false;
