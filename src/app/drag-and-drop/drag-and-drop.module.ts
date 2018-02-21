@@ -10,6 +10,8 @@ import { TransitContainerComponent } from './transit-container/transit-container
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { HomeButtonDirective } from './home-button.directive';
 import { InTransitClassDirective } from './in-transit-class.directive';
+import { ContentDirective } from './content.directive';
+import { TemplateDirective } from './template.directive';
 
 @NgModule({
   imports: [
@@ -25,7 +27,9 @@ import { InTransitClassDirective } from './in-transit-class.directive';
     TransitContainerComponent,
     DropZoneComponent,
     HomeButtonDirective,
-    InTransitClassDirective
+    InTransitClassDirective,
+    ContentDirective,
+    TemplateDirective
   ],
   exports: [
     DroppableComponent,
@@ -34,7 +38,9 @@ import { InTransitClassDirective } from './in-transit-class.directive';
     DraggableVideoDirective,
     DragHandleDirective,
     HomeButtonDirective,
-    InTransitClassDirective
+    InTransitClassDirective,
+    ContentDirective,
+    TemplateDirective
   ],
   entryComponents: [
     DraggableComponent

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, Type, ElementRef,
-  Input, Renderer2, Attribute, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewContainerRef, ViewChild, ElementRef,
+  Input, Renderer2, Attribute, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { DraggableFactoryService } from '../draggable/draggable-factory.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from '../drag-and-drop.service';
@@ -63,8 +63,8 @@ export class DroppableComponent implements OnInit, OnDestroy {
     this.subs.push(this.handleWheel());
   }
 
-  addDraggable<T>(id: string, component: Type<T>): void {
-    this.draggableFactoryService.addDraggable(id, component, this);
+  addDraggable<T>(id: string, tpl: TemplateRef<T>): void {
+    this.draggableFactoryService.create(id, tpl, this);
     // We need to manually inform Angular to detect changes here because
     // this method is most likely called from inside a lifecycle hook.
     // Adding draggables during a change detection cycle causes the

@@ -1,31 +1,46 @@
-import { Injectable, ComponentFactoryResolver, Type, ComponentRef } from '@angular/core';
+import { Injectable, TemplateRef, EmbeddedViewRef } from '@angular/core';
 import { DraggableComponent } from './draggable.component';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { DragAndDropService } from '../drag-and-drop.service';
+import { Subject } from 'rxjs/Subject';
+import { zip } from 'rxjs/observable/zip';
 
 @Injectable()
 export class DraggableFactoryService {
 
-  private factory = this.componentFactoryResolver.resolveComponentFactory(DraggableComponent);
+  private newDraggable = new Subject<DraggableComponent>();
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver,
-    private dragAndDropService: DragAndDropService) { }
+  private newEmbeddedDraggableView = new Subject<EmbeddedDraggableView>();
 
-  addDraggable<T>(id: string, component: Type<T>, droppable: DroppableComponent): void {
+  constructor(private dragAndDropService: DragAndDropService) {
+
+    zip(this.newEmbeddedDraggableView, this.newDraggable).subscribe(e => {
+      const embeddedDraggableView = e[0];
+      const draggable = e[1];
+      draggable.onFactoryInit(embeddedDraggableView.embeddedViewRef, embeddedDraggableView.droppable);
+      this.dragAndDropService.draggables.register(embeddedDraggableView.id, draggable);
+    });
+  }
+
+  create<T>(id: string, tpl: TemplateRef<T>, droppable: DroppableComponent): void {
     if (!this.dragAndDropService.draggables.has(id)) {
-      const draggable = this.createDraggable(droppable);
-      const content = this.createContentComponent(draggable.instance, component);
-      draggable.instance.onFactoryInit(draggable, content, droppable);
-      this.dragAndDropService.draggables.register(id, draggable.instance);
+      const embeddedViewRef = droppable.viewContainerRef.createEmbeddedView(tpl);
+
+      this.newEmbeddedDraggableView.next({
+        id: id,
+        embeddedViewRef: embeddedViewRef,
+        droppable: droppable
+      });
     }
   }
 
-  private createDraggable(droppable: DroppableComponent): ComponentRef<DraggableComponent> {
-    return droppable.viewContainerRef.createComponent(this.factory);
+  register(draggable: DraggableComponent): void {
+    this.newDraggable.next(draggable);
   }
+}
 
-  private createContentComponent<T>(draggable: DraggableComponent, component: Type<T>) {
-    const factory = this.componentFactoryResolver.resolveComponentFactory(component);
-    return draggable.viewContainerRef.createComponent(factory);
-  }
+interface EmbeddedDraggableView {
+  id: string;
+  embeddedViewRef: EmbeddedViewRef<any>;
+  droppable: DroppableComponent;
 }
