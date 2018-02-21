@@ -2,7 +2,7 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
 import { SwipeZoneService } from './swipe-zone.service';
 
 @Directive({
-  selector: '[appSwipeZone]',
+  selector: '[swipeZone]',
   providers: [
     SwipeZoneService
   ]

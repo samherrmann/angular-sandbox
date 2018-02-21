@@ -4,9 +4,9 @@
 </div>
 
 <ng-container *ngIf="(dragActive | async) && !swappable">
-  <div class="scroll-up-zone" (appSwipeOver)="scrollUp($event)">
+  <div class="scroll-up-zone" (swipeOver)="scrollUp($event)">
   </div>
 
-  <div class="scroll-down-zone" (appSwipeOver)="scrollDown($event)">
+  <div class="scroll-down-zone" (swipeOver)="scrollDown($event)">
   </div>
 </ng-container>
