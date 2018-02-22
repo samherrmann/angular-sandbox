@@ -6,17 +6,17 @@
     </button>
   </div>
 
-  <dnd-droppable *ngIf="isDrawerOpen" @slideInOut class="drawer" name="drawer"></dnd-droppable>
+  <dnd-droppable *ngIf="isDrawerOpen" @slideInOut class="drawer" name="drawer">
+    <dnd-draggable *dndTemplate="let video of videos; group 'videos'">
+      <app-example dndContent>
+        <video [src]="video.src" controls loop dndVideo></video>
+      </app-example>
+    </dnd-draggable>
+  </dnd-droppable>
 
   <div class="swappables">
     <dnd-droppable *ngFor="let i of [1,2,3,4]" swappable></dnd-droppable>
   </div>
-
-  <dnd-draggable *dndTemplate="let src=src">
-    <app-example dndContent>
-      <video [src]="src" controls loop dndVideo></video>
-    </app-example>
-  </dnd-draggable>
 
 </div>
 
