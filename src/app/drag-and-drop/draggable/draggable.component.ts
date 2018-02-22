@@ -1,6 +1,6 @@
 import {
   Component, OnInit, OnDestroy, ViewChild, ViewContainerRef,
-  HostBinding, ElementRef, Renderer2, ContentChild, EmbeddedViewRef,
+  HostBinding, ElementRef, Renderer2, ContentChild, ViewRef,
 } from '@angular/core';
 import { DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
@@ -44,7 +44,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private shadow: HTMLElement;
 
-  private host: EmbeddedViewRef<any>;
+  private viewRef: ViewRef;
 
   private subs: Subscription[] = [];
 
@@ -66,8 +66,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.target = this.draggableService.target;
   }
 
-  onFactoryInit(id: string, host: EmbeddedViewRef<any>, droppable: DroppableComponent): void {
-    this.host = host;
+  onFactoryInit(id: string, viewRef: ViewRef, droppable: DroppableComponent): void {
+    this.viewRef = viewRef;
     this.droppable = droppable;
     this._origin = droppable.name;
     this.dragAndDropService.draggables.register(id, this);
@@ -89,11 +89,11 @@ export class DraggableComponent implements OnInit, OnDestroy {
   }
 
   index(): number {
-    return this.droppable.viewContainerRef.indexOf(this.host);
+    return this.droppable.viewContainerRef.indexOf(this.viewRef);
   }
 
   insert(droppable: DroppableComponent, index?: number): void {
-    droppable.viewContainerRef.insert(this.host, index);
+    droppable.viewContainerRef.insert(this.viewRef, index);
     this.droppable = droppable;
     this.dragAndDropService.emitInsert(this);
   }
