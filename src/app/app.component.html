@@ -13,7 +13,9 @@
   </div>
 
   <dnd-draggable *dndTemplate="let src=src">
-    <app-example [src]="src" dndContent></app-example>
+    <app-example dndContent>
+      <video [src]="src" controls loop dndVideo></video>
+    </app-example>
   </dnd-draggable>
 
 </div>
