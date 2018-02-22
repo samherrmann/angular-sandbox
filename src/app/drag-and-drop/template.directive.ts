@@ -5,13 +5,13 @@ import { DroppableComponent } from './droppable/droppable.component';
 @Directive({
   selector: '[dndTemplate]'
 })
-export class TemplateDirective {
+export class TemplateDirective<T> {
 
   constructor(private templateRef: TemplateRef<any>,
     private draggableFactoryService: DraggableFactoryService, ) {
   }
 
-  create(id: string, droppable: DroppableComponent): void {
-    this.draggableFactoryService.create(id, this.templateRef, droppable);
+  create(id: string, droppable: DroppableComponent, ctx?: T): void {
+    this.draggableFactoryService.create(id, this.templateRef, droppable, ctx);
   }
 }

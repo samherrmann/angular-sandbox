@@ -24,9 +24,9 @@ export class DraggableFactoryService {
     });
   }
 
-  create<T>(id: string, tpl: TemplateRef<T>, droppable: DroppableComponent): void {
+  create<T>(id: string, tpl: TemplateRef<T>, droppable: DroppableComponent, ctx?: T): void {
     if (!this.dragAndDropService.draggables.has(id)) {
-      const embeddedViewRef = droppable.viewContainerRef.createEmbeddedView(tpl);
+      const embeddedViewRef = droppable.viewContainerRef.createEmbeddedView(tpl, ctx);
 
       this.newEmbeddedDraggableView.next({
         id: id,

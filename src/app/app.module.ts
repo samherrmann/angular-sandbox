@@ -5,6 +5,7 @@ import {  } from '@angular/animations';
 import { AppComponent } from './app.component';
 import { ExampleComponent } from './example/example.component';
 import { DragAndDropModule } from './drag-and-drop/drag-and-drop.module';
+import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,9 @@ import { DragAndDropModule } from './drag-and-drop/drag-and-drop.module';
     BrowserAnimationsModule,
     DragAndDropModule
   ],
-  providers: [],
+  providers: [
+    DataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,8 +12,8 @@
     <dnd-droppable *ngFor="let i of [1,2,3,4]" swappable></dnd-droppable>
   </div>
 
-  <dnd-draggable *dndTemplate>
-    <app-example dndContent></app-example>
+  <dnd-draggable *dndTemplate="let src=src">
+    <app-example [src]="src" dndContent></app-example>
   </dnd-draggable>
 
 </div>
