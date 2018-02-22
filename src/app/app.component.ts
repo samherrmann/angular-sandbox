@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, ViewChildren, QueryList, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DroppableComponent } from './drag-and-drop/droppable/droppable.component';
 import { TemplateDirective } from './drag-and-drop/template.directive';
 import { slideInOut } from './animations';
@@ -22,16 +22,16 @@ export class AppComponent {
   @ViewChild(TemplateDirective)
   draggableTpl: TemplateDirective<Media>;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService,
+    private cdr: ChangeDetectorRef) { }
 
   toggleDrawer(): void {
     this.isDrawerOpen = !this.isDrawerOpen;
     if (this.isDrawerOpen) {
-      setTimeout(() => {
-        const drawer = this.droppables.find(item => item.name === 'drawer');
-        this.dataService.videos.forEach((video, i) => {
-          this.draggableTpl.create('example-' + i, drawer, video);
-        });
+      this.cdr.detectChanges();
+      const drawer = this.droppables.find(item => item.name === 'drawer');
+      this.dataService.videos.forEach((video, i) => {
+        this.draggableTpl.create('example-' + i, drawer, video);
       });
     }
   }
