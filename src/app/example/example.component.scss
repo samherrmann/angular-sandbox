@@ -38,8 +38,3 @@ $padding: 16px;
   background-color: transparent;
   padding: $padding;
 }
-
-::ng-deep video {
-  max-width: 100%;
-  max-height: 100%;
-}

@@ -63,10 +63,17 @@ dnd-droppable.drawer {
   }
 }
 
-::ng-deep dnd-draggable .shadow {
-  background-color: cyan;
+::ng-deep dnd-draggable {
+  .shadow {
+    background-color: cyan;
 
-  * {
-    opacity: 0;
+    * {
+      opacity: 0;
+    }
+  }
+
+  video {
+    max-width: 100%;
+    max-height: 100%;
   }
 }
