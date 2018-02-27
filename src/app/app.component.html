@@ -7,25 +7,24 @@
   </div>
 
   <dnd-droppable *ngIf="isDrawerOpen" @slideInOut class="drawer" name="drawer">
-
     <ng-container *ngFor="let video of videos; index as i">
       <ng-container *dndTemplateOutlet="draggable; context: video; id: 'draggable-' + i"></ng-container>
     </ng-container>
-
-    <ng-template #draggable let-src="src">
-      <dnd-draggable>
-        <app-example dndContent>
-          <video [src]="src" controls loop dndVideo></video>
-        </app-example>
-      </dnd-draggable>
-    </ng-template>
-
   </dnd-droppable>
 
   <div class="swappables">
     <dnd-droppable *ngFor="let i of [1,2,3,4]" swappable></dnd-droppable>
   </div>
 </div>
+
+<!-- Templates -->
+<ng-template #draggable let-src="src">
+  <dnd-draggable>
+    <app-example dndContent>
+      <video [src]="src" controls loop dndVideo></video>
+    </app-example>
+  </dnd-draggable>
+</ng-template>
 
 <ng-template #menuIcon>
   <svg>
