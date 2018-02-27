@@ -11,7 +11,7 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { HomeButtonDirective } from './home-button.directive';
 import { InTransitClassDirective } from './in-transit-class.directive';
 import { ContentDirective } from './content.directive';
-import { TemplateDirective } from './template.directive';
+import { TemplateOutletDirective } from './template-outlet.directive';
 
 @NgModule({
   imports: [
@@ -29,7 +29,7 @@ import { TemplateDirective } from './template.directive';
     HomeButtonDirective,
     InTransitClassDirective,
     ContentDirective,
-    TemplateDirective
+    TemplateOutletDirective
   ],
   exports: [
     DroppableComponent,
@@ -40,7 +40,7 @@ import { TemplateDirective } from './template.directive';
     HomeButtonDirective,
     InTransitClassDirective,
     ContentDirective,
-    TemplateDirective
+    TemplateOutletDirective
   ],
   entryComponents: [
     DraggableComponent
