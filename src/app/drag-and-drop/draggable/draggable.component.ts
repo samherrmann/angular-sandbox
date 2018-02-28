@@ -107,11 +107,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
     return this.draggableService.dragStart.subscribe(() => {
       const el: HTMLElement = this.elementRef.nativeElement;
       const clientRect = el.getBoundingClientRect();
-      this.transitContainer.onDragStart(clientRect);
-
       this.width = clientRect.width + 'px';
       this.height = clientRect.height + 'px';
 
+      this.transitContainer.onDragStart(clientRect);
       this.clearSelection(this.elementRef.nativeElement);
       this.createShadow(this.content.nativeElement);
       this.insertShadow(
