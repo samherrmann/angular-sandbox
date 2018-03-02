@@ -9,7 +9,12 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "browser-check.js", {
+          "glob": "platform.js",
+          "input": "../node_modules/platform/",
+          "output": "./"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",
