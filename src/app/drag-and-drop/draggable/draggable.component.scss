@@ -1,6 +1,7 @@
 :host {
   display: block;
   position: relative;
+  flex-shrink: 0;
 }
 
 dnd-transit-container {
