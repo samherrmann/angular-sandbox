@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SwipeZoneDirective } from './swipe-zone.directive';
 import { SwipeTargetDirective } from './swipe-target.directive';
 import { SwipeZoneService } from './swipe-zone.service';
+import { SwipeHandleDirective } from './swipe-handle.directive';
 
 @NgModule({
   imports: [
@@ -10,11 +11,13 @@ import { SwipeZoneService } from './swipe-zone.service';
   ],
   declarations: [
     SwipeZoneDirective,
-    SwipeTargetDirective
+    SwipeTargetDirective,
+    SwipeHandleDirective
   ],
   exports: [
     SwipeZoneDirective,
-    SwipeTargetDirective
+    SwipeTargetDirective,
+    SwipeHandleDirective
   ],
   providers: [
     SwipeZoneService
