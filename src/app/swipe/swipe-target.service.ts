@@ -4,16 +4,34 @@ import { SwipeEvent } from './swipe-event';
 import { SwipeZoneService } from './swipe-zone.service';
 import { Subscription } from 'rxjs/Subscription';
 
+/**
+ * This service provides access to observe the `swipeenter`,
+ * `swipeover` and `swipeleave` events of the registered
+ * target element. This service is designed to be provided
+ * to the target directive/component.
+ */
 @Injectable()
 export class SwipeTargetService implements OnDestroy {
 
   private readonly _swipeOver = new Subject<SwipeEvent>();
+
+  /**
+   * Observable that emits a {@link SwipeEvent} on swipe over.
+   */
   readonly swipeOver = this._swipeOver.asObservable();
 
   private readonly _swipeEnter = new Subject<SwipeEvent>();
+
+  /**
+   * Observable that emits a {@link SwipeEvent} on swipe enter.
+   */
   readonly swipeEnter = this._swipeEnter.asObservable();
 
   private readonly _swipeLeave = new Subject<SwipeEvent>();
+
+  /**
+   * Observable that emits a {@link SwipeEvent} on swipe leave.
+   */
   readonly swipeLeave = this._swipeLeave.asObservable();
 
   private subs: Subscription[] = [];
@@ -22,6 +40,9 @@ export class SwipeTargetService implements OnDestroy {
 
   constructor(private swipeZoneService: SwipeZoneService) {}
 
+  /**
+   * Register a HTML element that defines a swipe target.
+   */
   register(target: HTMLElement): void {
     this.subs.push(
       this.handleSwipeStart(target),
@@ -30,6 +51,11 @@ export class SwipeTargetService implements OnDestroy {
     );
   }
 
+  /**
+   * Subscribes to `swipestart` events and emits a `swipeenter` event if
+   * the `swipestart` event was fired within the swipe target.
+   * @param target The swipe target HTML element.
+   */
   private handleSwipeStart(target: HTMLElement): Subscription {
     return this.swipeZoneService.swipeStart.subscribe(e => {
       if (this.isPointerOverTarget(e.pointerEvent, target)) {
@@ -44,6 +70,11 @@ export class SwipeTargetService implements OnDestroy {
     });
   }
 
+  /**
+   * Subscribes to `swipe` events and emits a `swipeenter`, `swipeover`, or
+   * `swipeleave` events for the given swipe target when appropriate.
+   * @param target The swipe target HTML element.
+   */
   private handleSwipe(target: HTMLElement): Subscription {
     return this.swipeZoneService.swipe.subscribe(e => {
       if (this.isPointerOverTarget(e.pointerEvent, target)) {
@@ -63,6 +94,11 @@ export class SwipeTargetService implements OnDestroy {
     });
   }
 
+  /**
+   * Subscribes to `swipeend` events and emits a `swipeleave` event if
+   * the `swipeend` was fired within the swipe target.
+   * @param target The swipe target HTML element.
+   */
   private handleSwipeEnd(target: HTMLElement): Subscription {
     return this.swipeZoneService.swipeEnd.subscribe(e => {
       if (this.wasLastEventOverTarget) {
@@ -72,6 +108,12 @@ export class SwipeTargetService implements OnDestroy {
     });
   }
 
+  /**
+   * Returns true if the pointer event is over the target element.
+   * Returns false otherwise.
+   * @param e The pointer event to check if it's over the target element.
+   * @param target The target HTML element.
+   */
   private isPointerOverTarget(e: PointerEvent, target: HTMLElement): boolean {
     const el: ClientRect = target.getBoundingClientRect();
     return e.clientX >= el.left && e.clientX < (el.left + el.width) &&

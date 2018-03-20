@@ -1,6 +1,10 @@
 import { Directive, HostListener } from '@angular/core';
 import { SwipeZoneService } from './swipe-zone.service';
 
+/**
+ * This directive activates a swipe upon a `pointerdown`
+ * event.
+ */
 @Directive({
   selector: '[swipeHandle]'
 })

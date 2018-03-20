@@ -1,6 +1,11 @@
 import { Directive, Output, ElementRef, OnInit } from '@angular/core';
 import { SwipeTargetService } from './swipe-target.service';
 
+/**
+ * This directive identifies an area within an application that fires
+ * `swipeEnter`, `swipeOver`, and `swipeLeave` events when a swipe is
+ * active. A swipe is activated through the {@link SwipeHandleDirective}.
+ */
 @Directive({
   selector: '[swipeEnter], [swipeOver], [swipeLeave]',
   providers: [
