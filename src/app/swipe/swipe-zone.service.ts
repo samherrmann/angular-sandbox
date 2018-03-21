@@ -88,7 +88,7 @@ export class SwipeZoneService implements OnDestroy {
    * Returns `true` if a swipe is currently active.
    * Returns `false` otherwise.
    */
-  get isActive(): boolean {
+  isActive(): boolean {
     return this._active.getValue();
   }
 

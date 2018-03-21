@@ -18,7 +18,7 @@ export class SwipeHandleDirective {
     // swipe-zone, the swipe-end event is not triggered. When
     // the user returns the pointer to the swipe-zone and resumes
     // the swipe, we need to ignore the `pointerdown` event.
-    if (!this.swipeService.isActive && e.isPrimary) {
+    if (!this.swipeService.isActive() && e.isPrimary) {
       this.swipeService.emitSwipeStart(e);
     }
   }
