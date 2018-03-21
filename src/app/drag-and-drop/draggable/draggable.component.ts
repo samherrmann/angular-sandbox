@@ -105,8 +105,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragStart(): Subscription {
     return this.draggableService.dragStart.subscribe(() => {
-      const el: HTMLElement = this.elementRef.nativeElement;
-      const clientRect = el.getBoundingClientRect();
+      const clientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
       this.width = clientRect.width + 'px';
       this.height = clientRect.height + 'px';
 

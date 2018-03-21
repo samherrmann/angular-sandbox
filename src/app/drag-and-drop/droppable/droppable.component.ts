@@ -35,14 +35,12 @@ export class DroppableComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild('scrollable')
-  scrollabelRef: ElementRef;
+  scrollable: ElementRef;
 
   @ViewChild('vc', { read: ViewContainerRef })
   viewContainerRef: ViewContainerRef;
 
   dragActive = this.dragAndDropService.active;
-
-  private scrollable: HTMLElement;
 
   private _name = '';
 
@@ -56,16 +54,15 @@ export class DroppableComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    this.scrollable = this.scrollabelRef.nativeElement;
     this.subs.push(this.handleWheel());
   }
 
   scrollUp() {
-    this.scroll(-this.scrollRatio * this.scrollable.clientHeight);
+    this.scroll(-this.scrollRatio * (this.scrollable.nativeElement as HTMLElement).clientHeight);
   }
 
   scrollDown() {
-    this.scroll(this.scrollRatio * this.scrollable.clientHeight);
+    this.scroll(this.scrollRatio * (this.scrollable.nativeElement as HTMLElement).clientHeight);
   }
 
   ngOnDestroy() {
@@ -74,7 +71,10 @@ export class DroppableComponent implements OnInit, OnDestroy {
   }
 
   private scroll(deltaY: number) {
-    this.renderer.setProperty(this.scrollable, 'scrollTop', this.scrollable.scrollTop += deltaY);
+    this.renderer.setProperty(
+      this.scrollable, 'scrollTop',
+      (this.scrollable.nativeElement as HTMLElement).scrollTop += deltaY
+    );
   }
 
   private handleWheel(): Subscription {
