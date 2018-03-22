@@ -2,6 +2,10 @@ import { Directive, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 
+/**
+ * This directive adds a `drag-and-drop-is-active` CSS class to the
+ * host element for styling when a draggable is being dragged.
+ */
 @Directive({
   selector: '[dndActiveClass]'
 })

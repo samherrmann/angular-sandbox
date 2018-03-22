@@ -10,16 +10,38 @@ import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { DroppableComponent } from './droppable/droppable.component';
 import { Registry } from './registry';
 
+/**
+ * This service provides access to the different drag events.
+ * Through this service, you can both observe these events and
+ * emit them.
+ *
+ * see: {@link DragEventType}
+ */
 @Injectable()
 export class DragAndDropService {
 
+  /**
+   * Registered droppables.
+   */
   readonly droppables = new Registry<DroppableComponent>();
 
+  /**
+   * Registered draggables.
+   */
   readonly draggables = new Registry<DraggableComponent>();
 
   private readonly _inTransit = new BehaviorSubject<DraggableComponent>(null);
+
+  /**
+   * Observable that emits the {@link DraggableComponent} that is being dragged.
+   * `null` is emitted when no draggable is being dragged.
+   */
   readonly inTransit = this._inTransit.asObservable();
 
+  /**
+   * Observable that emits `true` when a draggable is being dragged.
+   * Emits `false` otherwise.
+   */
   readonly active = this.inTransit.pipe(
     map(e => e !== null)
   );
@@ -84,6 +106,12 @@ export class DragAndDropService {
     this._insert.next(new InsertEvent('insert', draggable));
   }
 
+  /**
+   * Attaches an event listener to a HTML element when the drag is active and
+   * removes the event listener when the drag is inactive.
+   * @param el The element on which to attach an event listener.
+   * @param eventName The name of the event to listen to.
+   */
   listenWhenActive<T>(el: EventTarget, eventName: string): Observable<T> {
     return this.active.pipe(
       filter(e => e === true),

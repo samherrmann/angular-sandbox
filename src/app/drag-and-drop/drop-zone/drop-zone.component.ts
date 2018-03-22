@@ -7,6 +7,12 @@ import { DroppableComponent } from '../droppable/droppable.component';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { Location } from '../relocation/location';
 
+/**
+ * This component is used to identify areas in which
+ * a draggable that is being dragged can be dropped.
+ * This component is intended to only be used internally
+ * by the drag and drop module.
+ */
 @Component({
   selector: 'dnd-drop-zone',
   templateUrl: './drop-zone.component.html',
@@ -33,6 +39,9 @@ export class DropZoneComponent implements OnInit, OnDestroy {
     this.translateSwipeToDragEvents();
   }
 
+  /**
+   * Returns the {@link Location} of this dropzone.
+   */
   location(): Location {
     if (this._draggable) {
       let index = this._draggable.index();
@@ -53,6 +62,11 @@ export class DropZoneComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Returns the {@link DraggableComponent} that this
+   * dropzone is located in. Returns `null` if this
+   * dropzone is not located in a draggable.
+   */
   draggable(): DraggableComponent {
     return this._draggable;
   }

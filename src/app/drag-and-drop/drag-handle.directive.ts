@@ -3,6 +3,10 @@ import { DragAndDropService } from './drag-and-drop.service';
 import { DraggableComponent } from './draggable/draggable.component';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
 
+/**
+ * This directive activates a drag upon a `pointerdown`
+ * event.
+ */
 @Directive({
   selector: '[dndDragHandle]'
 })
@@ -15,6 +19,9 @@ export class DragHandleDirective implements OnInit {
     private swipeService: SwipeZoneService) { }
 
   ngOnInit() {
+    // We need to disable `touch-action`, otherwise the browser intercepts the
+    // touch event when dragging. Without disabling the touch action, the browser
+    // attempts to scroll the page.
     this.renderer.setStyle(this.elementRef.nativeElement, 'touch-action', 'none');
   }
 

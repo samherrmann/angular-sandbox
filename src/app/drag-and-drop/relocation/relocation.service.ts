@@ -11,11 +11,23 @@ import { CacheRelocationService } from './cache-relocation.service';
 import { OperatorFunction } from 'rxjs/interfaces';
 import { DragEnterEvent } from '../drag-event';
 
+/**
+ * This service is responsible for relocating draggables during
+ * a drag and drop operation. It first detatches all draggables
+ * that require to be relocated, and then inserts all of them in
+ * their new location.
+ */
 @Injectable()
 export class RelocationService implements OnDestroy {
 
   private sub: Subscription;
 
+  /**
+   * RxJs operators that translate observable `DragEnterEvent`s into
+   * `RelocationEvent`s. Every operator must emit an event for every
+   * `DragEnterEvent`. If no relocation is required for a given
+   * `DragEnterEvent`, then the operator must emit `null`.
+   */
   private operators: OperatorFunction<DragEnterEvent, RelocationEvent>[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,

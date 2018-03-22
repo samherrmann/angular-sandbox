@@ -1,5 +1,8 @@
 import { Injectable, Renderer2 } from '@angular/core';
 
+/**
+ * This service provides access to the draggable shadow.
+ */
 @Injectable()
 export class ShadowService {
 

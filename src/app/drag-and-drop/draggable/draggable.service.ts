@@ -7,27 +7,71 @@ import { DraggableComponent } from './draggable.component';
 import { Coordinate2D } from './coordinate-2d';
 import { UnaryFunction } from 'rxjs/interfaces';
 
+/**
+ * This service proxies events from the {@link DragAndDropService}
+ * and only passes through the events that are applicable to the
+ * registered {@link DraggableComponent}.
+ *
+ * This service is designed to be provided to the {@link DraggableComponent}.
+ */
 @Injectable()
 export class DraggableService {
 
+  /**
+   * Observable emitting `true` if the registered draggable
+   * is in transit. Emits false otherwise.
+   */
   inTransit: Observable<boolean>;
 
+  /**
+   * Observable emitting `dragstart` events if the draggable
+   * in transit is the registered draggble.
+   */
   dragStart: Observable<DragEvent>;
 
+  /**
+   * Observable emitting `drag` events if the draggable
+   * in transit is the registered draggble.
+   */
   drag: Observable<Coordinate2D>;
 
+  /**
+   * Observable emitting `dragend` event if the draggable
+   * in transit is the registered draggble.
+   */
   dragEnd: Observable<DragEvent>;
 
+  /**
+   * Observable emitting `remove` event if the draggable
+   * in transit is the registered draggble.
+   */
   remove: Observable<RemoveEvent>;
 
+  /**
+   * Observable emitting `insert` event if the draggable
+   * in transit is the registered draggble.
+   */
   insert: Observable<InsertEvent>;
 
+  /**
+   * Observable emitting `true` if a draggable instance other
+   * than the instance of the registered draggable is in
+   * transit. Emits `false` otherwise.
+   */
   target: Observable<boolean>;
 
+  /**
+   * The coordinates of the draggable relative to the
+   * browser window at the time of `dragstart`.
+   */
   private dragStartPoint: Coordinate2D;
 
   constructor(private dragAndDropService: DragAndDropService) { }
 
+  /**
+   * Registeres the instance of the draggable that this
+   * service is supporting.
+   */
   register(draggable: DraggableComponent): void {
 
     this.inTransit = this.dragAndDropService.inTransit.pipe(
@@ -56,6 +100,11 @@ export class DraggableService {
     );
   }
 
+  /**
+   * Returns a RxJs `filter` operator that only passes through
+   * events that are applicable to the registered draggable.
+   * @param draggable The registered draggable.
+   */
   private filterInstance(draggable: DraggableComponent): UnaryFunction<Observable<DragEvent>, Observable<DragEvent>> {
     return filter<DragEvent>(e => e.draggable === draggable);
   }
@@ -67,6 +116,10 @@ export class DraggableService {
     };
   }
 
+  /**
+   * Returns the position delta between the current drag event
+   * position and the drag start position.
+   */
   private dragPositionDelta(e: DragEvent): Coordinate2D {
     const delta: Coordinate2D = {
       x: e.pointerEvent.clientX - this.dragStartPoint.x,

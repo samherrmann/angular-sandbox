@@ -1,32 +1,57 @@
-
+/**
+ * A wrapper around the JavaScript native `Map` object
+ * that rejects the addition of a value if the key
+ * already exists.
+ */
 export class Registry<T> {
 
   private items = new Map<string, T>();
 
   constructor() { }
 
-  register(id: string, item: T): void {
-    if (this.has(id)) {
-      console.error('Item ID "' + id + '" already exists.');
-      return;
+  /**
+   * Register a value for a given key. Returns `true` if the value was successfully
+   * registered. Returns `false` if the key already exists.
+   * @param key The key under which to register the value.
+   * @param value The value to register.
+   */
+  register(key: string, value: T): boolean {
+    if (this.has(key)) {
+      console.error('The key "' + key + '" already exists.');
+      return false;
     }
-    this.items.set(id, item);
+    this.items.set(key, value);
+    return true;
   }
 
-  unregister(item: T): void {
-    for (const [key, value] of Array.from(this.items)) {
-      if (value === item) {
-        this.items.delete(key);
-        return;
+  /**
+   * Unregisters a value from the registry.
+   * @param value The value to unregister.
+   */
+  unregister(value: T): boolean {
+    for (const [k, v] of Array.from(this.items)) {
+      if (v === value) {
+        return this.items.delete(k);
       }
     }
+    return false;
   }
 
-  get(id: string): T {
-    return this.items.get(id);
+  /**
+   * Returns the value for the given key.
+   * Returns `undefined` if no value for the given key exists.
+   * @param key The key for which to return the value.
+   */
+  get(key: string): T {
+    return this.items.get(key);
   }
 
-  has(id: string): boolean {
-    return this.items.has(id);
+  /**
+   * Returns `true` if a value for the given key exists.
+   * Returns `false` otherwise.
+   * @param key The key for which to check if a value exists.
+   */
+  has(key: string): boolean {
+    return this.items.has(key);
   }
 }

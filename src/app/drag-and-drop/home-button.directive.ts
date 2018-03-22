@@ -4,6 +4,21 @@ import { DraggableService } from './draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
 import { DragAndDropService } from './drag-and-drop.service';
 
+/**
+ * This structural directive can be applied on an element, most likely
+ * a button, that when clicked will return the parent
+ * {@link DraggableComponent} back to its origin (the droppable within
+ * which the draggable was created). The directive will also remove the
+ * host element from the DOM when the parent draggable is located at its
+ * origin.
+ *
+ * ### Example
+ * ```
+ * <button *dndHomeButton>
+ *   Home
+ * </button>
+ * ```
+ */
 @Directive({
   selector: '[dndHomeButton]'
 })
@@ -23,12 +38,12 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
     private renderer: Renderer2) {}
 
   ngOnInit() {
-    if (!this.isAtOrigin() && this.doesHaveAnOrigin()) {
+    if (!this.isAtOrigin() && this.hasAnOrigin()) {
       this.createView();
     }
 
     this.sub = this.draggableService.insert.subscribe(e => {
-      if (!this.doesViewExist() && !this.isAtOrigin() && this.doesHaveAnOrigin()) {
+      if (!this.doesViewExist() && !this.isAtOrigin() && this.hasAnOrigin()) {
         this.createView();
 
       } else if (this.doesViewExist() && this.isAtOrigin()) {
@@ -59,7 +74,7 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
     return this.dragAndDropService.droppables.get(this.draggable.origin()) === this.draggable.droppable;
   }
 
-  private doesHaveAnOrigin(): boolean {
+  private hasAnOrigin(): boolean {
     return this.draggable.origin().length > 0;
   }
 

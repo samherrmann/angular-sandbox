@@ -6,11 +6,20 @@ import { Subscription } from 'rxjs/Subscription';
 import { Location } from './location';
 import { DragEnterEvent } from '../drag-event';
 
+/**
+ * This service is responsible for determining the relocation
+ * of the draggable that is being dragged.
+ */
 @Injectable()
 export class TransientRelocationService implements OnDestroy {
 
   private _origin: Location;
 
+  /**
+   * Translates an observable `DragEnterEvent` into a `RelocationEvent`
+   * for the draggable being dragged. If the draggable does not need to
+   * be relocated upon a `DragEnterEvent`, a `null` event is emitted.
+   */
   readonly operator = map<DragEnterEvent, RelocationEvent>(e => this.createRelocationEvent(e));
 
   private subs: Subscription[] = [];
@@ -22,6 +31,11 @@ export class TransientRelocationService implements OnDestroy {
     );
   }
 
+  /**
+   * Returns the location of the draggable of where
+   * it is being dragged from (i.e. the location) at
+   * `dragstart`.
+   */
   origin(): Location {
     return this._origin;
   }
