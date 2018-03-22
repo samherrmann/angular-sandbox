@@ -72,7 +72,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.dragAndDropService.draggables.register(id, this);
   }
 
-  get origin(): string {
+  origin(): string {
     return this._origin;
   }
 

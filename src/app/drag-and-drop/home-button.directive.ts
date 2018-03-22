@@ -56,15 +56,15 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
   }
 
   private isAtOrigin(): boolean {
-    return this.dragAndDropService.droppables.get(this.draggable.origin) === this.draggable.droppable;
+    return this.dragAndDropService.droppables.get(this.draggable.origin()) === this.draggable.droppable;
   }
 
   private doesHaveAnOrigin(): boolean {
-    return this.draggable.origin.length > 0;
+    return this.draggable.origin().length > 0;
   }
 
   private onClick(): void {
-    const origin = this.dragAndDropService.droppables.get(this.draggable.origin);
+    const origin = this.dragAndDropService.droppables.get(this.draggable.origin());
     if (origin) {
       this.draggable.detatch();
       this.draggable.insert(origin);
