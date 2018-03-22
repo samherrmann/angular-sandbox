@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, ViewChild, ViewContainerRef,
+  Component, OnInit, OnDestroy, ViewChild,
   HostBinding, ElementRef, ViewRef,
 } from '@angular/core';
 import { DraggableService } from './draggable.service';
@@ -21,9 +21,6 @@ import { ShadowService } from './shadow.service';
   ]
 })
 export class DraggableComponent implements OnInit, OnDestroy {
-
-  @ViewChild('vc', { read: ViewContainerRef })
-  viewContainerRef: ViewContainerRef;
 
   @ViewChild(TransitContainerComponent)
   transitContainer: TransitContainerComponent;
