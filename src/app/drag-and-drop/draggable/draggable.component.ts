@@ -1,6 +1,6 @@
 import {
   Component, OnInit, OnDestroy, ViewChild, ViewContainerRef,
-  HostBinding, ElementRef, Renderer2, ViewRef,
+  HostBinding, ElementRef, ViewRef,
 } from '@angular/core';
 import { DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
@@ -9,13 +9,15 @@ import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { TransitContainerComponent } from '../transit-container/transit-container.component';
 import { DraggableFactoryService } from './draggable-factory.service';
+import { ShadowService } from './shadow.service';
 
 @Component({
   selector: 'dnd-draggable',
   templateUrl: './draggable.component.html',
   styleUrls: ['./draggable.component.scss'],
   providers: [
-    DraggableService
+    DraggableService,
+    ShadowService
   ]
 })
 export class DraggableComponent implements OnInit, OnDestroy {
@@ -41,17 +43,15 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private _origin = '';
 
-  private shadow: HTMLElement[] = [];
-
   private viewRef: ViewRef;
 
   private subs: Subscription[] = [];
 
-  constructor(private renderer: Renderer2,
-    private elementRef: ElementRef,
+  constructor(private elementRef: ElementRef,
     private draggableService: DraggableService,
     private dragAndDropService: DragAndDropService,
-    private draggableFactoryService: DraggableFactoryService) {
+    private draggableFactoryService: DraggableFactoryService,
+    private shadowService: ShadowService) {
 
     this.draggableFactoryService.register(this);
   }
@@ -111,17 +111,13 @@ export class DraggableComponent implements OnInit, OnDestroy {
       this.transitContainer.onDragStart(clientRect);
       this.clearSelection(this.elementRef.nativeElement);
 
-      this.createShadow(this.content());
-      this.insertShadow(
-        this.elementRef.nativeElement,
-        this.shadow
-      );
+      this.shadowService.insert(this.elementRef.nativeElement, this.content());
     });
   }
 
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
-      this.removeShadow(this.shadow);
+      this.shadowService.remove();
 
       // ensure width and height are unset in case the
       // draggable was never detatched (i.e. the draggable
@@ -133,30 +129,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private unsetSize(): void {
     this.width = null;
     this.height = null;
-  }
-
-  private createShadow(content: HTMLElement[] ): void {
-    const shadow: HTMLElement[] = [];
-
-    content.forEach(el => {
-      const clone = el.cloneNode(true) as HTMLElement;
-      shadow.push(clone);
-      this.renderer.addClass(clone, 'shadow');
-    });
-    this.shadow = shadow;
-  }
-
-  private insertShadow(draggable: HTMLElement, shadow: HTMLElement[]) {
-    shadow.forEach(el => {
-      this.renderer.appendChild(draggable, el);
-    });
-  }
-
-  private removeShadow(shadow: HTMLElement[]) {
-    shadow.forEach(el => {
-      this.renderer.removeChild(el.parentNode, el);
-    });
-    this.shadow = [];
   }
 
   private clearSelection(draggable: HTMLElement): void {
