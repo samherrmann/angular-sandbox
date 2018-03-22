@@ -10,7 +10,6 @@ import { TransitContainerComponent } from './transit-container/transit-container
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { HomeButtonDirective } from './home-button.directive';
 import { InTransitClassDirective } from './in-transit-class.directive';
-import { ContentDirective } from './content.directive';
 import { TemplateOutletDirective } from './template-outlet.directive';
 import { DragAndDropService } from './drag-and-drop.service';
 import { RelocationService } from './relocation/relocation.service';
@@ -34,7 +33,6 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
     DropZoneComponent,
     HomeButtonDirective,
     InTransitClassDirective,
-    ContentDirective,
     TemplateOutletDirective
   ],
   exports: [
@@ -45,7 +43,6 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
     DragHandleDirective,
     HomeButtonDirective,
     InTransitClassDirective,
-    ContentDirective,
     TemplateOutletDirective
   ],
   entryComponents: [

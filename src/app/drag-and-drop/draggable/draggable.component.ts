@@ -1,6 +1,6 @@
 import {
   Component, OnInit, OnDestroy, ViewChild, ViewContainerRef,
-  HostBinding, ElementRef, Renderer2, ContentChild, ViewRef,
+  HostBinding, ElementRef, Renderer2, ViewRef,
 } from '@angular/core';
 import { DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
@@ -9,7 +9,6 @@ import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { TransitContainerComponent } from '../transit-container/transit-container.component';
 import { DraggableFactoryService } from './draggable-factory.service';
-import { ContentDirective } from '../content.directive';
 
 @Component({
   selector: 'dnd-draggable',
@@ -27,8 +26,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
   @ViewChild(TransitContainerComponent)
   transitContainer: TransitContainerComponent;
 
-  @ContentChild(ContentDirective, { read: ElementRef })
-  content: ElementRef;
+  @ViewChild(TransitContainerComponent, { read: ElementRef })
+  transitContainerElementRef: ElementRef;
 
   @HostBinding('style.width')
   width: string;
@@ -42,7 +41,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private _origin = '';
 
-  private shadow: HTMLElement;
+  private shadow: HTMLElement[] = [];
 
   private viewRef: ViewRef;
 
@@ -111,7 +110,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
       this.transitContainer.onDragStart(clientRect);
       this.clearSelection(this.elementRef.nativeElement);
-      this.createShadow(this.content.nativeElement);
+
+      this.createShadow(this.content());
       this.insertShadow(
         this.elementRef.nativeElement,
         this.shadow
@@ -121,7 +121,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
-      this.removeShadow(e.draggable.shadow);
+      this.removeShadow(this.shadow);
 
       // ensure width and height are unset in case the
       // draggable was never detatched (i.e. the draggable
@@ -135,20 +135,28 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.height = null;
   }
 
-  private createShadow(el: HTMLElement): void {
-    this.shadow = el.cloneNode(true) as HTMLElement;
-    this.renderer.addClass(this.shadow, 'shadow');
+  private createShadow(content: HTMLElement[] ): void {
+    const shadow: HTMLElement[] = [];
+
+    content.forEach(el => {
+      const clone = el.cloneNode(true) as HTMLElement;
+      shadow.push(clone);
+      this.renderer.addClass(clone, 'shadow');
+    });
+    this.shadow = shadow;
   }
 
-  private insertShadow(draggable: HTMLElement, shadow: HTMLElement) {
-    this.renderer.appendChild(draggable, shadow);
+  private insertShadow(draggable: HTMLElement, shadow: HTMLElement[]) {
+    shadow.forEach(el => {
+      this.renderer.appendChild(draggable, el);
+    });
   }
 
-  private removeShadow(shadow: HTMLElement) {
-    if (shadow) {
-      this.renderer.removeChild(shadow.parentNode, shadow);
-      this.shadow = null;
-    }
+  private removeShadow(shadow: HTMLElement[]) {
+    shadow.forEach(el => {
+      this.renderer.removeChild(el.parentNode, el);
+    });
+    this.shadow = [];
   }
 
   private clearSelection(draggable: HTMLElement): void {
@@ -156,5 +164,9 @@ export class DraggableComponent implements OnInit, OnDestroy {
     if (selection.containsNode(draggable, true)) {
       selection.empty();
     }
+  }
+
+  private content(): HTMLElement[] {
+    return Array.from((this.transitContainerElementRef.nativeElement as HTMLElement).children) as HTMLElement[];
   }
 }
