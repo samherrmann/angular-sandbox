@@ -30,18 +30,7 @@ export class DropZoneComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.swipeTargetService.register(this.elementRef.nativeElement);
-
-    this.subs.push(
-      this.swipeTargetService.swipeEnter.subscribe(e => {
-        this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
-      }),
-      this.swipeTargetService.swipeOver.subscribe(e => {
-        this.dragAndDropService.emitDragOver(e.pointerEvent, this);
-      }),
-      this.swipeTargetService.swipeLeave.subscribe(e => {
-        this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
-      })
-    );
+    this.translateSwipeToDragEvents();
   }
 
   location(): Location {
@@ -70,5 +59,19 @@ export class DropZoneComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  private translateSwipeToDragEvents(): void {
+    this.subs.push(
+      this.swipeTargetService.swipeEnter.subscribe(e => {
+        this.dragAndDropService.emitDragEnter(e.pointerEvent, this);
+      }),
+      this.swipeTargetService.swipeOver.subscribe(e => {
+        this.dragAndDropService.emitDragOver(e.pointerEvent, this);
+      }),
+      this.swipeTargetService.swipeLeave.subscribe(e => {
+        this.dragAndDropService.emitDragLeave(e.pointerEvent, this);
+      })
+    );
   }
 }
