@@ -18,10 +18,6 @@ export class DraggableService {
 
   dragEnd: Observable<DragEvent>;
 
-  dragEnter: Observable<DragEvent>;
-
-  dragLeave: Observable<DragEvent>;
-
   remove: Observable<RemoveEvent>;
 
   insert: Observable<InsertEvent>;
@@ -44,12 +40,6 @@ export class DraggableService {
     this.drag = this.dragAndDropService.drag.pipe(
       this.filterInstance(draggable),
       map(e => this.dragPositionDelta(e))
-    );
-    this.dragEnter = this.dragAndDropService.dragEnter.pipe(
-      this.filterInstance(draggable)
-    );
-    this.dragLeave = this.dragAndDropService.dragLeave.pipe(
-      this.filterInstance(draggable)
     );
     this.dragEnd = this.dragAndDropService.dragEnd.pipe(
       this.filterInstance(draggable),
