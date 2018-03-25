@@ -17,6 +17,7 @@ import { TransientRelocationService } from './relocation/transient-relocation.se
 import { TargetRelocationService } from './relocation/target-relocation.service';
 import { CacheRelocationService } from './relocation/cache-relocation.service';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
+import { ActiveClassDirective } from './active-class.directive';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
     DropZoneComponent,
     HomeButtonDirective,
     InTransitClassDirective,
-    TemplateOutletDirective
+    TemplateOutletDirective,
+    ActiveClassDirective
   ],
   exports: [
     DroppableComponent,
@@ -43,7 +45,8 @@ import { DraggableFactoryService } from './draggable/draggable-factory.service';
     DragHandleDirective,
     HomeButtonDirective,
     InTransitClassDirective,
-    TemplateOutletDirective
+    TemplateOutletDirective,
+    ActiveClassDirective
   ],
   entryComponents: [
     DraggableComponent
