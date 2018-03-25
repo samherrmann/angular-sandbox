@@ -10,7 +10,7 @@ import { UnaryFunction } from 'rxjs/interfaces';
 @Injectable()
 export class DraggableService {
 
-  active: Observable<boolean>;
+  inTransit: Observable<boolean>;
 
   dragStart: Observable<DragEvent>;
 
@@ -30,7 +30,7 @@ export class DraggableService {
 
   register(draggable: DraggableComponent): void {
 
-    this.active = this.dragAndDropService.inTransit.pipe(
+    this.inTransit = this.dragAndDropService.inTransit.pipe(
       map(e => e === draggable)
     );
     this.dragStart = this.dragAndDropService.dragStart.pipe(
