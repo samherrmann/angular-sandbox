@@ -21,7 +21,7 @@
 <ng-template #draggable let-src="src">
   <dnd-draggable>
     <app-example>
-      <video [src]="src" controls loop dndVideo></video>
+      <video [src]="src" controls loop autoplay dndVideo oncanplay="this.muted=true" ></video>
     </app-example>
   </dnd-draggable>
 </ng-template>
