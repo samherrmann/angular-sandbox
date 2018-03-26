@@ -17,7 +17,6 @@ export class Registry<T> {
    */
   register(key: string, value: T): boolean {
     if (this.has(key)) {
-      console.error('The key "' + key + '" already exists.');
       return false;
     }
     this.items.set(key, value);
