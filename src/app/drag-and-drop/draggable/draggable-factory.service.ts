@@ -54,12 +54,7 @@ export class DraggableFactoryService {
   create<T>(id: string, tpl: TemplateRef<T>, droppable: DroppableComponent, ctx?: T): void {
     if (!this.dragAndDropService.draggables.has(id)) {
       const viewRef = droppable.viewContainerRef.createEmbeddedView(tpl, ctx);
-
-      this.newView.next({
-        id: id,
-        viewRef: viewRef,
-        droppable: droppable
-      });
+      this.newView.next({id, viewRef, droppable});
     }
   }
 
