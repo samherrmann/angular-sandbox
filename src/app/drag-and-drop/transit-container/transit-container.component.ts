@@ -68,7 +68,7 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
 
   private handleDrag() {
     return this.draggableService.drag.subscribe(delta => {
-      this.transform = 'translate(' + delta.x + 'px, ' + delta.y + 'px)';
+      this.transform = `translate(${delta.x}px, ${delta.y}px)`;
     });
   }
 
