@@ -41,8 +41,10 @@ export class DropZoneComponent implements OnInit, OnDestroy {
 
   /**
    * Returns the {@link Location} of this dropzone.
+   * Returns `undefined` if this component is not
+   * inside a draggable or a droppable.
    */
-  location(): Location {
+  location(): Location | undefined {
     if (this._draggable) {
       let index = this._draggable.index();
       if (this.dropPosition === 'after' && !this._draggable.droppable.swappable) {
