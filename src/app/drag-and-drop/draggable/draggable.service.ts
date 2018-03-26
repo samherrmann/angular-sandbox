@@ -121,10 +121,9 @@ export class DraggableService {
    * position and the drag start position.
    */
   private dragPositionDelta(e: DragEvent): Coordinate2D {
-    const delta: Coordinate2D = {
+    return {
       x: e.pointerEvent.clientX - this.dragStartPoint.x,
       y: e.pointerEvent.clientY - this.dragStartPoint.y
     };
-    return delta;
   }
 }
