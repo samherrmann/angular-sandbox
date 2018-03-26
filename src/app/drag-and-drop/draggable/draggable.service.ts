@@ -5,7 +5,7 @@ import { DragEvent, RemoveEvent, InsertEvent } from '../drag-event';
 import { filter, map, tap } from 'rxjs/operators';
 import { DraggableComponent } from './draggable.component';
 import { Coordinate2D } from './coordinate-2d';
-import { UnaryFunction } from 'rxjs/interfaces';
+import { MonoTypeOperatorFunction } from 'rxjs/interfaces';
 
 /**
  * This service proxies events from the {@link DragAndDropService}
@@ -105,7 +105,7 @@ export class DraggableService {
    * events that are applicable to the registered draggable.
    * @param draggable The registered draggable.
    */
-  private filterInstance(draggable: DraggableComponent): UnaryFunction<Observable<DragEvent>, Observable<DragEvent>> {
+  private filterInstance(draggable: DraggableComponent): MonoTypeOperatorFunction<DragEvent> {
     return filter<DragEvent>(e => e.draggable === draggable);
   }
 
