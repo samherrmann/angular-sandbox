@@ -51,10 +51,7 @@ export class DropZoneComponent implements OnInit, OnDestroy {
         index += 1;
       }
 
-      return {
-        droppable: this._draggable.droppable,
-        index: index
-      };
+      return { droppable: this._draggable.droppable, index };
 
     } else if (this._droppable) {
       return {
