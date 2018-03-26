@@ -8,7 +8,7 @@ import { DragHandleDirective } from './drag-handle.directive';
 import { SwipeModule } from '../swipe/swipe.module';
 import { TransitContainerComponent } from './transit-container/transit-container.component';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
-import { HomeButtonDirective } from './home-button.directive';
+import { OriginControlDirective } from './home-button.directive';
 import { InTransitClassDirective } from './in-transit-class.directive';
 import { TemplateOutletDirective } from './template-outlet.directive';
 import { DragAndDropService } from './drag-and-drop.service';
@@ -94,7 +94,7 @@ import { ActiveClassDirective } from './active-class.directive';
     DragHandleDirective,
     TransitContainerComponent,
     DropZoneComponent,
-    HomeButtonDirective,
+    OriginControlDirective,
     InTransitClassDirective,
     TemplateOutletDirective,
     ActiveClassDirective
@@ -105,7 +105,7 @@ import { ActiveClassDirective } from './active-class.directive';
     DragZoneDirective,
     VideoDirective,
     DragHandleDirective,
-    HomeButtonDirective,
+    OriginControlDirective,
     InTransitClassDirective,
     TemplateOutletDirective,
     ActiveClassDirective

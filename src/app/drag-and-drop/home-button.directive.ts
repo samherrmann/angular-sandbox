@@ -14,17 +14,17 @@ import { DragAndDropService } from './drag-and-drop.service';
  *
  * ### Example
  * ```
- * <button *dndHomeButton>
+ * <button *dndOriginControl>
  *   Home
  * </button>
  * ```
  */
 @Directive({
-  selector: '[dndHomeButton]'
+  selector: '[dndOriginControl]'
 })
-export class HomeButtonDirective implements OnInit, OnDestroy {
+export class OriginControlDirective implements OnInit, OnDestroy {
 
-  private viewRef: EmbeddedViewRef<HomeButtonDirective> = null;
+  private viewRef: EmbeddedViewRef<OriginControlDirective> = null;
 
   private removeClickListener: () => void;
 
@@ -33,7 +33,7 @@ export class HomeButtonDirective implements OnInit, OnDestroy {
   constructor(@SkipSelf() private draggable: DraggableComponent,
     private draggableService: DraggableService,
     private dragAndDropService: DragAndDropService,
-    private templateRef: TemplateRef<HomeButtonDirective>,
+    private templateRef: TemplateRef<OriginControlDirective>,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2) {}
 
