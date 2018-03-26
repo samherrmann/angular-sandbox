@@ -13,13 +13,11 @@ export class CacheRelocationService implements OnDestroy {
 
   private sub: Subscription;
 
-  readonly relocation = this.dragAndDropService.dragEnter.pipe(
-    map(e => {
-      const relocation = this.createRelocationEvent(e);
-      this.handleCaching(e);
-      return relocation;
-    })
-  );
+  readonly operator = map<DragEnterEvent, RelocationEvent>(e => {
+    const relocation = this.createRelocationEvent(e);
+    this.handleCaching(e);
+    return relocation;
+  });
 
   constructor(private dragAndDropService: DragAndDropService) {
     this.sub = this.dragAndDropService.dragEnd.subscribe(() => this.cache.clear());

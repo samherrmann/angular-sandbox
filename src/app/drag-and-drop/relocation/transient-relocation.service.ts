@@ -11,9 +11,7 @@ export class TransientRelocationService implements OnDestroy {
 
   private _origin: Location;
 
-  readonly relocation = this.dragAndDropService.dragEnter.pipe(
-    map(e => this.createRelocationEvent(e))
-  );
+  readonly operator = map<DragEnterEvent, RelocationEvent>(e => this.createRelocationEvent(e));
 
   private subs: Subscription[] = [];
 

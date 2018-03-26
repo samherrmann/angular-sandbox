@@ -3,9 +3,6 @@ import { DragAndDropService } from './drag-and-drop.service';
 import { Subscription } from 'rxjs/Subscription';
 import { SwipeZoneService } from '../swipe/swipe-zone.service';
 import { RelocationService } from './relocation/relocation.service';
-import { TransientRelocationService } from './relocation/transient-relocation.service';
-import { TargetRelocationService } from './relocation/target-relocation.service';
-import { CacheRelocationService } from './relocation/cache-relocation.service';
 
 @Directive({
   selector: '[dndDragZone]'
@@ -14,21 +11,14 @@ export class DragZoneDirective implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  constructor(private dragAndDropService: DragAndDropService,
-    private relocationService: RelocationService,
-    private transientRelocationService: TransientRelocationService,
-    private targetRelocationService: TargetRelocationService,
-    private cacheRelocationService: CacheRelocationService,
+  constructor(private relocationService: RelocationService,
+    private dragAndDropService: DragAndDropService,
     private swipeService: SwipeZoneService,
     private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.swipeService.register(this.elementRef.nativeElement);
-    this.relocationService.init(
-      this.transientRelocationService.relocation,
-      this.targetRelocationService.relocation,
-      this.cacheRelocationService.relocation
-    );
+    this.relocationService.init();
     this.subs.push(
       this.handleSwipe(),
       this.handleSwipeEnd()

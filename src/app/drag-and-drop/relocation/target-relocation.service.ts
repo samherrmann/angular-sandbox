@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { RelocationEvent } from './relocation-event';
-import { DragAndDropService } from '../drag-and-drop.service';
 import { TransientRelocationService } from './transient-relocation.service';
 import { CacheRelocationService } from './cache-relocation.service';
 import { DragEnterEvent } from '../drag-event';
@@ -9,12 +8,9 @@ import { DragEnterEvent } from '../drag-event';
 @Injectable()
 export class TargetRelocationService {
 
-  readonly relocation = this.dragAndDropService.dragEnter.pipe(
-    map(e => this.createRelocationEvent(e))
-  );
+  readonly operator = map<DragEnterEvent, RelocationEvent>(e => this.createRelocationEvent(e));
 
-  constructor(private dragAndDropService: DragAndDropService,
-    private transientRelocationService: TransientRelocationService,
+  constructor(private transientRelocationService: TransientRelocationService,
     private cacheRelocationService: CacheRelocationService) { }
 
   private createRelocationEvent(e: DragEnterEvent): RelocationEvent {

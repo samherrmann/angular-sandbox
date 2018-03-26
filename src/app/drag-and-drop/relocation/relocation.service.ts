@@ -4,16 +4,36 @@ import { map, filter } from 'rxjs/operators';
 import { RelocationEvent } from './relocation-event';
 import { zip } from 'rxjs/observable/zip';
 import { Observable } from 'rxjs/Observable';
+import { DragAndDropService } from '../drag-and-drop.service';
+import { TransientRelocationService } from './transient-relocation.service';
+import { TargetRelocationService } from './target-relocation.service';
+import { CacheRelocationService } from './cache-relocation.service';
+import { OperatorFunction } from 'rxjs/interfaces';
+import { DragEnterEvent } from '../drag-event';
 
 @Injectable()
 export class RelocationService implements OnDestroy {
 
   private sub: Subscription;
 
-  constructor() { }
+  private operators: OperatorFunction<DragEnterEvent, RelocationEvent>[] = [];
 
-  init(...relocations: Observable<RelocationEvent>[]) {
-    this.sub = this.handleRelocations(relocations);
+  constructor(private dragAndDropService: DragAndDropService,
+    transientRelocationService: TransientRelocationService,
+    targetRelocationService: TargetRelocationService,
+    cacheRelocationService: CacheRelocationService) {
+
+    this.operators.push(
+      transientRelocationService.operator,
+      targetRelocationService.operator,
+      cacheRelocationService.operator
+    );
+  }
+
+  init(): void {
+    this.sub = this.handleRelocations(
+      this.operators.map(operator => this.dragAndDropService.dragEnter.pipe(operator))
+    );
   }
 
   private handleRelocations(relocations: Observable<RelocationEvent>[]): Subscription {
