@@ -29,7 +29,7 @@ export class TargetRelocationService {
   private createRelocationEvent(e: DragEnterEvent): RelocationEvent {
     let relocation: RelocationEvent = null;
 
-    // if the target draggable is inside a swappable, then we need to move that
+    // If the target draggable is inside a swappable, then we need to move that
     // draggable into the origin location of the transient draggable.
     if (this.isOverDraggableTargetInsideSwappable(e) &&
       !this.cacheRelocationService.isOverCache(e)) {

@@ -52,7 +52,7 @@ export class CacheRelocationService implements OnDestroy {
   private createRelocationEvent(e: DragEnterEvent): RelocationEvent {
     let relocation: RelocationEvent = null;
 
-    // create relocation event if cache is not empty
+    // Create relocation event if cache is not empty
     if (!this.cache.isEmpty()) {
       relocation = new RelocationEvent(
         this.cache.draggable(),
@@ -64,7 +64,7 @@ export class CacheRelocationService implements OnDestroy {
   }
 
   private handleCaching(e: DragEnterEvent): void {
-    // add target to cache if target is inside a swappable and the
+    // Add target to cache if target is inside a swappable and the
     // target is not the cached draggable.
     if (this.isOverDraggableInSwappable(e) && !this.isOverCache(e)) {
       this.cache.set(e.dropZone.draggable(), e.dropZone.location());

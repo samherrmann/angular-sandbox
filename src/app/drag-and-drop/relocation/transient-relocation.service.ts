@@ -44,7 +44,7 @@ export class TransientRelocationService implements OnDestroy {
     const index = this.dropIndex(e);
 
     let relocation: RelocationEvent = null;
-    // only emit a relocation event if the requested position is different from the
+    // Only emit a relocation event if the requested position is different from the
     // current position.
     if (e.draggable.droppable !== e.dropZone.location().droppable || e.draggable.index() !== index) {
       relocation = new RelocationEvent(
@@ -61,7 +61,7 @@ export class TransientRelocationService implements OnDestroy {
     let index = target.index;
 
     if (index) {
-      // adjust the index if the draggable is currently located before the drop-zone
+      // Adjust the index if the draggable is currently located before the drop-zone
       // in the same container, i.e. if that's the case, the index of the drop-zone
       // will be reduced by one when the draggable is removed from its current location.
       if (target.droppable === e.draggable.droppable && e.draggable.index() < index) {

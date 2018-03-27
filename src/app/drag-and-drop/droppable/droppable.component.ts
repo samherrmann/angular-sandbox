@@ -54,13 +54,13 @@ export class DroppableComponent implements OnInit, OnDestroy {
    */
   @Input()
   set name(value: string) {
-    // unregister droppable if the new name
+    // Unregister droppable if the new name
     // is empty or if the droppable was already
     // registered under a different name.
     if (!value || (value && this._name)) {
       this.dragAndDropService.droppables.unregister(this);
     }
-    // register droppable with new name.
+    // Register droppable with new name.
     if (value) {
       this.dragAndDropService.droppables.register(value, this);
     }

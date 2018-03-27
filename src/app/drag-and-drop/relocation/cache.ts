@@ -10,7 +10,7 @@ export class Cache {
     private _location: Location = null) { }
 
   /**
-   * caches a draggable
+   * Caches a draggable
    * @param draggable The draggable to cache.
    * @param location The location of the draggable to cache.
    */
