@@ -45,7 +45,6 @@ export class OriginControlDirective implements OnInit, OnDestroy {
     this.sub = this.draggableService.insert.subscribe(e => {
       if (!this.doesViewExist() && !this.isAtOrigin() && this.hasAnOrigin()) {
         this.createView();
-
       } else if (this.doesViewExist() && this.isAtOrigin()) {
         this.removeView();
       }

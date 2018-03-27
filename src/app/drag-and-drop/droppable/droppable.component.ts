@@ -47,7 +47,7 @@ export class DroppableComponent implements OnInit, OnDestroy {
   /**
    * Registers the droppable with a name. A droppable must be registered
    * with a name if the ability to return the draggable back to its
-   * origin through the use of {@link HomeButtonDirective} is desired.
+   * origin through the use of {@link OriginControlDirective} is desired.
    * The name allows the origin droppable to be removed from the DOM
    * and re-added (new instance) without losing the "return to origin"
    * capability.
