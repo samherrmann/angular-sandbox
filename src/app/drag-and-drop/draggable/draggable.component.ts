@@ -9,56 +9,33 @@ import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { TransitContainerComponent } from '../transit-container/transit-container.component';
 import { DraggableFactoryService } from './draggable-factory.service';
-import { ShadowService } from './shadow.service';
 
 /**
  * This component is the main container for draggable content.
+ *
+ * When a draggable is being dragged, the content follows the pointer and this
+ * component is solely a placeholder indicating where the content will be
+ * dropped at any given time. During this period, the component contains
+ * the CSS class `in-transit.
+ *
+ * To style the placeholder in an application, use `dnd-draggable.in-transit`
+ * as the selector.
  */
 @Component({
   selector: 'dnd-draggable',
   templateUrl: './draggable.component.html',
   styleUrls: ['./draggable.component.scss'],
   providers: [
-    DraggableService,
-    ShadowService
+    DraggableService
   ]
 })
 export class DraggableComponent implements OnInit, OnDestroy {
 
+  @HostBinding('class.in-transit')
+  isInTransit = false;
+
   @ViewChild(TransitContainerComponent)
   transitContainer: TransitContainerComponent;
-
-  @ViewChild(TransitContainerComponent, { read: ElementRef })
-  transitContainerElementRef: ElementRef;
-
-  /**
-   * The static width of this component on `dragstart`.
-   * `null` at all other times.
-   *
-   * When a drag of the draggable is initiated, the
-   * draggable creates a temporary static width and
-   * height. The purpose for the static width and
-   * height is to allow the real draggable content to
-   * be removed from the flow of the document (to
-   * follow the pointer) while not affecting the rest
-   * of the document layout. Also, after the draggable
-   * content is removed, a shadow is inserted in the
-   * real content's place to provide the same resize
-   * behaviour as the real content. Once the shadow is
-   * in its place, the static width and height are
-   * removed.
-   */
-  @HostBinding('style.width')
-  width: string;
-
-  /**
-   * The static height of this component on drag start.
-   * `null` at all other times.
-   *
-   * See {@link width}
-   */
-  @HostBinding('style.height')
-  height: string;
 
   /**
    * The {@link DroppableComponet} that the draggable
@@ -83,8 +60,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
   constructor(private elementRef: ElementRef,
               private draggableService: DraggableService,
               private dragAndDropService: DragAndDropService,
-              private draggableFactoryService: DraggableFactoryService,
-              private shadowService: ShadowService) {
+              private draggableFactoryService: DraggableFactoryService) {
     this.draggableFactoryService.register(this);
   }
 
@@ -121,7 +97,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
    * Detaches the draggable from its droppable (`ViewContainerRef`).
    */
   detatch(): void {
-    this.unsetSize();
     this.dragAndDropService.emitRemove(this);
     this.droppable.viewContainerRef.detach(this.index());
   }
@@ -163,34 +138,17 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private handleDragStart(): Subscription {
     return this.draggableService.dragStart.subscribe(() => {
       const clientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
-      this.width = clientRect.width + 'px';
-      this.height = clientRect.height + 'px';
+      this.isInTransit = true;
 
       this.transitContainer.onDragStart(clientRect);
       this.clearSelection(this.elementRef.nativeElement);
-
-      this.shadowService.insert(this.elementRef.nativeElement, this.content());
     });
   }
 
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
-      this.shadowService.remove();
-
-      // ensure width and height are unset in case the
-      // draggable was never detatched (i.e. the draggable
-      // was never moved).
-      this.unsetSize();
+      this.isInTransit = false;
     });
-  }
-
-  /**
-   * Resets the height and width property of this component
-   * to `null`.
-   */
-  private unsetSize(): void {
-    this.width = null;
-    this.height = null;
   }
 
   /**
@@ -206,23 +164,5 @@ export class DraggableComponent implements OnInit, OnDestroy {
     if (selection.containsNode(draggable, true)) {
       selection.empty();
     }
-  }
-
-  /**
-   * Returns a reference to the content root elements.
-   *
-   * This method obtains a reference to the content root elements by accessing
-   * the DOM directly. Ideally a reference to the content would be obtained using
-   * `@ContentChild` or `@ContentChildren`. Angular is however currently not able
-   * to query content generically. To make use of `@ContentChild` or
-   * `@ContentChildren` would require the user of this library to tag the root
-   * content elements with either a predefined template variable or a directive.
-   * That is undesireable because it's extra overhead to the library user and is
-   * more error prone.
-   *
-   * See: https://github.com/angular/angular/issues/8563
-   */
-  private content(): HTMLElement[] {
-    return Array.from((this.transitContainerElementRef.nativeElement as HTMLElement).children) as HTMLElement[];
   }
 }

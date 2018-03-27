@@ -2,6 +2,16 @@
   display: block;
   position: relative;
   flex-shrink: 0;
+  box-sizing: border-box;
+
+  &.in-transit {
+    // This padding creates a default min-width
+    // based on the width of the draggable. The
+    // "in-transit" style may be overwritten
+    // within an application.
+    padding-top: 4%;
+    background-color: cyan;
+  }
 }
 
 dnd-transit-container {
