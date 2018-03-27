@@ -47,9 +47,9 @@ export class DragZoneDirective implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private relocationService: RelocationService,
-    private dragAndDropService: DragAndDropService,
-    private swipeService: SwipeZoneService,
-    private elementRef: ElementRef) { }
+              private dragAndDropService: DragAndDropService,
+              private swipeService: SwipeZoneService,
+              private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.swipeService.register(this.elementRef.nativeElement);

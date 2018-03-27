@@ -13,10 +13,10 @@ import { SwipeZoneService } from '../swipe/swipe-zone.service';
 export class DragHandleDirective implements OnInit {
 
   constructor(private dragAndDropService: DragAndDropService,
-    @SkipSelf() private draggable: DraggableComponent,
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private swipeService: SwipeZoneService) { }
+              @SkipSelf() private draggable: DraggableComponent,
+              private renderer: Renderer2,
+              private elementRef: ElementRef,
+              private swipeService: SwipeZoneService) { }
 
   ngOnInit() {
     // We need to disable `touch-action`, otherwise the browser intercepts the

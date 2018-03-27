@@ -24,7 +24,7 @@ export class TargetRelocationService {
   readonly operator = map<DragEnterEvent, RelocationEvent>(e => this.createRelocationEvent(e));
 
   constructor(private transientRelocationService: TransientRelocationService,
-    private cacheRelocationService: CacheRelocationService) { }
+              private cacheRelocationService: CacheRelocationService) {}
 
   private createRelocationEvent(e: DragEnterEvent): RelocationEvent {
     let relocation: RelocationEvent = null;

@@ -6,9 +6,7 @@ import { DroppableComponent } from '../droppable/droppable.component';
  * a draggable.
  */
 export class RelocationEvent {
-  constructor(
-    public draggable: DraggableComponent,
-    public droppable: DroppableComponent,
-    public index: number
-  ) { }
+  constructor(public draggable: DraggableComponent,
+              public droppable: DroppableComponent,
+              public index: number) {}
 }

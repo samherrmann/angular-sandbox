@@ -24,7 +24,7 @@ export class SwipeTargetDirective implements OnInit {
   swipeOver = this.swipeTargetService.swipeOver;
 
   constructor(private swipeTargetService: SwipeTargetService,
-    private elementRef: ElementRef) { }
+              private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.swipeTargetService.register(this.elementRef.nativeElement);

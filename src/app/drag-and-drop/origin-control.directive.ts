@@ -31,11 +31,11 @@ export class OriginControlDirective implements OnInit, OnDestroy {
   private sub: Subscription;
 
   constructor(@SkipSelf() private draggable: DraggableComponent,
-    private draggableService: DraggableService,
-    private dragAndDropService: DragAndDropService,
-    private templateRef: TemplateRef<OriginControlDirective>,
-    private viewContainerRef: ViewContainerRef,
-    private renderer: Renderer2) {}
+              private draggableService: DraggableService,
+              private dragAndDropService: DragAndDropService,
+              private templateRef: TemplateRef<OriginControlDirective>,
+              private viewContainerRef: ViewContainerRef,
+              private renderer: Renderer2) {}
 
   ngOnInit() {
     if (!this.isAtOrigin() && this.hasAnOrigin()) {

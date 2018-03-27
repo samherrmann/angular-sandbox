@@ -32,8 +32,7 @@ export class VideoDirective implements OnInit, OnDestroy {
   private isPaused = false;
 
   constructor(elementRef: ElementRef,
-    private draggableService: DraggableService) {
-
+              private draggableService: DraggableService) {
     this.video = elementRef.nativeElement;
   }
 

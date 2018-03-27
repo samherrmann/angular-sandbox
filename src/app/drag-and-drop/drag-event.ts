@@ -29,31 +29,27 @@ export type DragEventType =
 
 export class RemoveEvent {
   constructor(public type: DragEventType,
-    public draggable: DraggableComponent) {}
+              public draggable: DraggableComponent) { }
 }
 
-export class InsertEvent extends RemoveEvent {}
+export class InsertEvent extends RemoveEvent { }
 
 export class DragEvent extends RemoveEvent {
-  constructor(
-    type: DragEventType,
-    public pointerEvent: PointerEvent,
-    draggable: DraggableComponent
-  ) {
+  constructor(type: DragEventType,
+              public pointerEvent: PointerEvent,
+              draggable: DraggableComponent) {
     super(type, draggable);
   }
 }
 
 export class DragOverEvent extends DragEvent {
-  constructor(
-    type: DragEventType,
-    pointerEvent: PointerEvent,
-    draggable: DraggableComponent,
-    public dropZone: DropZoneComponent
-  ) {
+  constructor(type: DragEventType,
+              pointerEvent: PointerEvent,
+              draggable: DraggableComponent,
+              public dropZone: DropZoneComponent) {
     super(type, pointerEvent, draggable);
   }
 }
 
-export class DragEnterEvent extends DragOverEvent {}
-export class DragLeaveEvent extends DragOverEvent {}
+export class DragEnterEvent extends DragOverEvent { }
+export class DragLeaveEvent extends DragOverEvent { }

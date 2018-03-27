@@ -52,7 +52,7 @@ export class TemplateOutletDirective implements OnInit {
   dndTemplateOutletId = '';
 
   constructor(private draggableFactoryService: DraggableFactoryService,
-    @SkipSelf() private droppable: DroppableComponent) {
+              @SkipSelf() private droppable: DroppableComponent) {
   }
 
   ngOnInit() {

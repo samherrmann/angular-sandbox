@@ -29,10 +29,10 @@ export class DropZoneComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
-    private swipeTargetService: SwipeTargetService,
-    private elementRef: ElementRef,
-    @Optional() @SkipSelf() private _draggable: DraggableComponent,
-    @Optional() @SkipSelf() private _droppable: DroppableComponent) { }
+              private swipeTargetService: SwipeTargetService,
+              private elementRef: ElementRef,
+              @Optional() @SkipSelf() private _draggable: DraggableComponent,
+              @Optional() @SkipSelf() private _droppable: DroppableComponent) {}
 
   ngOnInit() {
     this.swipeTargetService.register(this.elementRef.nativeElement);

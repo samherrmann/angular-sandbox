@@ -84,11 +84,11 @@ export class DroppableComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    @Attribute('swappable') swappable) {
-      this.swappable = swappable !== null;
-    }
+              private renderer: Renderer2,
+              private elementRef: ElementRef,
+              @Attribute('swappable') swappable) {
+    this.swappable = swappable !== null;
+  }
 
   ngOnInit() {
     this.subs.push(this.handleWheel());

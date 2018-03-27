@@ -31,10 +31,9 @@ export class RelocationService implements OnDestroy {
   private operators: OperatorFunction<DragEnterEvent, RelocationEvent>[] = [];
 
   constructor(private dragAndDropService: DragAndDropService,
-    transientRelocationService: TransientRelocationService,
-    targetRelocationService: TargetRelocationService,
-    cacheRelocationService: CacheRelocationService) {
-
+              transientRelocationService: TransientRelocationService,
+              targetRelocationService: TargetRelocationService,
+              cacheRelocationService: CacheRelocationService) {
     this.operators.push(
       transientRelocationService.operator,
       targetRelocationService.operator,

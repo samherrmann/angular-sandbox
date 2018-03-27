@@ -1,7 +1,7 @@
 
 export class SwipeEvent {
   constructor(public type: SwipeEventType,
-    public pointerEvent: PointerEvent) { }
+              public pointerEvent: PointerEvent) { }
 }
 
 /**

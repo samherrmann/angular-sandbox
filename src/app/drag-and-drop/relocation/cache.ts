@@ -5,9 +5,8 @@ import { Location } from './location';
  * A cache for draggables.
  */
 export class Cache {
-  constructor(
-    private _draggable: DraggableComponent = null,
-    private _location: Location = null) { }
+  constructor(private _draggable: DraggableComponent = null,
+              private _location: Location = null) {}
 
   /**
    * Caches a draggable

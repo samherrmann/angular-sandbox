@@ -35,7 +35,7 @@ import { SwipeZoneService } from './swipe-zone.service';
 export class SwipeZoneDirective implements OnInit {
 
   constructor(private swipeService: SwipeZoneService,
-    private elementRef: ElementRef) { }
+              private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.swipeService.register(this.elementRef.nativeElement);

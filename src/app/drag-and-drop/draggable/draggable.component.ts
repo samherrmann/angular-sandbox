@@ -81,11 +81,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private elementRef: ElementRef,
-    private draggableService: DraggableService,
-    private dragAndDropService: DragAndDropService,
-    private draggableFactoryService: DraggableFactoryService,
-    private shadowService: ShadowService) {
-
+              private draggableService: DraggableService,
+              private dragAndDropService: DragAndDropService,
+              private draggableFactoryService: DraggableFactoryService,
+              private shadowService: ShadowService) {
     this.draggableFactoryService.register(this);
   }
 
