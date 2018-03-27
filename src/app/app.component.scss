@@ -40,6 +40,7 @@ dnd-droppable {
 dnd-droppable.drawer {
   flex-shrink: 0;
   width: 25%;
+  min-width: 200px;
   height: 100%;
   border-right: 1px solid black;
 
