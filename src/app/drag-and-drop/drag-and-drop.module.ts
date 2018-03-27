@@ -24,27 +24,14 @@ import { ActiveClassDirective } from './active-class.directive';
  *
  * ### Features:
  * -  Support for different pointer devices, i.e. Mouse and touch screen.
- * -  True Angular re-parenting. When a draggable is moved from one droppable
- *    to another, it is not moved through direct DOM manipulation, but through
- *    the use of Angular's `ViewContainerRef`. This ensures that the draggable
- *    is attached in the correct location in Angular's change detection tree.
+ * -  True Angular re-parenting. When a draggable is moved from one droppable to
+ *    another, it is not moved through direct DOM manipulation, but through the
+ *    use of Angular's `ViewContainerRef`. This ensures that the draggable is
+ *    attached in the correct location in Angular's change detection tree.
  *    Components may be destroyed without affecting draggables that may have
  *    resided in those components in the past.
- * -  Shadow over ghost: In most drag and drop libraries when a draggable is
- *    being dragged, a clone is created that follows the pointer, usually refered
- *    to as the "ghost". Meanwhile, the real component jumps from one drop
- *    location to another as the pointer hovers over the drop location. This
- *    approach does not work nicely for live components. If the draggable contains
- *    a video, for example, then the ghost does not show the current state of the
- *    video but the video's initial state. That may be misleading to users as it
- *    may make them believe that the video was reset when they started dragging
- *    the draggable that contains the video. With the shadow approach, the ghost
- *    is the real component that follows the pointer and the shadow is a clone
- *    that jumps from droppable to droppable. The limitation of the clone not
- *    representing the true state of the draggable is still exists with this
- *    approach. The benefit in this case though is that the ghost can be styled
- *    to a solid colour, hiding the content, without creating unexpected surprises
- *    for the users.
+ * -  Live draggable components, such as videos, follow the pointer as they are
+ *    being dragged without affecting their state.
  * -  Ability to sort draggables within a droppable.
  * -  Ability to swap draggables between droppables.
  *
