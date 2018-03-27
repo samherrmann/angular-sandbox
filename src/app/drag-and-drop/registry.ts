@@ -25,15 +25,18 @@ export class Registry<T> {
 
   /**
    * Unregisters a value from the registry.
+   * If the value is registered with multiple
+   * keys then all instances are deleted.
    * @param value The value to unregister.
    */
   unregister(value: T): boolean {
-    for (const [k, v] of Array.from(this.items)) {
-      if (v === value) {
-        return this.items.delete(k);
+    let hit = 0;
+    this.items.forEach((v, k) => {
+      if (v === value && this.items.delete(k)) {
+        hit++;
       }
-    }
-    return false;
+    });
+    return hit > 0;
   }
 
   /**
