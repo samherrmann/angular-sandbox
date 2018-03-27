@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
  * is being dragged, the {@link DraggableComponent} hosts the
  * shadow and jumps from droppable to droppable as the pointer
  * moves over them. This component hosts the real draggable
- * conen and follows the pointer. Ideally this component would
+ * content and follows the pointer. Ideally this component would
  * be a directive that is applied on the root element of the
  * draggable content. Adding a directive to an element dynamically
  * is as of Angular v5 not possible
