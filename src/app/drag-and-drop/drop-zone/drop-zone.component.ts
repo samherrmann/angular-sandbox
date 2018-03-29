@@ -50,14 +50,10 @@ export class DropZoneComponent implements OnInit, OnDestroy {
       if (this.dropPosition === 'after' && !this._draggable.droppable.swappable) {
         index += 1;
       }
-
-      return { droppable: this._draggable.droppable, index };
+      return new Location(this._draggable.droppable, index);
 
     } else if (this._droppable) {
-      return {
-        droppable: this._droppable,
-        index: null
-      };
+      return new Location(this._droppable, null);
     }
   }
 
