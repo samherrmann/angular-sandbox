@@ -1,13 +1,9 @@
-import {
-  Component, OnInit, OnDestroy, ViewChild,
-  HostBinding, ElementRef, ViewRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, ElementRef, ViewRef } from '@angular/core';
 import { DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
-import { TransitContainerComponent } from '../transit-container/transit-container.component';
 import { DraggableFactoryService } from './draggable-factory.service';
 
 /**
@@ -33,9 +29,6 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.in-transit')
   isInTransit = false;
-
-  @ViewChild(TransitContainerComponent)
-  transitContainer: TransitContainerComponent;
 
   /**
    * The {@link DroppableComponet} that the draggable
@@ -137,10 +130,7 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragStart(): Subscription {
     return this.draggableService.dragStart.subscribe(() => {
-      const clientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
       this.isInTransit = true;
-
-      this.transitContainer.onDragStart(clientRect);
       this.clearSelection(this.elementRef.nativeElement);
     });
   }
