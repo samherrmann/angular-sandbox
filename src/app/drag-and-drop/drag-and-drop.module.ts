@@ -10,7 +10,6 @@ import { TransitContainerComponent } from './transit-container/transit-container
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { OriginControlDirective } from './origin-control.directive';
 import { InTransitClassDirective } from './in-transit-class.directive';
-import { TemplateOutletDirective } from './template-outlet.directive';
 import { DragAndDropService } from './drag-and-drop.service';
 import { RelocationService } from './relocation/relocation.service';
 import { TransientRelocationService } from './relocation/transient-relocation.service';
@@ -18,6 +17,7 @@ import { TargetRelocationService } from './relocation/target-relocation.service'
 import { CacheRelocationService } from './relocation/cache-relocation.service';
 import { DraggableFactoryService } from './draggable/draggable-factory.service';
 import { ActiveClassDirective } from './active-class.directive';
+import { ForDirective } from './for.directive';
 
 /**
  * This module provides the ability to drag and drop UI components.
@@ -41,18 +41,12 @@ import { ActiveClassDirective } from './active-class.directive';
  * Host Component Template:
  * ```html
  * <dnd-droppable>
- *   <ng-container *ngFor="let video of videos">
- *     <ng-container *dndTemplateOutlet="draggable; context: video"></ng-container>
- *   </ng-container>
- * </dnd-droppable>
- *
- * <ng-template #draggable let-src="src">
- *   <dnd-draggable>
+ *   <dnd-draggable *dndFor="let video of videos; group 'video'">
  *     <app-example>
- *       <video [src]="src" dndVideo></video>
+ *       <video [src]="video.src" dndVideo></video>
  *     </app-example>
  *   </dnd-draggable>
- * </ng-template>
+ * </dnd-droppable>
  * ```
  *
  * Host Component Class:
@@ -83,8 +77,8 @@ import { ActiveClassDirective } from './active-class.directive';
     DropZoneComponent,
     OriginControlDirective,
     InTransitClassDirective,
-    TemplateOutletDirective,
-    ActiveClassDirective
+    ActiveClassDirective,
+    ForDirective
   ],
   exports: [
     DroppableComponent,
@@ -94,8 +88,8 @@ import { ActiveClassDirective } from './active-class.directive';
     DragHandleDirective,
     OriginControlDirective,
     InTransitClassDirective,
-    TemplateOutletDirective,
-    ActiveClassDirective
+    ActiveClassDirective,
+    ForDirective
   ],
   entryComponents: [
     DraggableComponent
