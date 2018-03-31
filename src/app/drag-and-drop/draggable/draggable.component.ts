@@ -123,6 +123,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.dragAndDropService.emitInsert(this);
   }
 
+  clientRect(): ClientRect {
+    return (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
+  }
+
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
     this.dragAndDropService.draggables.unregister(this);

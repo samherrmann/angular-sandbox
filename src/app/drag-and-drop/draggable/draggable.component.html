@@ -1,8 +1,9 @@
-<dnd-transit-container>
-  <ng-content></ng-content>
-</dnd-transit-container>
+<ng-content></ng-content>
 
 <div class="mask" *ngIf="target | async">
   <dnd-drop-zone dropPosition="before"></dnd-drop-zone>
   <dnd-drop-zone dropPosition="after"></dnd-drop-zone>
 </div>
+
+<div class="mask in-transit-mask" *ngIf="isInTransit"></div>
+<dnd-transit-container></dnd-transit-container>
