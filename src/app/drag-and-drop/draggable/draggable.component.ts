@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { DraggableFactoryService } from './draggable-factory.service';
+import { TransitService } from './transit.service';
 
 /**
  * This component is the main container for draggable content.
@@ -22,13 +23,17 @@ import { DraggableFactoryService } from './draggable-factory.service';
   templateUrl: './draggable.component.html',
   styleUrls: ['./draggable.component.scss'],
   providers: [
-    DraggableService
+    DraggableService,
+    TransitService
   ]
 })
 export class DraggableComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.in-transit')
   isInTransit = false;
+
+  @HostBinding('style.height')
+  height = null;
 
   /**
    * The {@link DroppableComponet} that the draggable
@@ -51,9 +56,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private elementRef: ElementRef,
-              private draggableService: DraggableService,
-              private dragAndDropService: DragAndDropService,
-              private draggableFactoryService: DraggableFactoryService) {
+    private draggableService: DraggableService,
+    private dragAndDropService: DragAndDropService,
+    private draggableFactoryService: DraggableFactoryService,
+    private transitService: TransitService) {
     this.draggableFactoryService.register(this);
   }
 
@@ -61,8 +67,10 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.draggableService.register(this);
     this.subs.push(
       this.handleDragStart(),
-      this.handleDragEnd()
+      this.handleDragEnd(),
+      this.handleHeight()
     );
+    this.transitService.register(this.elementRef);
     this.target = this.draggableService.target;
   }
 
@@ -138,6 +146,17 @@ export class DraggableComponent implements OnInit, OnDestroy {
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
       this.isInTransit = false;
+    });
+  }
+
+  private handleHeight(): Subscription {
+    return this.transitService.height.subscribe(h => {
+      if (h === null) {
+        this.height = h;
+
+      } else if (this.height !== null || (this.elementRef.nativeElement as HTMLElement).clientHeight === 0) {
+        this.height = `${h}px`;
+      }
     });
   }
 

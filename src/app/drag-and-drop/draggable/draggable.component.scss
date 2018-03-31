@@ -9,8 +9,13 @@
     // based on the width of the draggable. The
     // "in-transit" style may be overwritten
     // within an application.
-    padding-top: 4%;
+    // padding-top: 4%;
     background-color: cyan;
+
+    dnd-transit-container {
+      height: auto;
+      width: auto;
+    }
   }
 }
 

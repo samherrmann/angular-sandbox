@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding, ElementRef } from '@angular/core';
 import { DraggableService } from '../draggable/draggable.service';
 import { Subscription } from 'rxjs/Subscription';
+import { TransitService } from '../draggable/transit.service';
 
 /**
  * This component facilitates the positioning of the draggable view while the
@@ -27,10 +28,7 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
   isInTransit = false;
 
   @HostBinding('style.width')
-  width: string;
-
-  @HostBinding('style.height')
-  height: string;
+  width = null;
 
   @HostBinding('style.top')
   top: string;
@@ -44,13 +42,15 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
   private subs: Subscription[] = [];
 
   constructor(private draggableService: DraggableService,
+              private transitService: TransitService,
               private elementRef: ElementRef) { }
 
   ngOnInit() {
     this.subs.push(
       this.handleDragStart(),
       this.handleDrag(),
-      this.handleDragEnd()
+      this.handleDragEnd(),
+      this.handleWidth()
     );
   }
 
@@ -60,13 +60,15 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
 
   private handleDragStart() {
     return this.draggableService.dragStart.subscribe(e => {
-      const clientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
-      this.width = clientRect.width + 'px';
-      this.height = clientRect.height + 'px';
+      const clientRect = this.clientRect();
       this.isInTransit = true;
       this.top = clientRect.top + 'px';
       this.left = clientRect.left + 'px';
     });
+  }
+
+  private clientRect(): ClientRect {
+    return (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
   }
 
   private handleDrag() {
@@ -78,11 +80,20 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
   private handleDragEnd() {
     return this.draggableService.dragEnd.subscribe(e => {
       this.isInTransit = false;
-      this.width = null;
-      this.height = null;
       this.top = null;
       this.left = null;
       this.transform = null;
+    });
+  }
+
+  private handleWidth(): Subscription {
+    return this.transitService.width.subscribe(w => {
+      if (w === null) {
+        this.width = w;
+      } else {
+        this.width = `${w}px`;
+        this.transitService.setHeight(this.clientRect().height);
+      }
     });
   }
 }
