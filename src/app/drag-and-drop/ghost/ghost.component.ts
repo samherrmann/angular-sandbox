@@ -17,11 +17,11 @@ import { Subscription } from 'rxjs/Subscription';
  * module.
  */
 @Component({
-  selector: 'dnd-transit-container',
-  templateUrl: './transit-container.component.html',
-  styleUrls: ['./transit-container.component.scss']
+  selector: 'dnd-ghost',
+  templateUrl: './ghost.component.html',
+  styleUrls: ['./ghost.component.scss']
 })
-export class TransitContainerComponent implements OnInit, OnDestroy {
+export class GhostComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.in-transit')
   isInTransit = false;

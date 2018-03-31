@@ -6,7 +6,7 @@ import { DragZoneDirective } from './drag-zone.directive';
 import { VideoDirective } from './video.directive';
 import { DragHandleDirective } from './drag-handle.directive';
 import { SwipeModule } from '../swipe/swipe.module';
-import { TransitContainerComponent } from './transit-container/transit-container.component';
+import { GhostComponent } from './ghost/ghost.component';
 import { DropZoneComponent } from './drop-zone/drop-zone.component';
 import { OriginControlDirective } from './origin-control.directive';
 import { InTransitClassDirective } from './in-transit-class.directive';
@@ -73,7 +73,7 @@ import { ForDirective } from './for.directive';
     DragZoneDirective,
     VideoDirective,
     DragHandleDirective,
-    TransitContainerComponent,
+    GhostComponent,
     DropZoneComponent,
     OriginControlDirective,
     InTransitClassDirective,
