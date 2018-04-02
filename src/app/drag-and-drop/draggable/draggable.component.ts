@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy, HostBinding, ElementRef, ViewRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, ElementRef, ViewRef, ViewChild } from '@angular/core';
 import { DraggableService } from './draggable.service';
 import { DroppableComponent } from '../droppable/droppable.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { DragAndDropService } from '../drag-and-drop.service';
 import { DraggableFactoryService } from './draggable-factory.service';
+import { TransitService } from './transit.service';
+import { TransitContainerComponent } from '../transit-container/transit-container.component';
 
 /**
  * This component is the main container for draggable content.
@@ -22,13 +24,23 @@ import { DraggableFactoryService } from './draggable-factory.service';
   templateUrl: './draggable.component.html',
   styleUrls: ['./draggable.component.scss'],
   providers: [
-    DraggableService
+    DraggableService,
+    TransitService
   ]
 })
 export class DraggableComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.in-transit')
   isInTransit = false;
+
+  @HostBinding('style.height')
+  height = null;
+
+  @HostBinding('style.width')
+  width = null;
+
+  @ViewChild(TransitContainerComponent)
+  transitContainer: TransitContainerComponent;
 
   /**
    * The {@link DroppableComponet} that the draggable
@@ -40,6 +52,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
    * See {@link DraggableService.target}
    */
   target: Observable<boolean>;
+
+  removedFrom: DroppableComponent;
 
   private _origin = '';
 
@@ -61,6 +75,8 @@ export class DraggableComponent implements OnInit, OnDestroy {
     this.draggableService.register(this);
     this.subs.push(
       this.handleDragStart(),
+      this.handleRemove(),
+      this.handleInsert(),
       this.handleDragEnd()
     );
     this.target = this.draggableService.target;
@@ -130,15 +146,53 @@ export class DraggableComponent implements OnInit, OnDestroy {
 
   private handleDragStart(): Subscription {
     return this.draggableService.dragStart.subscribe(() => {
+      const clientRect = this.clientRect();
+      this.height = clientRect.height + 'px';
+      this.width = clientRect.width + 'px';
       this.isInTransit = true;
       this.clearSelection(this.elementRef.nativeElement);
+    });
+  }
+
+  private handleRemove(): Subscription {
+    return this.draggableService.remove.subscribe(e => {
+      this.removedFrom = e.draggable.droppable;
+    });
+  }
+
+  private handleInsert(): Subscription {
+    return this.draggableService.insert.subscribe(e => {
+      if (this.removedFrom !== this.droppable) {
+        this.height = null;
+        this.width = null;
+
+        requestAnimationFrame(() => {
+
+          const height = (this.elementRef.nativeElement as HTMLElement).offsetHeight;
+          if (height === 0) {
+            this.transitContainer.width = this.clientRect().width + 'px';
+            this.transitContainer.height = 'auto';
+
+            requestAnimationFrame(() => {
+              const clientRect = this.transitContainer.clientRect();
+              this.height = clientRect.height + 'px';
+            });
+          }
+        });
+      }
     });
   }
 
   private handleDragEnd(): Subscription {
     return this.draggableService.dragEnd.subscribe(e => {
       this.isInTransit = false;
+      this.height = null;
+      this.width = null;
     });
+  }
+
+  private clientRect(): ClientRect {
+    return (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
   }
 
   /**

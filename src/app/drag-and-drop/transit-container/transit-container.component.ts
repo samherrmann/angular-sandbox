@@ -54,13 +54,17 @@ export class TransitContainerComponent implements OnInit, OnDestroy {
     );
   }
 
+  clientRect(): ClientRect {
+    return (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
+  }
+
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
   private handleDragStart() {
     return this.draggableService.dragStart.subscribe(e => {
-      const clientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
+      const clientRect = this.clientRect();
       this.width = clientRect.width + 'px';
       this.height = clientRect.height + 'px';
       this.isInTransit = true;
