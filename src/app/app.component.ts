@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { timer } from 'rxjs';
+import { timer, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +8,9 @@ import { timer } from 'rxjs';
 })
 export class AppComponent {
 
-  output = timer(0, 1000);
+  output = timer(0, 1000).pipe(
+    (source: Observable<number>) => {
+      return source;
+    }
+  );
 }
