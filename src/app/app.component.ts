@@ -15,19 +15,17 @@ export class AppComponent {
   );
 
   private operatorFactory(): OperatorFunction<number, number> {
-    return this.operator;
-  }
+    return (source: Observable<number>) => {
+      return new Observable<number>(observer => {
+        const sub = source.subscribe((value) => {
+          console.log(value);
+          observer.next(value);
+        });
 
-  private operator(source: Observable<number>) {
-    return new Observable<number>(observer => {
-      const sub = source.subscribe((value) => {
-        console.log(value);
-        observer.next(value);
+        // on unsubscibe
+        return () => sub.unsubscribe();
       });
-
-      // on unsubscibe
-      return () => sub.unsubscribe();
-    });
+    };
   }
 
   toggleOutput(): void {
