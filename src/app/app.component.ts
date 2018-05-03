@@ -13,15 +13,15 @@ export class AppComponent {
   output = timer(0, 1000).pipe(
     this.operatorFactory((value) => {
       console.log(value);
+      return value * 2;
     })
   );
 
-  private operatorFactory(fn: (value: number) => void): OperatorFunction<number, number> {
+  private operatorFactory(fn: (value: number) => number): OperatorFunction<number, number> {
     return (source: Observable<number>) => {
       return new Observable<number>(observer => {
         const sub = source.subscribe((value) => {
-          fn(value);
-          observer.next(value);
+          observer.next(fn(value));
         });
 
         // on unsubscibe
