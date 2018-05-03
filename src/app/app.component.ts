@@ -17,6 +17,11 @@ export class AppComponent {
   }
 
   private operator(source: Observable<number>) {
-    return source;
+    return new Observable<number>((observer => {
+      source.subscribe((value) => {
+        console.log(value);
+        observer.next(value);
+      });
+    }));
   }
 }
