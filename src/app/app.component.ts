@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { timer, Observable, OperatorFunction } from 'rxjs';
+import { timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -11,24 +12,11 @@ export class AppComponent {
   isOutputEnabled = true;
 
   output = timer(0, 1000).pipe(
-    this.map((value) => {
+    map((value) => {
       console.log(value);
       return value * 2;
     })
   );
-
-  private map<A, B>(fn: (value: A) => B): OperatorFunction<A, B> {
-    return (source: Observable<A>) => {
-      return new Observable<B>(observer => {
-        const sub = source.subscribe((value) => {
-          observer.next(fn(value));
-        });
-
-        // on unsubscibe
-        return () => sub.unsubscribe();
-      });
-    };
-  }
 
   toggleOutput(): void {
     this.isOutputEnabled = !this.isOutputEnabled;
