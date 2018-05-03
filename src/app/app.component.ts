@@ -11,14 +11,16 @@ export class AppComponent {
   isOutputEnabled = true;
 
   output = timer(0, 1000).pipe(
-    this.operatorFactory()
+    this.operatorFactory((value) => {
+      console.log(value);
+    })
   );
 
-  private operatorFactory(): OperatorFunction<number, number> {
+  private operatorFactory(fn: (value: number) => void): OperatorFunction<number, number> {
     return (source: Observable<number>) => {
       return new Observable<number>(observer => {
         const sub = source.subscribe((value) => {
-          console.log(value);
+          fn(value);
           observer.next(value);
         });
 
