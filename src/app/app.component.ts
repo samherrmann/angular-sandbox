@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+
+  output = timer(0, 1000);
 }
