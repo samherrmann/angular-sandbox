@@ -17,9 +17,9 @@ export class AppComponent {
     })
   );
 
-  private map(fn: (value: number) => number): OperatorFunction<number, number> {
-    return (source: Observable<number>) => {
-      return new Observable<number>(observer => {
+  private map<A, B>(fn: (value: A) => B): OperatorFunction<A, B> {
+    return (source: Observable<A>) => {
+      return new Observable<B>(observer => {
         const sub = source.subscribe((value) => {
           observer.next(fn(value));
         });
