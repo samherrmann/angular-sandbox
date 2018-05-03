@@ -12,7 +12,7 @@ export class AppComponent {
     this.operatorFactory()
   );
 
-  private operatorFactory(): (source: Observable<number>) => Observable<number> {
+  private operatorFactory(): OperatorFunction<number, number> {
     return this.operator;
   }
 
@@ -20,3 +20,5 @@ export class AppComponent {
     return source;
   }
 }
+
+type OperatorFunction<A, B> = (source: Observable<A>) => Observable<B>;
