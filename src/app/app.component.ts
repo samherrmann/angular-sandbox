@@ -9,8 +9,10 @@ import { timer, Observable } from 'rxjs';
 export class AppComponent {
 
   output = timer(0, 1000).pipe(
-    (source: Observable<number>) => {
-      return source;
-    }
+    this.operator
   );
+
+  private operator(source: Observable<number>) {
+    return source;
+  }
 }
