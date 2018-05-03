@@ -11,13 +11,13 @@ export class AppComponent {
   isOutputEnabled = true;
 
   output = timer(0, 1000).pipe(
-    this.operatorFactory((value) => {
+    this.map((value) => {
       console.log(value);
       return value * 2;
     })
   );
 
-  private operatorFactory(fn: (value: number) => number): OperatorFunction<number, number> {
+  private map(fn: (value: number) => number): OperatorFunction<number, number> {
     return (source: Observable<number>) => {
       return new Observable<number>(observer => {
         const sub = source.subscribe((value) => {
