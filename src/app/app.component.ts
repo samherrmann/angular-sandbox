@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { timer, Observable } from 'rxjs';
+import { timer, Observable, OperatorFunction } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,5 +20,3 @@ export class AppComponent {
     return source;
   }
 }
-
-type OperatorFunction<A, B> = (source: Observable<A>) => Observable<B>;
