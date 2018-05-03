@@ -1,1 +1,4 @@
-{{ output | async }}
+<button (click)="toggleOutput()">Toggle Output</button>
+<div *ngIf="isOutputEnabled">
+  {{ output | async }}
+</div>

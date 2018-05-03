@@ -8,6 +8,8 @@ import { timer, Observable, OperatorFunction } from 'rxjs';
 })
 export class AppComponent {
 
+  isOutputEnabled = true;
+
   output = timer(0, 1000).pipe(
     this.operatorFactory()
   );
@@ -17,11 +19,18 @@ export class AppComponent {
   }
 
   private operator(source: Observable<number>) {
-    return new Observable<number>((observer => {
-      source.subscribe((value) => {
+    return new Observable<number>(observer => {
+      const sub = source.subscribe((value) => {
         console.log(value);
         observer.next(value);
       });
-    }));
+
+      // on unsubscibe
+      return () => sub.unsubscribe();
+    });
+  }
+
+  toggleOutput(): void {
+    this.isOutputEnabled = !this.isOutputEnabled;
   }
 }
