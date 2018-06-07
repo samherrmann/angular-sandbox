@@ -1,0 +1,7 @@
+<div #scrollable class="scrollable" [ngStyle]="scrollableDimensions" (scroll)="onScroll()">
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+</div>
+<div class="scrollbar scrollbar-y" [ngStyle]="{top: thumbYTop + 'px', height: thumbYLength + 'px'}"></div>
+<div class="scrollbar scrollbar-x" [ngStyle]="{left: thumbXLeft + 'px', width: thumbXLength + 'px'}"></div>
