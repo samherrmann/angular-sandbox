@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BarComponent } from './bar.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [
-  ],
+  imports: [CommonModule],
   declarations: [BarComponent],
   exports: [BarComponent]
 })

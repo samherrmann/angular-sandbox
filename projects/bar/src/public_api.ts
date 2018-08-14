@@ -5,3 +5,4 @@
 export * from './lib/bar.service';
 export * from './lib/bar.component';
 export * from './lib/bar.module';
+export * from './lib/types';
