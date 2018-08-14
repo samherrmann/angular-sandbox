@@ -5,10 +5,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build foo --prod && ng build sandbox --prod",
+    "build": "ng build bar --prod && ng build foo --prod && ng build sandbox --prod",
     "test": "ng test",
     "lint": "ng lint sandbox && ng lint sandbox-e2e",
-    "lint-fix": "ng lint foo --fix && ng lint sandbox --fix && ng lint sandbox-e2e --fix",
+    "lint-fix": "ng lint bar --fix && ng lint foo --fix && ng lint sandbox --fix && ng lint sandbox-e2e --fix",
     "e2e": "ng e2e"
   },
   "private": true,

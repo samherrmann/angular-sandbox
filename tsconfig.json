@@ -22,6 +22,12 @@
       ],
       "foo/*": [
         "dist/foo/*"
+      ],
+      "bar": [
+        "dist/bar"
+      ],
+      "bar/*": [
+        "dist/bar/*"
       ]
     }
   }
