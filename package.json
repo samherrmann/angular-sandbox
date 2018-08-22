@@ -4,8 +4,10 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng build mylib && ng serve",
+    "start:prod": "ng build --prod mylib && ng serve --aot",
+    "build": "ng build mylib && ng build sandbox",
+    "build:prod": "ng build mylib --prod && ng build sandbox --prod",
     "test": "ng test",
     "lint": "ng lint sandbox && ng lint sandbox-e2e",
     "lint-fix": "ng lint sandbox --fix && ng lint sandbox-e2e --fix",
