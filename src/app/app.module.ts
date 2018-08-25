@@ -10,7 +10,15 @@ import { MylibModule } from 'mylib';
   ],
   imports: [
     BrowserModule,
-    MylibModule
+    MylibModule.forRoot({
+      a: 2,
+      b: 'hello',
+      c: {
+        d: 0,
+        e: ''
+        // leave f undefined
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
