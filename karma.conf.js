@@ -31,9 +31,7 @@ module.exports = function (config) {
     customLaunchers: {
       customChrome: {
         base: 'ChromeHeadless',
-        flags: [
-          '--no-sandbox'
-        ]
+        flags: ['--headless', '--no-sandbox']
       }
     },
     singleRun: false
