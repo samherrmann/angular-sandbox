@@ -9,4 +9,4 @@ docker run \
   --rm \
   -v $(pwd):/code \
   ${args} \
-  samherrmann/angular-cli:6.1.4 $@
+  samherrmann/angular-cli:7.3.0 $@
