@@ -1,0 +1,16 @@
+:host {
+  display: none;
+
+  &.activated {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+a {
+  align-self: flex-end;
+}
+
+.content {
+  padding: 16px;
+}
