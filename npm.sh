@@ -11,4 +11,4 @@ docker run \
   -e HTTPS_PROXY=$HTTPS_PROXY \
   -e NO_PROXY=$NO_PROXY \
   ${args} \
-  samherrmann/angular-cli:7.3.0 $@
+  samherrmann/angular-cli:8.3.19 $@
