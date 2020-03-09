@@ -1,4 +1,5 @@
-import { Component, ViewChild, TemplateRef, ViewContainerRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, Inject } from '@angular/core';
+import { FOO_EXTENSIONS, FooExtensionFactory } from './foo/foo-extension';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +11,17 @@ export class AppComponent {
   @ViewChild('vcr', { read: ViewContainerRef })
   private vcr: ViewContainerRef;
 
-  constructor(private readonly cfr: ComponentFactoryResolver) {}
+  constructor(
+    private readonly cfr: ComponentFactoryResolver,
+    @Inject(FOO_EXTENSIONS) private readonly extensions: FooExtensionFactory[]
+  ) {}
 
   lazyLoad(): void {
-    import('../app/foo/foo.component').then(
-      ({ FooComponent }) => {
-        const component = this.cfr.resolveComponentFactory(
-          FooComponent
-        );
+    this.extensions.forEach(dynamicImport => {
+      dynamicImport().then(ext => {
+        const component = this.cfr.resolveComponentFactory(ext);
         this.vcr.createComponent(component);
-      }
-    );
+      });
+    });
   }
 }
