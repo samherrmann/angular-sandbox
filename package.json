@@ -12,7 +12,8 @@
     "lint:fix": "ng lint --fix",
     "e2e": "ng e2e --webdriver-update=false",
     "postinstall": "npm run webdriver-manager update -- --versions.standalone=2.53.1 --versions.chrome=2.38 --versions.gecko=v0.13.0",
-    "webdriver-manager": "npm explore protractor -- webdriver-manager"
+    "webdriver-manager": "npm explore protractor -- webdriver-manager",
+    "update": "ng update --all"
   },
   "private": true,
   "dependencies": {
