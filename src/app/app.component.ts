@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
+import { Viewer } from 'cesium';
+
+// tslint:disable-next-line: no-string-literal
+window['CESIUM_BASE_URL'] = '/assets/cesium/';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'sandbox';
+
+  readonly viewer: Viewer;
+
+  constructor(private host: ElementRef<HTMLElement>) {
+    this.viewer = new Viewer(this.host.nativeElement);
+  }
 }
