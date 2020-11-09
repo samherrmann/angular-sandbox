@@ -19,8 +19,14 @@
       "dom"
     ],
     "paths": {
-      "mylib": ["projects/mylib/src/public-api.ts"],
-      "mylib2": ["projects/mylib2/src/public-api.ts"]
+      "mylib": [
+        "dist/mylib/mylib",
+        "dist/mylib"
+      ],
+      "mylib2": [
+        "dist/mylib2/mylib2",
+        "dist/mylib2"
+      ]
     }
   },
   "angularCompilerOptions": {
