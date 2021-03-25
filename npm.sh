@@ -1,5 +1,6 @@
 args=()
 [[ $@ == 'start'* || $@ == 'run start'* ]] && args+=('--publish 4200:4200')
+[[ $@ == 'run serve'* ]] && args+=('--publish 8080:8080')
 [[ $@ == 'test'* || $@ == 'run test'* ]] && args+=('--publish 9876:9876')
 [[ $@ == 'run e2e'* ]] && args+=('--publish 49152:49152')
 
