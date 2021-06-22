@@ -124,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "sandbox"
+    }
+  },
+  "defaultProject": "sandbox",
+  "cli": {
+    "analytics": false
+  }
 }
