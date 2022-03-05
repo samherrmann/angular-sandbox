@@ -11,7 +11,8 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
-          "displayBlock": true
+          "displayBlock": true,
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:application": {
           "strict": true
