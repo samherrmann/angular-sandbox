@@ -15,9 +15,10 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"angular.ng-template",
 		"dbaeumer.vscode-eslint",
 		"mhutchie.git-graph",
-		"stkb.rewrap"
+		"stkb.rewrap",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
